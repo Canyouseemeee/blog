@@ -44,6 +44,6 @@ Register Edit
 
 @endsection
 
-@section('script')
+@section('scripts')
 
 @endsection

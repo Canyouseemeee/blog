@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table">
+                        <table id="datatable" class="table">
                             <thead class="text-primary">
                                 <th>Name</th>
                                 <th>Phone</th>
@@ -56,6 +56,10 @@
     </div>
 @endsection
 
-@section('script')
-
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $('#datatable').DataTable();
+    });
+</script>
 @endsection

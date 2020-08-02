@@ -34,6 +34,8 @@
   <link href="../assets/css/now-ui-dashboard.css?v=1.5.0" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../assets/demo/demo.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="{{ asset('css/dataTables.min.css') }}" />
 </head>
 
 <body class="">
@@ -62,16 +64,16 @@
               <p>Icons</p>
             </a>
           </li>
-          <li>
-            <a href="./map.html">
+          <li class="{{ 'category' == request()->path() ? 'active' : '' }}">
+            <a href="/category">
               <i class="now-ui-icons location_map-big"></i>
-              <p>Maps</p>
+              <p>Category</p>
             </a>
           </li>
-          <li>
-            <a href="./notifications.html">
-              <i class="now-ui-icons ui-1_bell-53"></i>
-              <p>Notifications</p>
+          <li class="{{ 'category-list' == request()->path() ? 'active' : '' }}">
+            <a href="{{ url('category-list') }}">
+              <i class="now-ui-icons location_map-big"></i>
+              <p>Category-list</p>
             </a>
           </li>
           <li class="{{ 'role-register' == request()->path() ? 'active' : '' }}">
@@ -80,10 +82,10 @@
               <p>Role-register</p>
             </a>
           </li>
-          <li>
-            <a href="./tables.html">
+          <li class="{{ 'abouts' == request()->path() ? 'active' : '' }}">
+            <a href="/abouts">
               <i class="now-ui-icons design_bullet-list-67"></i>
-              <p>Table List</p>
+              <p>About Us</p>
             </a>
           </li>
           <li>
@@ -225,6 +227,9 @@
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+
+  <script src="{{ asset('js/dataTables.min.js') }}"></script>
+
   <!--  Google Maps Plugin    -->
   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
   <!-- Chart JS -->
@@ -235,7 +240,20 @@
   <script src="../assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
   <script src="../assets/demo/demo.js"></script>
 
-  @yield('script')
+  <script src="{{ asset('js/sweetalert.js') }}"></script>
+  <script>
+    @if(session('status'))
+    // alert('{{ session('status') }}');
+    swal({
+      title: "{{ session('status') }}",
+      // text: "You clicked the button!",
+      icon: "{{ session('statuscode') }}",
+      button: "OK",
+    });
+    @endif
+  </script>
+
+  @yield('scripts')
 </body>
 
 </html>
