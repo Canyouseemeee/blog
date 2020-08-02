@@ -77,19 +77,21 @@ Web Test
             </div>
             <style>
                 .w-10p {
-                    width: 10% !important;
+                    /* width: 10% !important; */
+                    word-break:break-all;
+                    width: 600px ;
                 }
             </style>
             <div class="card-body">
                 <div class="table-responsive">
                     <table id="datatable" class="table">
                         <thead class="text-primary">
-                            <th class="w-10p">Id</th>
-                            <th class="w-10p">Title</th>
-                            <th class="w-10p">Sub-Title</th>
-                            <th class="w-10p">Description</th>
-                            <th class="w-10p">EDIT</th>
-                            <th class="w-10p">DELETE</th>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Sub-Title</th>
+                            <th>Description</th>
+                            <th>EDIT</th>
+                            <th>DELETE</th>
                         </thead>
                         <tbody>
                             @foreach($aboutus as $row)
@@ -97,7 +99,7 @@ Web Test
                                 <td>{{$row->id}}</td>
                                 <td>{{$row->title}}</td>
                                 <td>{{$row->subtitle}}</td>
-                                <td>
+                                <td class="w-10p">
                                     <div style="height: 30px; overflow: hidden;">
                                         {{$row->description}}
                                     </div>
