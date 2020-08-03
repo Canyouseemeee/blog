@@ -36,7 +36,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/issues', 'Admin\IssuesController@index');
     Route::post('/issues-filter-news', 'Admin\IssuesController@getReport');
     Route::get('/issues-create', 'Admin\IssuesController@create');
-    Route::post('/issues-store', 'Admin\IssuesController@store');
+    Route::post('/addimage', 'Admin\IssuesController@store')->name('addimage');
 
 
     Route::get('/abouts', 'Admin\AboutusController@index');

@@ -49,17 +49,24 @@ class IssuesController extends Controller
         return view('admin.issues.index', compact(['issues'], ['between']));
     }
 
-    public function create(){
+    public function create()
+    {
         $issues = Issues::all();
         $issuestracker = Issuestracker::all();
         $issuespriority = Issuespriority::all();
         $issuesstatus = Issuesstatus::all();
         $department = Department::all();
-        return view('admin.issues.create',compact(['issues'],['issuestracker']
-        ,['issuespriority'],['issuesstatus'],['department']));
+        return view('admin.issues.create', compact(
+            ['issues'],
+            ['issuestracker'],
+            ['issuespriority'],
+            ['issuesstatus'],
+            ['department']
+        ));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $issues = new Issues();
         $issues->Trackerid = $request->input('Trackerid');
         $issues->Priorityid = $request->input('Priorityid');
@@ -69,19 +76,22 @@ class IssuesController extends Controller
         $issues->Subject = $request->input('Subject');
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
-        
 
-        $fileupload1 = $request->file('fileupload1');
-        $new_name = rand() . '.' . $fileupload1->getClientOriginalExtension();
-        $fileupload1->move(public_path('fileupload1'), $new_name);
-        $form_data = array(
-            'Subject' => $request->Subject,
-            'Description' => $request->Description,
-            'Fileupload1' => $new_name,
-        );
+
+        if ($request->file('Image')) {
+            $file = $request->file('Image');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $file->move('uploads/issues/' . $filename);
+            $issues->Image = $filename;
+        } else {
+            return $request;
+            $issues->Image = '';
+        }
+
         $issues->save();
-        Issues::create($request->all(), $form_data);
 
-        return redirect('admin.issues.index')->with('status','Data Added for Issues Successfully');
+
+        return redirect('admin.issues.index',compact('issues'))->with('status', 'Data Added for Issues Successfully');
     }
 }

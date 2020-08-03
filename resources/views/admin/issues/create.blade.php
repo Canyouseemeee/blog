@@ -14,7 +14,7 @@ Web Test
                 </h4>
             </div>
             <div class="card-body">
-                <form action="{{ url('issues') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('addimage') }}" method="POST">
                     {{ csrf_field() }}
 
                     <div class="form-row">
@@ -75,8 +75,7 @@ Web Test
                     </div>
 
                     <div>
-                        <input type="file" name="fileupload1" id="fileupload1">
-                        {{ csrf_field() }}
+                        <input type="file" name="Image" class="custom-file-input">
                     </div>
                     <br>
                     <input type="submit" value="บันทึก" class="btn btn-primary ">
