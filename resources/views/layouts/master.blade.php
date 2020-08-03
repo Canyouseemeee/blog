@@ -58,6 +58,15 @@
               <p>Dashboard</p>
             </a>
           </li>
+<<<<<<< HEAD
+=======
+          <li class="{{ 'issues' == request()->path() ? 'active' : '' }}">
+            <a href="/issues">
+              <i class="now-ui-icons education_atom"></i>
+              <p>New Issues</p>
+            </a>
+          </li>
+>>>>>>> ac587245176ccf12e2fc354645e8e9c6e0f1461e
           <li class="{{ 'category' == request()->path() ? 'active' : '' }}">
             <a href="/category">
               <i class="now-ui-icons location_map-big"></i>
