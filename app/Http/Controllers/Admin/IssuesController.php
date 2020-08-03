@@ -94,4 +94,10 @@ class IssuesController extends Controller
 
         return redirect('admin.issues.index',compact('issues'))->with('status', 'Data Added for Issues Successfully');
     }
+
+    public function show($Issuesid)
+    {
+        $issues=Issues::find($Issuesid);
+        return view('admin.issues.show',compact('issues'));
+    }
 }

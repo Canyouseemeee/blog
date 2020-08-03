@@ -10,11 +10,11 @@ Web Test
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title"> Issues-Create
-                    <a href="{{ url('category') }}" class="btn btn-primary float-right">Back</a>
+                    <a href="{{ url('issues') }}" class="btn btn-info float-right">Back</a>
                 </h4>
             </div>
             <div class="card-body">
-                <form action="{{ route('addimage') }}" method="POST">
+                <form action="{{ url('issues-store') }}" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
 
                     <div class="form-row">
@@ -56,12 +56,12 @@ Web Test
 
                         <div class="form-group col-md-3">
                             <label>User</label>
-                            <text name="Users" class="form-control" readonly="readonly">{{Auth::user()->name}}</text>
+                            <text name="Users" class="form-control" readonly="readonly" value="Auth::user()->name">{{Auth::user()->name}}</text>
                         </div>
 
                         <div class="form-group col-md-3">
                             <label>DateIn</label>
-                            <text name="Users" class="form-control" readonly="readonly">{{now()->toDateString()}}</text>
+                            <text name="Users" class="form-control" readonly="readonly" value="now()->toDateString()">{{now()->toDateString()}}</text>
                         </div>
                     </div>
                     <div class="form-group">
@@ -75,11 +75,11 @@ Web Test
                     </div>
 
                     <div>
-                        <input type="file" name="Image" class="custom-file-input">
+                        <input type="file" name="Image">
                     </div>
                     <br>
-                    <input type="submit" value="บันทึก" class="btn btn-primary ">
-                    <a href="/issues" class="btn btn-success">ย้อนกลับ</a>
+                    <input type="submit" value="บันทึก" class="btn btn-success ">
+                    <a href="/issues" class="btn btn-danger">ย้อนกลับ</a>
 
                 </form>
             </div>
