@@ -58,10 +58,10 @@
               <p>Dashboard</p>
             </a>
           </li>
-          <li>
-            <a href="./icons.html">
+          <li class="{{ 'issues' == request()->path() ? 'active' : '' }}">
+            <a href="/issues">
               <i class="now-ui-icons education_atom"></i>
-              <p>Icons</p>
+              <p>New Issues</p>
             </a>
           </li>
           <li class="{{ 'category' == request()->path() ? 'active' : '' }}">
