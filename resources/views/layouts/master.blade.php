@@ -58,7 +58,7 @@
               <p>Dashboard</p>
             </a>
           </li>
-          <!-- <li class="nav-item dropdown {{ 'issues' == request()->path() ? 'active' : '' }}">
+          <!-- <li class=" {{ 'issues' == request()->path() ? 'active' : '' }}">
             <a href="/issues">
               <i class="now-ui-icons education_atom"></i>
               <p>New Issues</p>
