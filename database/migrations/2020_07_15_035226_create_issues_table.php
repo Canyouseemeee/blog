@@ -23,7 +23,7 @@ class CreateIssuesTable extends Migration
             $table->string('Subject');
             $table->longText('Description');
             $table->date('Date_In');
-            $table->string('Fileupload1');
+            $table->mediumText('Image')->nullable();
             $table->timestamps();
         });
     }

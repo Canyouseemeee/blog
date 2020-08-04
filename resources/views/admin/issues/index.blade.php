@@ -23,33 +23,6 @@ function DateThai($strDate)
 }
 ?>
 
-<!-- Delete Modal -->
-<div class="modal fade" id="deletemodalpop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">DELETE FORM</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="delete_modal_Form" method="POST">
-                {{ csrf_field() }}
-                {{ method_field('DELETE') }}
-                <div class="modal-body">
-                    <input type="hidden" id="delete_aboutus_id">
-                    <h5>Are you sure.? you want to delete this Data</h5>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Yes. Delete It.</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- End Delete Modal -->
-
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -60,23 +33,24 @@ function DateThai($strDate)
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="card-header">{{ __('Filter') }}</div>
-                                <div class="card-body row">
+                                <div class="card-body row ">
                                     <div class="form-group row">
-                                        <label class="col-md-4 col-form-label text-md-right"> Fromdate </label>
+                                        <label class="col-md-4 col-form-label text-md-right"> Fromdate : </label>
                                         <div class="col-md-8">
                                             <input type="date" name="fromdate" class="form-control">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-4 col-form-label text-md-right"> Todate </label>
+                                        <label class="col-md-4 col-form-label text-md-right"> Todate : </label>
                                         <div class="col-md-8">
                                             <input type="date" name="todate" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="col-md-12 " align="center">
-                                            <button type="submit" class="btn btn-info">Search</button>
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-info float-right">Search</button>
+                                        <a href="#" class="btn btn-danger float-right">Reset</a>
                                     </div>
                                 </div>
                             </div>
@@ -87,7 +61,7 @@ function DateThai($strDate)
 
             <div class="card-header">
                 <h4 class="card-title"> New Issues
-                    <a href="{{ url('issues-create') }}" class="btn btn-primary float-right">Add Issues</a>
+                    <a href="{{ url('issues-create') }}" class="btn btn-success float-right">Add Issues</a>
                 </h4>
             </div>
             <style>
@@ -131,7 +105,7 @@ function DateThai($strDate)
                                 <td>{{DateThai($row->created_at)}}</td>
                                 <td>{{DateThai($row->updated_at)}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-success">View</a>
+                                    <a href="{{ url('issues-view/'.$row->id) }}" class="btn btn-success">View</a>
                                 </td>
                             </tr>
                             @endforeach
