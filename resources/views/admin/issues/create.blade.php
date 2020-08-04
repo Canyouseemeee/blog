@@ -14,7 +14,7 @@ Web Test
                 </h4>
             </div>
             <div class="card-body">
-                <form action="{{ url('issues') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ url('issues-store') }}" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
 
                     <div class="form-row">
