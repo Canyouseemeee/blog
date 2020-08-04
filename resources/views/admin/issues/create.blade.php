@@ -9,9 +9,7 @@ Web Test
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title"> Issues-Create
-                    <a href="{{ url('issues') }}" class="btn btn-info float-right">Back</a>
-                </h4>
+                <h4 class="card-title"> Issues-Create</h4>
             </div>
             <div class="card-body">
                 <form action="{{ url('issues-store') }}" method="POST" enctype="multipart/form-data">
@@ -31,7 +29,7 @@ Web Test
                             <label>Priority</label>
                             <select name="Priorityid" class="form-control create" require>
                                 @foreach($issuespriority as $row2)
-                                <option value="{{$row->Priorityid}}">{{$row2->ISPName}}</option>
+                                <option value="{{$row2->Priorityid}}">{{$row2->ISPName}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -40,7 +38,7 @@ Web Test
                             <label>Status</label>
                             <select name="Statusid" class="form-control create" require>
                                 @foreach($issuesstatus as $row3)
-                                <option value="{{$row->Statusid}}">{{$row3->ISSName}}</option>
+                                <option value="{{$row3->Statusid}}">{{$row3->ISSName}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -49,19 +47,19 @@ Web Test
                             <label>Department</label>
                             <select name="Departmentid" class="form-control create" require>
                                 @foreach($department as $row4)
-                                <option value="{{$row->Departmentid}}">{{$row4->DmName}}</option>
+                                <option value="{{$row4->Departmentid}}">{{$row4->DmName}}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="form-group col-md-3">
                             <label>User</label>
-                            <text name="Users" class="form-control" readonly="readonly" value="Auth::user()->name">{{Auth::user()->name}}</text>
+                            <input name="Users" class="form-control" readonly="readonly" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}" >
                         </div>
 
                         <div class="form-group col-md-3">
                             <label>DateIn</label>
-                            <text name="Users" class="form-control" readonly="readonly" value="now()->toDateString()">{{now()->toDateString()}}</text>
+                            <input name="Date_In" class="form-control" readonly="readonly" value="{{now()->toDateString()}}" placeholder="{{now()->toDateString()}}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -78,8 +76,8 @@ Web Test
                         <input type="file" name="Image">
                     </div>
                     <br>
-                    <input type="submit" value="บันทึก" class="btn btn-success ">
-                    <a href="/issues" class="btn btn-danger">ย้อนกลับ</a>
+                    <input type="submit" value="Save" class="btn btn-success ">
+                    <a href="/issues" class="btn btn-danger">Back</a>
 
                 </form>
             </div>

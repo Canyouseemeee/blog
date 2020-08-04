@@ -58,11 +58,37 @@
               <p>Dashboard</p>
             </a>
           </li>
-          <li class="{{ 'issues' == request()->path() ? 'active' : '' }}">
+          <!-- <li class="nav-item dropdown {{ 'issues' == request()->path() ? 'active' : '' }}">
             <a href="/issues">
               <i class="now-ui-icons education_atom"></i>
               <p>New Issues</p>
             </a>
+          </li> -->
+          <li class="nav-item dropdown ">
+            <a id="navbarDropdown" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+              <i class="now-ui-icons education_atom"></i>
+              <p>Issues</p> <span class="caret"></span>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <div class="dropdown-item ">
+                <a href="/issues">
+                  <i class="now-ui-icons education_atom"></i>
+                  <p>New Issues</p>
+                </a>
+              </div>
+              <div class="dropdown-item ">
+                <a href="/defer">
+                  <i class="now-ui-icons education_atom"></i>
+                  <p>Defer Issues</p>
+                </a>
+              </div>
+              <div class="dropdown-item ">
+                <a href="/closed">
+                  <i class="now-ui-icons education_atom"></i>
+                  <p>Closed Issues</p>
+                </a>
+              </div>
+            </div>
           </li>
           <li class="{{ 'category' == request()->path() ? 'active' : '' }}">
             <a href="/category">
@@ -146,7 +172,7 @@
                   </form>
                 </div>
               </li>
-              <!-- <li class="nav-item dropdown">
+              <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="now-ui-icons location_world"></i>
                   <p>
@@ -158,15 +184,15 @@
                   <a class="dropdown-item" href="#">Another action</a>
                   <a class="dropdown-item" href="#">Something else here</a>
                 </div>
-              </li> -->
-              <!-- <li class="nav-item">
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="#pablo">
                   <i class="now-ui-icons users_single-02"></i>
                   <p>
                     <span class="d-lg-none d-md-block">Account</span>
                   </p>
                 </a>
-              </li> -->
+              </li>
             </ul>
           </div>
         </div>

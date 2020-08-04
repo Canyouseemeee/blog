@@ -7,8 +7,6 @@ Web Test
 @section('content')
 <?php
 
-use Carbon\Carbon;
-
 function DateThai($strDate)
 {
     $strYear = date("Y", strtotime($strDate)) + 543;
@@ -84,7 +82,6 @@ function DateThai($strDate)
                             <th class="w-10p">Priority</th>
                             <th class="w-10p">Users</th>
                             <th class="w-10p">Subject</th>
-                            <th class="w-10p">Created</th>
                             <th class="w-10p">Updated</th>
                             <th class="w-10p">Views</th>
                         </thead>
@@ -99,13 +96,12 @@ function DateThai($strDate)
                                 <td>{{$row->Users}}</td>
                                 <td>
                                     <div class="w-11p" style="height: 30px; overflow: hidden;">
-                                        {{$row->Subject}}
+                                        <a href="{{ url('issues-show/'.$row->Issuesid) }}">{{$row->Subject}}</a>
                                     </div>
                                 </td>
-                                <td>{{DateThai($row->created_at)}}</td>
                                 <td>{{DateThai($row->updated_at)}}</td>
                                 <td>
-                                    <a href="{{ url('issues-view/'.$row->id) }}" class="btn btn-success">View</a>
+                                    <a href="{{ url('issues-show/'.$row->Issuesid) }}" class="btn btn-success">View</a>
                                 </td>
                             </tr>
                             @endforeach
@@ -120,13 +116,12 @@ function DateThai($strDate)
                                 <td style="text-align:center">{{$betweens->Users}}</td>
                                 <td>
                                     <div class="w-11p" style="height: 30px; overflow: hidden;">
-                                        <a href="#">{{$betweens->Subject}}</a>
+                                        <a href="{{ url('issues-show/'.$betweens->Issuesid) }}">{{$betweens->Subject}}</a>
                                     </div>
                                 </td>
-                                <td style="text-align:center">{{DateThai($betweens->created_at)}}</td>
                                 <td style="text-align:center">{{DateThai($betweens->updated_at)}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-success">View</a>
+                                    <a href="{{ url('issues-show/'.$betweens->Issuesid) }}" class="btn btn-success">View</a>
                                 </td>
                             </tr>
                             @endforeach

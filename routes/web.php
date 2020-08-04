@@ -34,10 +34,16 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::delete('/role-delete/{id}', 'Admin\DashboardController@registerdelete');
 
     Route::get('/issues', 'Admin\IssuesController@index');
+    Route::get('/closed', 'Admin\IssuesController@closed');
+    Route::get('/defer', 'Admin\IssuesController@defer');
     Route::post('/issues-filter-news', 'Admin\IssuesController@getReport');
+    Route::post('/issues-filter-defers', 'Admin\IssuesController@getReportdefers');
+    Route::post('/issues-filter-closed', 'Admin\IssuesController@getReportclosed');
     Route::get('/issues-create', 'Admin\IssuesController@create');
     Route::post('/issues-store', 'Admin\IssuesController@store')->name('issues-store');
-    Route::get('/issues-view', 'Admin\IssuesController@show');
+    Route::get('/issues-edit/{id}', 'Admin\IssuesController@edit');
+    Route::put('/issues-update/{id}', 'Admin\IssuesController@update');
+    Route::get('/issues-show/{id}', 'Admin\IssuesController@show');
 
     Route::get('/abouts', 'Admin\AboutusController@index');
     Route::post('/save-aboutus', 'Admin\AboutusController@store');

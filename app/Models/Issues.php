@@ -9,7 +9,7 @@ class Issues extends Model
     protected $table ='issues';
     protected $primaryKey = 'Issuesid';
     protected $fillable = [
-        'Trackerid','Priorityid','Statusid','Departmentid','users','subject','description'
+        'Trackerid','Priorityid','Statusid','Departmentid','Users','Subject','Description'
         ,'Date_In','Image','created_at','updated_at'
     ];
 
