@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master2')
 
 @section('title')
 Web Test
@@ -72,7 +72,7 @@ Web Test
 
                         <div class="form-group col-md-3">
                             <label>DateIn</label>
-                            <input name="Date_In" class="form-control" readonly="readonly" value="{{now()->toDateString()}}" placeholder="{{now()->toDateString()}}">
+                            <input name="Date_In" class="form-control" readonly="readonly" value="{{$data->Date_In}}" placeholder="{{$data->Date_In}}">
                         </div>
                     </div>
                     <div class="form-group">

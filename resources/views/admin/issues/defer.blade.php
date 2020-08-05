@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master2')
 
 @section('title')
 Web Test
@@ -47,7 +47,7 @@ function DateThai($strDate)
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <button type="submit" class="btn btn-info float-right">Search</button>
+                                        <button type="submit" class="btn btn-primary float-right">Search</button>
                                         <a href="#" class="btn btn-danger float-right">Reset</a>
                                     </div>
                                 </div>
@@ -59,7 +59,7 @@ function DateThai($strDate)
 
             <div class="card-header">
                 <h4 class="card-title"> Defer Issues
-                    <a href="{{ url('issues-create') }}" class="btn btn-success float-right">Add Issues</a>
+                    <a href="{{ url('issues-create') }}" class="btn btn-primary float-right">Add Issues</a>
                 </h4>
             </div>
             <style>

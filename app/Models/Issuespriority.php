@@ -9,6 +9,6 @@ class Issuespriority extends Model
     protected $table ='issues_priority';
     protected $primaryKey = 'Priorityid';
     protected $fillable = [
-        'ISPName'
+        'ISPName','Description'
     ];
 }

@@ -16,6 +16,7 @@ class CreateIssuesStatusTable extends Migration
         Schema::create('issues_status', function (Blueprint $table) {
             $table->bigIncrements('Statusid');
             $table->string('ISSName');
+            $table->longText('Description');
             $table->timestamps();
         });
     }

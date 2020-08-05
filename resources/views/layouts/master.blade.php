@@ -64,31 +64,37 @@
               <p>New Issues</p>
             </a>
           </li> -->
-          <li class="nav-item dropdown ">
-            <a id="navbarDropdown" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-              <i class="now-ui-icons education_atom"></i>
-              <p>Issues</p> <span class="caret"></span>
+          <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          <i class="fas fa-fw fa-cog"></i>
+          <span>Issues</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <!-- <h6 class="collapse-header">Custom Components:</h6> -->
+            <a class="collapse-item" href="/issues">New Issues</a>
+            <a class="collapse-item" href="/defer">Defer Issues</a>
+            <a class="collapse-item" href="/closed">Closed Issues</a>
+          </div>
+        </div>
+      </li>
+          <li class="{{ 'tracker' == request()->path() ? 'active' : '' }}">
+            <a href="/tracker">
+              <i class="now-ui-icons location_map-big"></i>
+              <p>Tracker</p>
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <div class="dropdown-item ">
-                <a href="/issues">
-                  <i class="now-ui-icons education_atom"></i>
-                  <p>New Issues</p>
-                </a>
-              </div>
-              <div class="dropdown-item ">
-                <a href="/defer">
-                  <i class="now-ui-icons education_atom"></i>
-                  <p>Defer Issues</p>
-                </a>
-              </div>
-              <div class="dropdown-item ">
-                <a href="/closed">
-                  <i class="now-ui-icons education_atom"></i>
-                  <p>Closed Issues</p>
-                </a>
-              </div>
-            </div>
+          </li>
+          <li class="{{ 'priority' == request()->path() ? 'active' : '' }}">
+            <a href="/priority">
+              <i class="now-ui-icons location_map-big"></i>
+              <p>Priority</p>
+            </a>
+          </li>
+          <li class="{{ 'status' == request()->path() ? 'active' : '' }}">
+            <a href="/status">
+              <i class="now-ui-icons location_map-big"></i>
+              <p>Status</p>
+            </a>
           </li>
           <li class="{{ 'category' == request()->path() ? 'active' : '' }}">
             <a href="/category">

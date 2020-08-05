@@ -16,6 +16,7 @@ class CreateIssuesTrackerTable extends Migration
         Schema::create('issues_tracker', function (Blueprint $table) {
             $table->bigIncrements('Trackerid');
             $table->string('ISTName');
+            $table->longText('Description');
             $table->timestamps();
         });
     }

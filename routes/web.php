@@ -24,15 +24,19 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth', 'admin']], function () {
 
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    });
+    // Route::get('/dashboard', function () {
+    //     return view('admin.dashboard');
+    // });
+
+    Route::get('/dashboard', 'Admin\DashController@index');
+
 
     Route::get('/role-register', 'Admin\DashboardController@registered');
     Route::get('/role-edit/{id}', 'Admin\DashboardController@registeredit');
     Route::put('/role-register-update/{id}', 'Admin\DashboardController@registerupdate');
     Route::delete('/role-delete/{id}', 'Admin\DashboardController@registerdelete');
 
+    //issues//
     Route::get('/issues', 'Admin\IssuesController@index');
     Route::get('/closed', 'Admin\IssuesController@closed');
     Route::get('/defer', 'Admin\IssuesController@defer');
@@ -44,6 +48,38 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/issues-edit/{id}', 'Admin\IssuesController@edit');
     Route::put('/issues-update/{id}', 'Admin\IssuesController@update');
     Route::get('/issues-show/{id}', 'Admin\IssuesController@show');
+
+    //tracker//
+    Route::get('/tracker', 'Admin\TrackerController@index');
+    Route::get('/tracker-create', 'Admin\TrackerController@create');
+    Route::post('/tracker-store', 'Admin\TrackerController@store');
+    Route::get('/tracker-edit/{id}', 'Admin\TrackerController@edit');
+    Route::put('/tracker-update/{id}', 'Admin\TrackerController@update');
+    Route::delete('/tracker-delete/{id}', 'Admin\TrackerController@delete');
+
+    //priority//
+    Route::get('/priority', 'Admin\PriorityController@index');
+    Route::get('/priority-create', 'Admin\PriorityController@create');
+    Route::post('/priority-store', 'Admin\PriorityController@store');
+    Route::get('/priority-edit/{id}', 'Admin\PriorityController@edit');
+    Route::put('/priority-update/{id}', 'Admin\PriorityController@update');
+    Route::delete('/priority-delete/{id}', 'Admin\PriorityController@delete');
+
+    //status//
+    Route::get('/status', 'Admin\StatusController@index');
+    Route::get('/status-create', 'Admin\StatusController@create');
+    Route::post('/status-store', 'Admin\StatusController@store');
+    Route::get('/status-edit/{id}', 'Admin\StatusController@edit');
+    Route::put('/status-update/{id}', 'Admin\StatusController@update');
+    Route::delete('/status-delete/{id}', 'Admin\StatusController@delete');
+
+    //department//
+    Route::get('/department', 'Admin\DepartmentController@index');
+    Route::get('/department-create', 'Admin\DepartmentController@create');
+    Route::post('/department-store', 'Admin\DepartmentController@store');
+    Route::get('/department-edit/{id}', 'Admin\DepartmentController@edit');
+    Route::put('/department-update/{id}', 'Admin\DepartmentController@update');
+    Route::delete('/department-delete/{id}', 'Admin\DepartmentController@delete');
 
     Route::get('/abouts', 'Admin\AboutusController@index');
     Route::post('/save-aboutus', 'Admin\AboutusController@store');

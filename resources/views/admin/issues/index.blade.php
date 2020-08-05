@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master2')
 
 @section('title')
 Web Test
@@ -20,46 +20,46 @@ function DateThai($strDate)
     return "$strDay $strMonthThai $strYear $strHour:$strMinute น.";
 }
 ?>
-
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <form action="{{ url('issues-filter-news') }}" method="post">
-                {{ csrf_field() }}
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="card-header">{{ __('Filter') }}</div>
-                                <div class="card-body row ">
-                                    <div class="form-group row">
-                                        <label class="col-md-4 col-form-label text-md-right"> Fromdate : </label>
-                                        <div class="col-md-8">
-                                            <input type="date" name="fromdate" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-4 col-form-label text-md-right"> Todate : </label>
-                                        <div class="col-md-8">
-                                            <input type="date" name="todate" class="form-control">
-                                        </div>
-                                    </div>
+<div class="card-body">
+    <form action="{{ url('issues-filter-news') }}" method="post">
+        {{ csrf_field() }}
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">{{ __('Filter') }}</div>
+                        <div class="card-body row ">
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label text-md-right"> Fromdate : </label>
+                                <div class="col-md-8">
+                                    <input type="date" name="fromdate" class="form-control">
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <button type="submit" class="btn btn-info float-right">Search</button>
-                                        <a href="#" class="btn btn-danger float-right">Reset</a>
-                                    </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label text-md-right"> Todate : </label>
+                                <div class="col-md-8">
+                                    <input type="date" name="todate" class="form-control">
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary float-right">Search</button>
+                                <a href="#" class="btn btn-danger float-right">Reset</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
-
-            <div class="card-header">
-                <h4 class="card-title"> New Issues
-                    <a href="{{ url('issues-create') }}" class="btn btn-success float-right">Add Issues</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header py-3 ">
+                <h4 class="m-0 font-weight-bold text-primary"> New Issues
+                    <a href="{{ url('issues-create') }}" class="btn btn-primary float-right">Add Issues</a>
                 </h4>
             </div>
             <style>
@@ -74,7 +74,7 @@ function DateThai($strDate)
             </style>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="datatable" class="table">
+                    <table class="table " id="dataTable" width="100%" cellspacing="0">
                         <thead class="text-primary">
                             <th class="w-10p">Id</th>
                             <th class="w-10p">Tracker</th>
