@@ -24,7 +24,7 @@ Web Test
                     </div>
                     <br />
                     <div class="form-group">
-                        <select name="SubTrackName" id="SubTrackName" class="form-control input-lg dynamic">
+                        <select name="SubTrackName" id="SubTrackName" class="form-control input-lg">
                             <option value="">Select SubTrackName</option>
                         </select>
                     </div>
