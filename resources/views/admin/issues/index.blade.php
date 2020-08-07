@@ -90,7 +90,7 @@ function DateThai($strDate)
                             @foreach($issues as $row)
                             <tr>
                                 <td>{{$row->Issuesid}}</td>
-                                <td>{{$row->ISTName}}</td>
+                                <td>{{$row->TrackName}}</td>
                                 <td>{{$row->ISSName}}</td>
                                 <td>{{$row->ISPName}}</td>
                                 <td>{{$row->Users}}</td>
@@ -110,7 +110,7 @@ function DateThai($strDate)
                             @foreach ($between as $betweens)
                             <tr>
                                 <th scope="row">{{$betweens->Issuesid}}</th>
-                                <td style="text-align:center">{{$betweens->ISTName}}</td>
+                                <td style="text-align:center">{{$betweens->TrackName}}</td>
                                 <td style="text-align:center">{{$betweens->ISSName}}</td>
                                 <td style="text-align:center">{{$betweens->ISPName}}</td>
                                 <td style="text-align:center">{{$betweens->Users}}</td>

@@ -7,8 +7,7 @@ use App\Models\Department;
 use App\Models\Issues;
 use App\Models\Issuespriority;
 use App\Models\Issuesstatus;
-use App\Models\Issuestracker;
-use Carbon\Carbon;
+use App\Models\Tracker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -16,9 +15,9 @@ class IssuesController extends Controller
 {
     public function index()
     {
-        $issues = DB::table('issues_tracker')
-            ->select('Issuesid', 'ISTName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
-            ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+        $issues = DB::table('tracker')
+            ->select('Issuesid', 'tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+            ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
             ->where([['issues.Statusid', 1], ['issues.Date_In', now()->toDateString()]])
@@ -33,9 +32,9 @@ class IssuesController extends Controller
         $fromdate = $request->input('fromdate');
         $todate = $request->input('todate');
         if ($request->isMethod('post')) {
-            $between = DB::table('issues_tracker')
-                ->select('Issuesid', 'ISTName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
-                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+            $between = DB::table('tracker')
+                ->select('Issuesid', 'tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+                ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
                 ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
                 ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
                 ->where('issues.Statusid', 1)
@@ -51,9 +50,9 @@ class IssuesController extends Controller
 
     public function defer()
     {
-        $issues = DB::table('issues_tracker')
-            ->select('Issuesid', 'ISTName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
-            ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+        $issues = DB::table('tracker')
+            ->select('Issuesid', 'Trackerid', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+            ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
             ->where('issues.Statusid', 3)
@@ -68,9 +67,9 @@ class IssuesController extends Controller
         $fromdate = $request->input('fromdate');
         $todate = $request->input('todate');
         if ($request->isMethod('post')) {
-            $between = DB::table('issues_tracker')
-                ->select('Issuesid', 'ISTName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
-                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+            $between = DB::table('tracker')
+                ->select('Issuesid', 'Trackerid', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+                ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
                 ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
                 ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
                 ->where('issues.Statusid', 3)
@@ -86,9 +85,9 @@ class IssuesController extends Controller
 
     public function closed()
     {
-        $issues = DB::table('issues_tracker')
-            ->select('Issuesid', 'ISTName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
-            ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+        $issues = DB::table('tracker')
+            ->select('Issuesid', 'Trackerid', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+            ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
             ->where('issues.Statusid', 2)
@@ -103,9 +102,9 @@ class IssuesController extends Controller
         $fromdate = $request->input('fromdate');
         $todate = $request->input('todate');
         if ($request->isMethod('post')) {
-            $between = DB::table('issues_tracker')
-                ->select('Issuesid', 'ISTName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
-                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+            $between = DB::table('tracker')
+                ->select('Issuesid', 'Trackerid', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+                ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
                 ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
                 ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
                 ->where('issues.Statusid', 2)
@@ -121,28 +120,25 @@ class IssuesController extends Controller
 
     public function create()
     {
+        $tracker = DB::table('tracker')
+            ->groupBy('TrackName')
+            ->get();
         $issues = Issues::all();
-        $issuestracker = Issuestracker::all();
+        // $issuestracker = Issuestracker::all();
         $issuespriority = Issuespriority::all();
         $issuesstatus = Issuesstatus::all();
         $department = Department::all();
         return view('admin.issues.create', compact(
             ['issues'],
-            ['issuestracker'],
             ['issuespriority'],
             ['issuesstatus'],
-            ['department']
+            ['department'],
+            ['tracker']
         ));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'Subject' => 'required',
-            'Description' => 'required',
-            'Image' => 'required|image|max:2048'
-        ]);
-
         $issues = new Issues();
         $issues->Trackerid = $request->input('Trackerid');
         $issues->Priorityid = $request->input('Priorityid');
@@ -174,7 +170,7 @@ class IssuesController extends Controller
     {
         $data = Issues::find($Issuesid);
         $issues = Issues::all();
-        $issuestracker = Issuestracker::all();
+        $issuestracker = Tracker::all();
         $issuespriority = Issuespriority::all();
         $issuesstatus = Issuesstatus::all();
         $department = Department::all();
@@ -192,7 +188,7 @@ class IssuesController extends Controller
     {
         $data = Issues::find($Issuesid);
         $issues = Issues::all();
-        $issuestracker = Issuestracker::all();
+        $issuestracker = Tracker::all();
         $issuespriority = Issuespriority::all();
         $issuesstatus = Issuesstatus::all();
         $department = Department::all();
@@ -232,5 +228,75 @@ class IssuesController extends Controller
         $issues->update();
 
         return redirect('/issues')->with('status', 'Data Update for Issues Successfully');
+    }
+
+    public function fetch(Request $request)
+    {
+        $select = $request->get('select');
+        $TrackName = $request->get('TrackName');
+        $SubTrackName = $request->get('SubTrackName');
+        $Name = $request->get('Name');
+        $dependent = $request->get('dependent');
+        // echo $select . "," . $value . "," . $dependent;
+        $data = DB::table('tracker')
+            ->where($select, $TrackName)
+            ->groupBy($dependent)
+            ->get();
+        $data2 = DB::table('tracker')
+            ->where([['TrackName', $TrackName], [$select, $SubTrackName]])
+            ->groupBy($dependent)
+            ->get();
+        $output = '<option value="" disabled="true" selected="true">Select '
+            . ucfirst($dependent) . '</option>';
+
+        //echo "DATA:".print_r($data);   
+
+        foreach ($data as $row2) {
+            $output = $output . '<option value="' . $row2->$dependent . '" > 
+                ' . $row2->$dependent . ' </option>';
+        }
+        foreach ($data2 as $row3) {
+            $output = $output . '<option value="' . $row3->$dependent . '"> 
+                ' . $row3->$dependent . ' </option>';
+        }
+        echo $output;
+        
+    }
+
+
+    public function findid(Request $request)
+    {
+        $TrackName = $request->get('TrackName');
+        $SubTrackName = $request->get('SubTrackName');
+        $Name = $request->get('Name');
+
+        //it will get id if its id match with product id
+
+        $p = Tracker::select('Trackerid')->where([['TrackName', $TrackName], ['SubTrackName', $SubTrackName], ['Name', $Name]])->first();
+        // echo $p;
+        // $json = array("Trackerid" => $p->Trackerid);
+        // echo print_r($json);
+        // return response()->json($json);
+        return $p->Trackerid;
+    }
+
+    public function findidother(Request $request)
+    {
+        $TrackName = $request->get('TrackName');
+        $SubTrackName = $request->get('SubTrackName');
+        $Name = $request->get('Name');
+
+        //it will get id if its id match with product id
+
+        if($SubTrackName == 'Other'){
+            $p2 = Tracker::select('Trackerid')->where([['TrackName', $TrackName], ['SubTrackName', 'Other']])->first();
+            return $p2->Trackerid;
+        }
+        
+        // echo $p;
+        // $json = array("Trackerid" => $p->Trackerid);
+        // echo print_r($json);
+        // return response()->json($json);
+        
     }
 }

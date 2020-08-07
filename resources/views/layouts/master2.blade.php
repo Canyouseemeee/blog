@@ -49,6 +49,11 @@
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/dynamic">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dynamic</span></a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider">
@@ -215,6 +220,8 @@
     <!-- Page level custom scripts -->
     <script src="/js/demo/datatables-demo.js"></script>
     <script src="{{ asset('js/dataTables.min.js') }}"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
     <script src="{{ asset('js/sweetalert.js') }}"></script>
     <script>

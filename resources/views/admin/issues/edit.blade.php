@@ -17,16 +17,51 @@ Web Test
                     {{ method_field('PUT') }}
 
                     <div class="form-row">
+
                         <div class="col-md-3">
                             <label>Tracker</label>
-                            <select name="Trackerid" class="form-control create" require>
+                            <select name="TrackName" id="TrackName" class="form-control input-lg dynamic" data-dependent="SubTrackName">
+                                <!-- <option value="">Select Trackname</option> -->
                                 @foreach($issuestracker as $row)
-                                <option value="{{$row->Trackerid}}" @if ($row->Trackerid === $data->Trackerid)
-                                    selected
+                                <option value="{{$row->TrackName}}" 
+                                    @if ($row->Trackerid === $data->Trackerid)
+                                        selected
                                     @endif
-                                    >{{$row->ISTName}}</option>
+                                    >{{$row->TrackName}}</option>
                                 @endforeach
                             </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>SubTracker</label>
+                            <select name="SubTrackName" id="SubTrackName" class="form-control input-lg dynamic findidother" data-dependent="Name">
+                                <!-- <option value="">Select SubTrackName</option> -->
+                                @foreach($issuestracker as $row11)
+                                <option value="{{$row->SubTrackName}}" 
+                                    @if ($row11->Trackerid === $data->Trackerid)
+                                        selected
+                                    @endif
+                                    >{{$row11->SubTrackName}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>Name</label>
+                            <select name="Name" id="Name" class="form-control input-lg Name ">
+                                <!-- <option value="">Select Name</option> -->
+                                @foreach($issuestracker as $row12)
+                                <option value="{{$row->Name}}" 
+                                    @if ($row12->Trackerid === $data->Trackerid)
+                                        selected
+                                    @endif
+                                    >{{$row12->Name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" value="{{$data->Trackerid}}" class="tracker_id" id="Trackerid" name="Trackerid">
                         </div>
 
                         <div class="col-md-3">
@@ -97,4 +132,146 @@ Web Test
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function() {
+
+        $('.dynamic').change(function() {
+            var TrackName = $("#TrackName option:selected").val();
+            if (TrackName != '') {
+                var select = $(this).attr("id");
+                var dependent = $(this).data('dependent');
+
+                var TrackName = $("#TrackName option:selected").val();
+                var SubTrackName = $("#SubTrackName option:selected").val();
+                var Name = $("#Name option:selected").val();
+                console.log(select);
+                console.log(TrackName);
+                console.log(SubTrackName);
+                console.log(Name);
+                var _token = $('input[name="_token"]').val();
+                $.ajax({
+                    url: "{{ route('dynamiccontroller.fetch') }}",
+                    method: "GET",
+                    data: {
+                        select: select,
+                        TrackName: TrackName,
+                        SubTrackName: SubTrackName,
+                        Name: Name,
+                        _token: _token,
+                        dependent: dependent
+                    },
+                    success: function(result) {
+                        $('#' + dependent).html(result);
+                        $('#SubTrackName').prop('disabled', false);
+
+                    }
+                });
+            }
+            if (TrackName == '') {
+                $('#SubTrackName').empty().append('<option>Select SubTrackName</option>');;
+                $('#Name').html('<option value="">Select Name</option>');
+                $('#tracker_id').val('');
+                $('#Name').prop('disabled', false);
+            }
+            if (SubTrackName != '') {
+                $('#Name').html('<option value="">Select Name</option>');
+                $('#tracker_id').val('');
+                $('#Name').prop('disabled', false);
+
+            }
+            if (SubTrackName == 'Other') {
+                $('#Name').prop('disabled', 'disabled');
+            }
+            if (SubTrackName != 'Other') {
+                $('#Name').prop('disabled', false);
+            }
+        });
+
+
+
+        $(document).on('change', '.Name', function() {
+            var SubTrackName = $("#SubTrackName option:selected").val();
+            if (SubTrackName != 'Other') {
+                var tracker_id = $(this).val();
+                var TrackName = $("#TrackName option:selected").val();
+                var SubTrackName = $("#SubTrackName option:selected").val();
+                var Name = $("#Name option:selected").val();
+                var a = $(this).parent();
+                // console.log(tracker_id);
+
+                var op = "";
+                $.ajax({
+                    type: 'get',
+                    url: '{!!URL::to('findid')!!}',
+                    data: {
+                        // 'Name': tracker_id,
+                        TrackName: TrackName,
+                        SubTrackName: SubTrackName,
+                        Name: Name,
+                    },
+                    dataType: 'json', //return data will be json
+                    success: function(data) {
+                        // console.log("Trackerid","3");
+                        // console.log(len(data));
+                        console.log(data);
+
+                        // here price is coloumn name in products table data.coln name
+                        $('#Trackerid').val(data);
+                        // a.find('.tracker_id').val(data.Name);
+                        // console.log(data = JSON.parse(data));
+
+
+
+                    },
+                    error: function() {
+
+                    }
+                });
+            }
+
+        });
+
+        $(document).on('change', '.findidother', function() {
+
+            var tracker_id = $(this).val();
+            var TrackName = $("#TrackName option:selected").val();
+            var SubTrackName = $("#SubTrackName option:selected").val();
+            var Name = $("#Name option:selected").val();
+            var a = $(this).parent();
+            // console.log(tracker_id);
+
+            var op = "";
+            $.ajax({
+                type: 'get',
+                url: '{!!URL::to('findidother')!!}',
+                data: {
+                    TrackName: TrackName,
+                    SubTrackName: SubTrackName,
+                    Name: Name,
+                },
+                dataType: 'json', //return data will be json
+                success: function(data) {
+                    // console.log("Trackerid","3");
+                    // console.log(len(data));
+                    console.log(data);
+
+                    // here price is coloumn name in products table data.coln name
+                    $('#Trackerid').val(data);
+                    // a.find('.tracker_id').val(data.Name);
+                    // console.log(data = JSON.parse(data));
+
+                },
+                error: function() {
+
+                }
+            });
+
+
+        });
+
+    });
+</script>
 @endsection

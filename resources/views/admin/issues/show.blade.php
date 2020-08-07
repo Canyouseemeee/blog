@@ -42,7 +42,25 @@ function DateThai($strDate)
                                     <b> <label>Tracker : </label></b>
                                     @foreach($issuestracker as $row)
                                     @if ($row->Trackerid === $data->Trackerid)
-                                    <label>{{$row->ISTName}}</label>
+                                    <label>{{$row->TrackName}}</label>
+                                    @endif
+                                    @endforeach
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <b> <label>SubTracker : </label></b>
+                                    @foreach($issuestracker as $row)
+                                    @if ($row->Trackerid === $data->Trackerid)
+                                    <label>{{$row->SubTrackName}}</label>
+                                    @endif
+                                    @endforeach
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <b> <label>TrackName : </label></b>
+                                    @foreach($issuestracker as $row)
+                                    @if ($row->Trackerid === $data->Trackerid)
+                                    <label>{{$row->Name}}</label>
                                     @endif
                                     @endforeach
                                 </div>
@@ -102,7 +120,7 @@ function DateThai($strDate)
                             </div>
 
                         </div>
-                        <a href="{{ url('issues-edit/'.$data->Issuesid) }}" class="btn btn-info">Edit</a>
+                        <a href="{{ url('issues-edit/'.$data->Issuesid) }}" class="btn btn-primary">Edit</a>
                         <a href="/issues" class="btn btn-danger">Back</a>
                     </div>
                 </div>

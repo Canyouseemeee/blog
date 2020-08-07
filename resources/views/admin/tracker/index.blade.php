@@ -17,22 +17,21 @@ Web Test
                 <table class="table">
                     <thead class="text-primary">
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Description</th>
+                        <th>Tracker</th>
+                        <th>SubTrack</th>
+                        <th>TrackName</th>
                         <th>EDIT</th>
                         <th>DELETE</th>
                     </thead>
                     <tbody>
-                        @foreach($issuestracker as $row)
+                        @foreach($trackname as $row)
                         <tr>
                             <input type="hidden" class="trackerdelete_val" value="{{$row->Trackerid}}">
                             <td>{{$row->Trackerid}}</td>
-                            <td>{{$row->ISTName}}</td>
-                            <td>
-                                <div style="height: 30px; overflow: hidden;">
-                                    {{$row->Description}}
-                                </div>
-                            </td>
+                            <td>{{$row->TrackName}}</td>
+                            <td>{{$row->SubTrackName}}</td>
+                            <td>{{$row->Name}}</td>
+
                             <td>
                                 <a href="{{ url('tracker-edit/'.$row->Trackerid) }}" class="btn btn-success">EDIT</a>
                             </td>
