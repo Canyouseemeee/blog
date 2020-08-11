@@ -1,4 +1,4 @@
-@extends('layouts.master2')
+@extends('layouts.master')
 
 @section('title')
 Web Test
@@ -40,7 +40,7 @@ function DateThai($strDate)
                             <div class="form-row ">
                                 <div class="form-group col-md-3">
                                     <b> <label>Tracker : </label></b>
-                                    @foreach($issuestracker as $row)
+                                    @foreach($trackname as $row)
                                     @if ($row->Trackerid === $data->Trackerid)
                                     <label>{{$row->TrackName}}</label>
                                     @endif
@@ -49,7 +49,7 @@ function DateThai($strDate)
 
                                 <div class="form-group col-md-3">
                                     <b> <label>SubTracker : </label></b>
-                                    @foreach($issuestracker as $row)
+                                    @foreach($trackname as $row)
                                     @if ($row->Trackerid === $data->Trackerid)
                                     <label>{{$row->SubTrackName}}</label>
                                     @endif
@@ -58,7 +58,7 @@ function DateThai($strDate)
 
                                 <div class="form-group col-md-3">
                                     <b> <label>TrackName : </label></b>
-                                    @foreach($issuestracker as $row)
+                                    @foreach($trackname as $row)
                                     @if ($row->Trackerid === $data->Trackerid)
                                     <label>{{$row->Name}}</label>
                                     @endif
@@ -119,8 +119,14 @@ function DateThai($strDate)
                                 <label class="w-11p">{{$data->Description}}</label>
                             </div>
 
+                            <div class="form-group">
+                                <b><label>Image : </label></b>
+                                <img src="{{ asset('/storage/'.$data->Image) }}" alt="Image" width="500"/>
+                            </div>
+
                         </div>
                         <a href="{{ url('issues-edit/'.$data->Issuesid) }}" class="btn btn-primary">Edit</a>
+                        &nbsp;&nbsp;
                         <a href="/issues" class="btn btn-danger">Back</a>
                     </div>
                 </div>

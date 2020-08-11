@@ -1,4 +1,4 @@
-@extends('layouts.master2')
+@extends('layouts.master')
 
 @section('title')
 Web Test
@@ -21,43 +21,44 @@ function DateThai($strDate)
 }
 ?>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <form action="{{ url('issues-filter-defers') }}" method="post">
-                {{ csrf_field() }}
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="card-header">{{ __('Filter') }}</div>
-                                <div class="card-body row ">
-                                    <div class="form-group row">
-                                        <label class="col-md-4 col-form-label text-md-right"> Fromdate : </label>
-                                        <div class="col-md-8">
-                                            <input type="date" name="fromdate" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-4 col-form-label text-md-right"> Todate : </label>
-                                        <div class="col-md-8">
-                                            <input type="date" name="todate" class="form-control">
-                                        </div>
-                                    </div>
+<div class="card-body">
+    <form action="{{ url('issues-filter-news') }}" method="post">
+        {{ csrf_field() }}
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">{{ __('Filter') }}</div>
+                        <div class="card-body row ">
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label text-md-right"> Fromdate : </label>
+                                <div class="col-md-8">
+                                    <input type="date" name="fromdate" class="form-control">
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <button type="submit" class="btn btn-primary float-right">Search</button>
-                                        <a href="#" class="btn btn-danger float-right">Reset</a>
-                                    </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label text-md-right"> Todate : </label>
+                                <div class="col-md-8">
+                                    <input type="date" name="todate" class="form-control">
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary float-right">Search</button>
+                                <a href="#" class="btn btn-danger float-right">Reset</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
-
-            <div class="card-header">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header py-3 ">
                 <h4 class="card-title"> Defer Issues
                     <a href="{{ url('issues-create') }}" class="btn btn-primary float-right">Add Issues</a>
                 </h4>
@@ -90,7 +91,7 @@ function DateThai($strDate)
                             @foreach($issues as $row)
                             <tr>
                                 <td>{{$row->Issuesid}}</td>
-                                <td>{{$row->ISTName}}</td>
+                                <td>{{$row->TrackName}}</td>
                                 <td>{{$row->ISSName}}</td>
                                 <td>{{$row->ISPName}}</td>
                                 <td>{{$row->Users}}</td>
@@ -110,7 +111,7 @@ function DateThai($strDate)
                             @foreach ($between as $betweens)
                             <tr>
                                 <th scope="row">{{$betweens->Issuesid}}</th>
-                                <td style="text-align:center">{{$betweens->ISTName}}</td>
+                                <td style="text-align:center">{{$betweens->TrackName}}</td>
                                 <td style="text-align:center">{{$betweens->ISSName}}</td>
                                 <td style="text-align:center">{{$betweens->ISPName}}</td>
                                 <td style="text-align:center">{{$betweens->Users}}</td>
@@ -136,6 +137,13 @@ function DateThai($strDate)
 @endsection
 
 @section('scripts')
+<!-- Page level plugins -->
+<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<!-- Page level custom scripts -->
+<script src="/js/demo/datatables-demo.js"></script>
+<script src="{{ asset('js/dataTables.min.js') }}"></script>
+
 <script>
     $(document).ready(function() {
         $('#datatable').DataTable();
@@ -149,9 +157,9 @@ function DateThai($strDate)
 
             // console.log(data);
 
-            $('#delete_aboutus_id').val(data[0]);
+            $('#delete_department_id').val(data[0]);
 
-            $('#delete_modal_Form').attr('action', '/about-us-delete/' + data[0]);
+            $('#delete_modal_Form').attr('action', '/department-delete/' + data[0]);
 
             $('#deletemodalpop').modal('show');
         });

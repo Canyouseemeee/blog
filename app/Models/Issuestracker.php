@@ -9,6 +9,6 @@ class Issuestracker extends Model
     protected $table ='issues_tracker';
     protected $primaryKey = 'Trackerid';
     protected $fillable = [
-        'ISTName','Description'
+        'TrackName','SubTrackName','Name'
     ];
 }

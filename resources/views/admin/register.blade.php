@@ -41,7 +41,7 @@
                                         <form action="/role-delete/{{ $row->id }}" method="post">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
-                                            <button type="submit" class="btn btn-danger">DELETE</button>
+                                            <button type="submit" class="btn btn-danger circle"><i class="fas fa-trash"></i></button>
                                         </form>
                                         
                                     </td>

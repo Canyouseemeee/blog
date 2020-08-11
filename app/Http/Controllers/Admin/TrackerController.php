@@ -13,7 +13,7 @@ class TrackerController extends Controller
 {
     public function index()
     {
-        $trackname = Tracker::all();
+        $trackname = Issuestracker::all();
         // ->get();
         return view('admin.tracker.index', compact('trackname'));
     }
@@ -28,7 +28,19 @@ class TrackerController extends Controller
 
     public function store(Request $request)
     {
-        $dynamic = new Tracker();
+        $this->validate($request, 
+        array(
+            'TrackName' => 'required|max:2' ,
+            'SubTrackName' => 'required|max:10',
+            'Name' => 'required|max:10'
+
+        ),[
+            'TrackName.required' => 'You have select TrackName',
+            'SubTrackName.required' => 'You have select SubTrackName',
+            'Name.required' => 'You have enter Name'
+        ]);
+
+        $dynamic = new Issuestracker();
         $dynamic->TrackName = $request->input('TrackName');
         $dynamic->SubTrackName = $request->input('SubTrackName');
         $dynamic->Name = $request->input('Name');
@@ -38,29 +50,51 @@ class TrackerController extends Controller
         return redirect('/tracker')->with('status', 'Data Added for Tracker Successfully');
     }
 
-    public function edit($Trackerid){
-        $issuestracker = Tracker::find($Trackerid);
-        return view('admin.tracker.edit',compact('issuestracker'));
+    public function edit($Trackerid)
+    {
+        $trackname = DB::table('tracker')
+            ->groupBy('TrackName')
+            ->get();
+        $tracker = Issuestracker::find($Trackerid);
+        return view('admin.tracker.edit', compact([['tracker'], ['trackname']]));
     }
 
-    public function update(Request $request,$Trackerid){
-        $issuestracker = Tracker::find($Trackerid);
-        $issuestracker->ISTName = $request->input('ISTName');
-        $issuestracker->Description = $request->input('Description');
-        $issuestracker->update();
+    public function update(Request $request, $Trackerid)
+    {
 
-        Session::flash('statuscode','success');
-        return redirect('/tracker')->with('status','Data Update for Tracker Successfully');
+        $this->validate($request, 
+        array(
+            'TrackName' => 'required' ,
+            'SubTrackName' => 'required|',
+            'Name' => 'required'
+
+        ),[
+            'TrackName.required' => 'You have select TrackName',
+            'SubTrackName.required' => 'You have select SubTrackName',
+            'Name.required' => 'You have enter Name'
+        ]);
+
+        $tracker = Issuestracker::find($Trackerid);
+        $tracker->TrackName = $request->input('TrackName');
+        $tracker->SubTrackName = $request->input('SubTrackName');
+        $tracker->Name = $request->input('Name');
+        $tracker->update();
+
+        Session::flash('statuscode', 'success');
+        return redirect('/tracker')->with('status', 'Data Update for Tracker Successfully');
     }
 
-    public function delete($Trackerid){
-        $issuestracker = Tracker::findOrFail($Trackerid);
-        $issuestracker->delete();
-        return response()->json(['status'=>'Tracker Delete Sucessfully']);
+    public function delete($Trackerid)
+    {
+        $tracker = Issuestracker::findOrFail($Trackerid);
+        $tracker->delete();
+        Session::flash('statuscode', 'error');
+        return redirect('/tracker')->with('danger', 'Your Data is Deleted');
     }
 
     public function fetch(Request $request)
     {
+        $tracker = Issuestracker::all();
         $select = $request->get('select');
         $TrackName = $request->get('TrackName');
         $SubTrackName = $request->get('SubTrackName');
@@ -71,10 +105,10 @@ class TrackerController extends Controller
             ->where($select, $TrackName)
             ->groupBy($dependent)
             ->get();
-        $data2 = DB::table('tracker')
-            ->where([['TrackName', $TrackName], [$select, $SubTrackName]])
-            ->groupBy($dependent)
-            ->get();
+        // $data2 = DB::table('tracker')
+        //     ->where([['TrackName', $TrackName], [$select, $SubTrackName]])
+        //     ->groupBy($dependent)
+        //     ->get();
         $output = '<option value="" disabled="true" selected="true">Select '
             . ucfirst($dependent) . '</option>';
 
@@ -84,10 +118,10 @@ class TrackerController extends Controller
             $output = $output . '<option value="' . $row2->$dependent . '" > 
                 ' . $row2->$dependent . ' </option>';
         }
-        foreach ($data2 as $row3) {
-            $output = $output . '<option value="' . $row3->$dependent . '"> 
-                ' . $row3->$dependent . ' </option>';
-        }
+        // foreach ($data2 as $row3) {
+        //     $output = $output . '<option value="' . $row3->$dependent . '"> 
+        //         ' . $row3->$dependent . ' </option>';
+        // }
         echo $output;
         // echo $data;
         // return response()->json($data);

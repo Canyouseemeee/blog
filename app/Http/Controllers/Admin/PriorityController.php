@@ -19,6 +19,16 @@ class PriorityController extends Controller
     }
 
     public function store(Request $request){
+        $this->validate($request, 
+        array(
+            'ISPName' => 'required' ,
+            'Description' => 'required'
+
+        ),[
+            'ISPName.required' => 'You have enter PriorityName',
+            'Description.required' => 'You have enter Description'
+        ]);
+
         $issuespriority = new Issuespriority();
         $issuespriority->ISPName = $request->input('ISPName');
         $issuespriority->Description = $request->input('Description');
@@ -34,6 +44,16 @@ class PriorityController extends Controller
     }
 
     public function update(Request $request,$Priorityid){
+        $this->validate($request, 
+        array(
+            'ISPName' => 'required' ,
+            'Description' => 'required'
+
+        ),[
+            'ISPName.required' => 'You have enter PriorityName',
+            'Description.required' => 'You have enter Description'
+        ]);
+
         $issuespriority = Issuespriority::find($Priorityid);
         $issuespriority->ISPName = $request->input('ISPName');
         $issuespriority->Description = $request->input('Description');
@@ -46,6 +66,7 @@ class PriorityController extends Controller
     public function delete($Priorityid){
         $issuespriority = Issuespriority::findOrFail($Priorityid);
         $issuespriority->delete();
-        return response()->json(['status'=>'Priority Delete Sucessfully']);
+        Session::flash('statuscode','error');
+        return redirect('/priority')->with('danger','Your Data is Deleted');
     }
 }

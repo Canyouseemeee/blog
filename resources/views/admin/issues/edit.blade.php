@@ -1,4 +1,4 @@
-@extends('layouts.master2')
+@extends('layouts.master')
 
 @section('title')
 Web Test
@@ -9,9 +9,16 @@ Web Test
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title"> Issues-Create</h4>
+                <h4 class="card-title"> Issues-Edit</h4>
             </div>
             <div class="card-body">
+                @if($errors)
+                @foreach($errors->all() as $error)
+                <div class="alert alert-danger">
+                    <li>{{$error}}</li>
+                </div>
+                @endforeach
+                @endif
                 <form action="{{ url('issues-update/'.$data->Issuesid) }}" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     {{ method_field('PUT') }}
@@ -21,25 +28,24 @@ Web Test
                         <div class="col-md-3">
                             <label>Tracker</label>
                             <select name="TrackName" id="TrackName" class="form-control input-lg dynamic" data-dependent="SubTrackName">
-                                <!-- <option value="">Select Trackname</option> -->
-                                @foreach($issuestracker as $row)
-                                <option value="{{$row->TrackName}}" 
-                                    @if ($row->Trackerid === $data->Trackerid)
-                                        selected
+                                @foreach($find as $find1)
+                                @foreach($trackname as $row)
+                                <option value="{{$row->TrackName}}" @if ($row->TrackName === $find1->TrackName)
+                                    selected
                                     @endif
                                     >{{$row->TrackName}}</option>
+                                @endforeach
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="col-md-3">
                             <label>SubTracker</label>
-                            <select name="SubTrackName" id="SubTrackName" class="form-control input-lg dynamic findidother" data-dependent="Name">
+                            <select name="SubTrackName" id="SubTrackName" class="form-control input-lg dynamic findidother" data-dependent="Name" disabled>
                                 <!-- <option value="">Select SubTrackName</option> -->
-                                @foreach($issuestracker as $row11)
-                                <option value="{{$row->SubTrackName}}" 
-                                    @if ($row11->Trackerid === $data->Trackerid)
-                                        selected
+                                @foreach($tracker as $row11)
+                                <option value="" @if ($row11->Trackerid === $data->Trackerid)
+                                    selected
                                     @endif
                                     >{{$row11->SubTrackName}}</option>
                                 @endforeach
@@ -48,12 +54,11 @@ Web Test
 
                         <div class="col-md-3">
                             <label>Name</label>
-                            <select name="Name" id="Name" class="form-control input-lg Name ">
+                            <select name="Name" id="Name" class="form-control input-lg Name " disabled>
                                 <!-- <option value="">Select Name</option> -->
-                                @foreach($issuestracker as $row12)
-                                <option value="{{$row->Name}}" 
-                                    @if ($row12->Trackerid === $data->Trackerid)
-                                        selected
+                                @foreach($tracker as $row12)
+                                <option value="" @if ($row12->Trackerid === $data->Trackerid)
+                                    selected
                                     @endif
                                     >{{$row12->Name}}</option>
                                 @endforeach
@@ -61,7 +66,7 @@ Web Test
                         </div>
 
                         <div class="form-group">
-                            <input type="text" value="{{$data->Trackerid}}" class="tracker_id" id="Trackerid" name="Trackerid">
+                            <input type="hidden" value="{{$data->Trackerid}}" class="tracker_id" id="Trackerid" name="Trackerid">
                         </div>
 
                         <div class="col-md-3">
@@ -124,7 +129,7 @@ Web Test
                         <input type="file" name="Image" value="{{$data->Image}}">
                     </div>
                     <br>
-                    <input type="submit" value="Update" class="btn btn-success ">
+                    <input type="submit" value="Update" class="btn btn-primary ">
                     <a href="{{ url('issues-show/'.$data->Issuesid) }}" class="btn btn-danger">Back</a>
 
                 </form>
@@ -180,7 +185,11 @@ Web Test
                 $('#Name').html('<option value="">Select Name</option>');
                 $('#tracker_id').val('');
                 $('#Name').prop('disabled', false);
-
+            }
+            if (SubTrackName == '') {
+                $('#Name').html('<option value="">Select Name</option>');
+                $('#tracker_id').val('');
+                $('#Name').prop('disabled', false);
             }
             if (SubTrackName == 'Other') {
                 $('#Name').prop('disabled', 'disabled');
@@ -205,7 +214,8 @@ Web Test
                 var op = "";
                 $.ajax({
                     type: 'get',
-                    url: '{!!URL::to('findid')!!}',
+                    url: '{!!URL::to('
+                    findid ')!!}',
                     data: {
                         // 'Name': tracker_id,
                         TrackName: TrackName,
@@ -246,7 +256,8 @@ Web Test
             var op = "";
             $.ajax({
                 type: 'get',
-                url: '{!!URL::to('findidother')!!}',
+                url: '{!!URL::to('
+                findidother ')!!}',
                 data: {
                     TrackName: TrackName,
                     SubTrackName: SubTrackName,

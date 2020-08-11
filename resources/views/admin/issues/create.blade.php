@@ -1,4 +1,4 @@
-@extends('layouts.master2')
+@extends('layouts.master')
 
 @section('title')
 Web Test
@@ -12,6 +12,13 @@ Web Test
                 <h4 class="card-title"> Issues-Create</h4>
             </div>
             <div class="card-body">
+                @if($errors)
+                @foreach($errors->all() as $error)
+                <div class="alert alert-danger">
+                    <li>{{$error}}</li>
+                </div>
+                @endforeach
+                @endif
                 <form action="{{ url('issues-store') }}" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
 
@@ -94,10 +101,10 @@ Web Test
                     </div>
 
                     <div>
-                        <input type="file" name="Image">
+                        <input type="file" id="Image" name="Image">
                     </div>
                     <br>
-                    <input type="submit" value="Save" class="btn btn-success ">
+                    <input type="submit" value="Save" class="btn btn-primary ">
                     <a href="/issues" class="btn btn-danger">Back</a>
 
                 </form>

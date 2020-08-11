@@ -19,6 +19,16 @@ class DepartmentController extends Controller
     }
 
     public function store(Request $request){
+        $this->validate($request, 
+        array(
+            'DmName' => 'required' ,
+            'Dm_Tel' => 'required|max:5'
+
+        ),[
+            'DmName.required' => 'You have enter Department Name',
+            'Dm_Tel.required' => 'You have enter Department Tel'
+        ]);
+
         $department = new Department();
         $department->DmName = $request->input('DmName');
         $department->Dm_Tel = $request->input('Dm_Tel');
@@ -34,6 +44,16 @@ class DepartmentController extends Controller
     }
 
     public function update(Request $request,$Departmentid){
+        $this->validate($request, 
+        array(
+            'DmName' => 'required' ,
+            'Dm_Tel' => 'required|max:5'
+
+        ),[
+            'DmName.required' => 'You have enter Department Name',
+            'Dm_Tel.required' => 'You have enter Department Tel'
+        ]);
+
         $department = Department::find($Departmentid);
         $department->DmName = $request->input('DmName');
         $department->Dm_Tel = $request->input('Dm_Tel');
@@ -46,6 +66,7 @@ class DepartmentController extends Controller
     public function delete($Departmentid){
         $department = Department::findOrFail($Departmentid);
         $department->delete();
-        return response()->json(['status'=>'Department Delete Sucessfully']);
+        Session::flash('statuscode','error');
+        return redirect('/department')->with('danger','Your Data is Deleted');
     }
 }

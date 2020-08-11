@@ -18,6 +18,7 @@
   <!-- Custom styles for this template-->
   <link href="/css/sb-admin-2.min.css" rel="stylesheet">
   <link href="/css/app.css" rel="stylesheet" />
+ 
 
   <link rel="stylesheet" href="{{ asset('css/dataTables.min.css') }}" />
 
@@ -33,11 +34,11 @@
     <ul class="navbar-nav bg-gray-800 sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
+        <div class="sidebar-brand-icon rotate-n-10">
+          <i class="fas fa-fw fa-wrench"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">HD HekpDesk</div>
+        <div class="sidebar-brand-text mx-3">HD HelpDesk</div>
       </a>
 
       <!-- Divider -->
@@ -49,10 +50,10 @@
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="/dynamic">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dynamic</span></a>
+      <li class="{{ 'role-register' == request()->path() ? 'active' : '' }} nav-item ">
+        <a class="nav-link" href="/role-register">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Role_User</span></a>
       </li>
 
       <!-- Divider -->
@@ -222,6 +223,8 @@
     <script src="{{ asset('js/dataTables.min.js') }}"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script src="{{ asset('js/sweetalert.js') }}"></script>
     <script>

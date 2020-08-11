@@ -7,7 +7,7 @@ use App\Models\Department;
 use App\Models\Issues;
 use App\Models\Issuespriority;
 use App\Models\Issuesstatus;
-use App\Models\Tracker;
+use App\Models\Issuestracker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -51,7 +51,7 @@ class IssuesController extends Controller
     public function defer()
     {
         $issues = DB::table('tracker')
-            ->select('Issuesid', 'Trackerid', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+            ->select('Issuesid', 'tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
             ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
@@ -68,7 +68,7 @@ class IssuesController extends Controller
         $todate = $request->input('todate');
         if ($request->isMethod('post')) {
             $between = DB::table('tracker')
-                ->select('Issuesid', 'Trackerid', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+                ->select('Issuesid', 'tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
                 ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
                 ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
                 ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
@@ -86,7 +86,7 @@ class IssuesController extends Controller
     public function closed()
     {
         $issues = DB::table('tracker')
-            ->select('Issuesid', 'Trackerid', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+            ->select('Issuesid', 'tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
             ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
@@ -103,7 +103,7 @@ class IssuesController extends Controller
         $todate = $request->input('todate');
         if ($request->isMethod('post')) {
             $between = DB::table('tracker')
-                ->select('Issuesid', 'Trackerid', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+                ->select('Issuesid', 'tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
                 ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
                 ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
                 ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
@@ -139,6 +139,19 @@ class IssuesController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, 
+        array(
+            'Trackerid' => 'required' ,
+            'Subject' => 'required',
+            'Description' => 'required',
+            'Image' => 'required|image',
+
+        ),[
+            'Trackerid.required' => 'You have select TrackName and SubTrackName and Name',
+            'Subject.required' => 'You have enter Subject',
+            'Description.required' => 'You have enter Description',
+        ]);
+
         $issues = new Issues();
         $issues->Trackerid = $request->input('Trackerid');
         $issues->Priorityid = $request->input('Priorityid');
@@ -149,17 +162,24 @@ class IssuesController extends Controller
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
 
-
-        if ($request->file('Image')) {
-            $file = $request->file('Image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move('uploads/issues/' . $filename);
-            $issues->Image = $filename;
-        } else {
-            return $request;
-            $issues->Image = '';
+        if($request->hasFile('Image')){
+            $filename = $request->Image->getClientOriginalName();
+            $file = time() . '.' . $filename;
+            $issues->Image = $request->Image->storeAs('images',$file,'public');
+            // dd($file);
         }
+        
+
+        // if ($request->file('Image')) {
+        //     $file = $request->file('Image');
+        //     $extension = $file->getClientOriginalExtension();
+        //     $filename = time() . '.' . $extension;
+        //     $file->move('uploads/issues/' . $filename);
+        //     $issues->Image = $filename;
+        // } else {
+        //     return $request;
+        //     $issues->Image = '';
+        // }
 
         $issues->save();
 
@@ -169,18 +189,20 @@ class IssuesController extends Controller
     public function show($Issuesid)
     {
         $data = Issues::find($Issuesid);
+        $tracker = Issuestracker::find($Issuesid);
         $issues = Issues::all();
-        $issuestracker = Tracker::all();
+        $trackname = Issuestracker::all();
         $issuespriority = Issuespriority::all();
         $issuesstatus = Issuesstatus::all();
         $department = Department::all();
         return view('admin.issues.show', compact(
             ['issues'],
             ['data'],
-            ['issuestracker'],
+            ['trackname'],
             ['issuespriority'],
             ['issuesstatus'],
-            ['department']
+            ['department'],
+            ['tracker']
         ));
     }
 
@@ -188,14 +210,25 @@ class IssuesController extends Controller
     {
         $data = Issues::find($Issuesid);
         $issues = Issues::all();
-        $issuestracker = Tracker::all();
+        $trackname = DB::table('tracker')
+        ->groupBy('TrackName')
+        ->get();
+        $find = DB::table('issues')
+        ->select('tracker.TrackName')
+        ->join('tracker', 'issues.Trackerid', '=', 'tracker.Trackerid')
+        ->where('tracker.Trackerid',$data->Trackerid)
+        ->groupBy('TrackName')
+        ->get();
+        $tracker = Issuestracker::all();
         $issuespriority = Issuespriority::all();
         $issuesstatus = Issuesstatus::all();
         $department = Department::all();
         return view('admin.issues.edit', compact(
             ['issues'],
             ['data'],
-            ['issuestracker'],
+            ['find'],
+            ['trackname'],
+            ['tracker'],
             ['issuespriority'],
             ['issuesstatus'],
             ['department']
@@ -204,6 +237,19 @@ class IssuesController extends Controller
 
     public function update(Request $request, $Issuesid)
     {
+        $this->validate($request, 
+        array(
+            'Trackerid' => 'required' ,
+            'Subject' => 'required',
+            'Description' => 'required',
+            'Image' => 'required|image',
+
+        ),[
+            'Trackerid.required' => 'You have select TrackName and SubTrackName and Name',
+            'Subject.required' => 'You have enter Subject',
+            'Description.required' => 'You have enter Description',
+        ]);
+
         $issues = Issues::find($Issuesid);
         $issues->Trackerid = $request->input('Trackerid');
         $issues->Priorityid = $request->input('Priorityid');
@@ -214,16 +260,23 @@ class IssuesController extends Controller
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
 
-        if ($request->file('Image')) {
-            $file = $request->file('Image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move('uploads/issues/' . $filename);
-            $issues->Image = $filename;
-        } else {
-            return $request;
-            $issues->Image = '';
+        if($request->hasFile('Image')){
+            $filename = $request->Image->getClientOriginalName();
+            $file = time() . '.' . $filename;
+            $issues->Image = $request->Image->storeAs('images',$file,'public');
+            // dd($file);
         }
+
+        // if ($request->file('Image')) {
+        //     $file = $request->file('Image');
+        //     $extension = $file->getClientOriginalExtension();
+        //     $filename = time() . '.' . $extension;
+        //     $file->move('uploads/issues/' . $filename);
+        //     $issues->Image = $filename;
+        // } else {
+        //     return $request;
+        //     $issues->Image = '';
+        // }
 
         $issues->update();
 
@@ -272,7 +325,7 @@ class IssuesController extends Controller
 
         //it will get id if its id match with product id
 
-        $p = Tracker::select('Trackerid')->where([['TrackName', $TrackName], ['SubTrackName', $SubTrackName], ['Name', $Name]])->first();
+        $p = Issuestracker::select('Trackerid')->where([['TrackName', $TrackName], ['SubTrackName', $SubTrackName], ['Name', $Name]])->first();
         // echo $p;
         // $json = array("Trackerid" => $p->Trackerid);
         // echo print_r($json);
@@ -289,7 +342,7 @@ class IssuesController extends Controller
         //it will get id if its id match with product id
 
         if($SubTrackName == 'Other'){
-            $p2 = Tracker::select('Trackerid')->where([['TrackName', $TrackName], ['SubTrackName', 'Other']])->first();
+            $p2 = Issuestracker::select('Trackerid')->where([['TrackName', $TrackName], ['SubTrackName', 'Other']])->first();
             return $p2->Trackerid;
         }
         

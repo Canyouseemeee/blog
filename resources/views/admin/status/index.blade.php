@@ -1,10 +1,37 @@
-@extends('layouts.master2')
+@extends('layouts.master')
 
 @section('title')
 Web Test
 @endsection
 
 @section('content')
+<!-- Delete Modal -->
+<div class="modal fade" id="deletemodalpop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">DELETE FORM</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="delete_modal_Form" method="POST">
+                {{ csrf_field() }}
+                {{ method_field('DELETE') }}
+                <div class="modal-body">
+                    <input type="hidden" id="delete_status_id">
+                    <h5>Are you sure.? you want to delete this Data</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Yes. Delete It.</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Delete Modal -->
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -14,7 +41,7 @@ Web Test
                 </h4>
             </div>
             <div class="card-body">
-                <table class="table">
+                <table id="datatable" class="table">
                     <thead class="text-primary">
                         <th>ID</th>
                         <th>Name</th>
@@ -37,7 +64,7 @@ Web Test
                                 <a href="{{ url('status-edit/'.$row->Statusid) }}" class="btn btn-success">EDIT</a>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger statusdeletebtn">DELETE</button>
+                                <a href="javascript:void(0)" class="btn btn-danger btn-circle deletebtn" data-toggle="modal" data-target="#deletemodalpop"><i class="fas fa-trash"></i></a>
                             </td>
                         </tr>
                         @endforeach
@@ -50,49 +77,31 @@ Web Test
 @endsection
 
 @section('scripts')
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- Page level plugins -->
+<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<!-- Page level custom scripts -->
+<script src="/js/demo/datatables-demo.js"></script>
+<script src="{{ asset('js/dataTables.min.js') }}"></script>
+
 <script>
     $(document).ready(function() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        // $('#datatable').DataTable();
+        $('#datatable').DataTable();
 
-        $('.statusdeletebtn').click(function(e) {
-            e.preventDefault();
-            var delete_id = $(this).closest('tr')
-                .find('.statusdelete_val').val();
+        $('#datatable').on('click', '.deletebtn', function() {
+            $tr = $(this).closest('tr');
 
-            swal({
-                    title: "Are you sure?",
-                    text: "Once deleted, you will not be able to recover this imaginary file!",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        var data = {
-                            "_token": $('input[name="_token"]').val(),
-                            "id": delete_id,
-                        };
+            var data = $tr.children('td').map(function() {
+                return $(this).text();
+            }).get();
 
-                        $.ajax({
-                            type: "DELETE",
-                            url: '/status-delete/' + delete_id,
-                            data: data,
-                            success: function(response) {
-                                swal(response.status, {
-                                    icon: "success",
-                                }).then((result) => {
-                                    location.reload();
-                                });
-                            }
-                        });
-                    }
-                });
+            // console.log(data);
+
+            $('#delete_status_id').val(data[0]);
+
+            $('#delete_modal_Form').attr('action', '/status-delete/' + data[0]);
+
+            $('#deletemodalpop').modal('show');
         });
     });
 </script>

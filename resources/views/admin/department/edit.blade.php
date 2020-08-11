@@ -1,4 +1,4 @@
-@extends('layouts.master2')
+@extends('layouts.master')
 
 @section('title')
 Web Test
@@ -21,12 +21,22 @@ Web Test
                             <div class="form-group">
                                 <label> Department Name</label>
                                 <input type="text" name="DmName" class="form-control" value="{{$department->DmName}}">
+                                @if($errors->has('DmName'))
+                                <div class="alert alert-danger">
+                                    <li>{{$errors->first('DmName')}}</li>
+                                </div>
+                                @endif
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label> Department Tel</label>
                                 <input type="text" name="Dm_Tel" class="form-control" value="{{$department->Dm_Tel}}">
+                                @if($errors->has('Dm_Tel'))
+                                <div class="alert alert-danger">
+                                    <li>{{$errors->first('Dm_Tel')}}</li>
+                                </div>
+                                @endif
                             </div>
                         </div>
                         <div class="col-md-12">

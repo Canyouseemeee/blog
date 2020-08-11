@@ -28,24 +28,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 //     return view('admin.dashboard');
 // });
 
-Route::get('/dashboard', 'Admin\DashController@index');
+Route::get('/dashboard', 'Admin\DashboardController@index');
 
 
-Route::get('/dynamic', 'Admin\DynamicController@index');
-Route::get('/dynamic-index', 'Admin\DynamicController@index2');
-Route::get('/dynamic-create', 'Admin\DynamicController@create');
-Route::post('/dynamic-store', 'Admin\DynamicController@store');
-//Route::post('/dynamic/fetch', 'Admin\DynamicController@fetch')->name('dynamiccontroller.fetch');
-// Route::get('/dynamic/fetch', 'Admin\DynamicController@fetch')->name('dynamiccontroller.fetch');
-// Route::get('/findid','Admin\DynamicController@findid');
-// Route::get('/findidother','Admin\DynamicController@findidother');
-
-
-
-Route::get('/role-register', 'Admin\DashboardController@registered');
-Route::get('/role-edit/{id}', 'Admin\DashboardController@registeredit');
-Route::put('/role-register-update/{id}', 'Admin\DashboardController@registerupdate');
-Route::delete('/role-delete/{id}', 'Admin\DashboardController@registerdelete');
+Route::get('/role-register', 'Admin\RoleController@registered');
+Route::get('/role-edit/{id}', 'Admin\RoleController@registeredit');
+Route::put('/role-register-update/{id}', 'Admin\RoleController@registerupdate');
+Route::delete('/role-delete/{id}', 'Admin\RoleController@registerdelete');
 
 //issues//
 Route::get('/issues', 'Admin\IssuesController@index');

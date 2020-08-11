@@ -1,4 +1,4 @@
-@extends('layouts.master2')
+@extends('layouts.master')
 
 @section('title')
 Web Test
@@ -58,7 +58,7 @@ function DateThai($strDate)
     <div class="col-md-12">
         <div class="card">
             <div class="card-header py-3 ">
-                <h4 class="m-0 font-weight-bold text-primary"> New Issues
+                <h4 class="card-title"> New Issues
                     <a href="{{ url('issues-create') }}" class="btn btn-primary float-right">Add Issues</a>
                 </h4>
             </div>
@@ -74,7 +74,7 @@ function DateThai($strDate)
             </style>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table " id="dataTable" width="100%" cellspacing="0">
+                    <table class="table " id="datatable" width="100%" cellspacing="0">
                         <thead class="text-primary">
                             <th class="w-10p">Id</th>
                             <th class="w-10p">Tracker</th>
@@ -136,6 +136,13 @@ function DateThai($strDate)
 @endsection
 
 @section('scripts')
+<!-- Page level plugins -->
+<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<!-- Page level custom scripts -->
+<script src="/js/demo/datatables-demo.js"></script>
+<script src="{{ asset('js/dataTables.min.js') }}"></script>
+
 <script>
     $(document).ready(function() {
         $('#datatable').DataTable();
@@ -149,9 +156,9 @@ function DateThai($strDate)
 
             // console.log(data);
 
-            $('#delete_aboutus_id').val(data[0]);
+            $('#delete_department_id').val(data[0]);
 
-            $('#delete_modal_Form').attr('action', '/about-us-delete/' + data[0]);
+            $('#delete_modal_Form').attr('action', '/department-delete/' + data[0]);
 
             $('#deletemodalpop').modal('show');
         });

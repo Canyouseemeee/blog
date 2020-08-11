@@ -19,6 +19,16 @@ class StatusController extends Controller
     }
 
     public function store(Request $request){
+        $this->validate($request, 
+        array(
+            'ISSName' => 'required' ,
+            'Description' => 'required'
+
+        ),[
+            'ISSName.required' => 'You have Enter StatusName',
+            'Description.required' => 'You have Enter Description',
+        ]);
+
         $issuesstatus = new Issuesstatus();
         $issuesstatus->ISSName = $request->input('ISSName');
         $issuesstatus->Description = $request->input('Description');
@@ -34,6 +44,16 @@ class StatusController extends Controller
     }
 
     public function update(Request $request,$Statusrid){
+        $this->validate($request, 
+        array(
+            'ISSName' => 'required' ,
+            'Description' => 'required'
+
+        ),[
+            'ISSName.required' => 'You have Enter StatusName',
+            'Description.required' => 'You have Enter Description',
+        ]);
+
         $issuesstatus = Issuesstatus::find($Statusrid);
         $issuesstatus->ISSName = $request->input('ISSName');
         $issuesstatus->Description = $request->input('Description');
@@ -46,6 +66,7 @@ class StatusController extends Controller
     public function delete($Statusrid){
         $issuesstatus = Issuesstatus::findOrFail($Statusrid);
         $issuesstatus->delete();
-        return response()->json(['status'=>'Status Delete Sucessfully']);
+        Session::flash('statuscode','error');
+        return redirect('/status')->with('danger','Your Data is Deleted');
     }
 }

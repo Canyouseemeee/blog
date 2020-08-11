@@ -1,4 +1,4 @@
-@extends('layouts.master2')
+@extends('layouts.master')
 
 @section('title')
 Web Test
@@ -12,6 +12,13 @@ Web Test
                 <h4 class="card-title"> Tracker-Create</h4>
             </div>
             <div class="card-body">
+                <!-- @if($errors)
+                @foreach($errors->all() as $error)
+                <div class="alert alert-danger">
+                    <li>{{$error}}</li>
+                </div>
+                @endforeach
+                @endif -->
                 <form action="{{ url('tracker-store') }}" method="post">
                     {{ csrf_field() }}
                     <div class="form-group">
@@ -21,18 +28,33 @@ Web Test
                             <option value="{{$row->TrackName}}">{{$row->TrackName}}</option>
                             @endforeach
                         </select>
+                        @if($errors->has('TrackName'))
+                        <div class="alert alert-danger">
+                            <li>{{$errors->first('TrackName')}}</li>
+                        </div>
+                        @endif
                     </div>
                     <br />
                     <div class="form-group">
                         <select name="SubTrackName" id="SubTrackName" class="form-control input-lg dynamic">
                             <option value="">Select SubTrackName</option>
                         </select>
+                        @if($errors->has('SubTrackName'))
+                        <div class="alert alert-danger">
+                            <li>{{$errors->first('SubTrackName')}}</li>
+                        </div>
+                        @endif
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label> Name</label>
-                                <input type="text" name="Name" class="form-control" placeholder="Enter">
+                                <label>Name</label>
+                                <input type="text" id="Name" name="Name" class="form-control" placeholder="Enter">
+                                @if($errors->has('Name'))
+                                <div class="alert alert-danger">
+                                    <li>{{$errors->first('Name')}}</li>
+                                </div>
+                                @endif
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -79,7 +101,7 @@ Web Test
                     success: function(result) {
                         $('#' + dependent).html(result);
                         $('#SubTrackName').prop('disabled', false);
-                        
+
                     }
                 });
             }
@@ -101,8 +123,12 @@ Web Test
             // }
             if (SubTrackName == 'Other') {
                 $('#Name').prop('disabled', 'disabled');
+                $('#Name').val('ไม่สามารถเพิ่ม/แก้ไขข้อมูลได้');
+                document.getElementById("Name").readOnly = true;
             }
             if (SubTrackName != 'Other') {
+                document.getElementById("Name").readOnly = false;
+                $('#Name').val('');
                 $('#Name').prop('disabled', false);
             }
         });
