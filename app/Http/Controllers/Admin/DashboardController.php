@@ -25,22 +25,28 @@ class DashboardController extends Controller
         $datatotal = "" . $data2 . "," . $data3 . "," . $data4 . "";
 
         //Column HW
-        $databar = DB::table('issues_tracker')
+        $databar = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
             ->where([['TrackName', 'HW'], ['SubTrackName', 'Install'], ['Name', 'PC']])
             ->count();
-        $databar2 = DB::table('issues_tracker')
+        $databar2 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
             ->where([['TrackName', 'HW'], ['SubTrackName', 'Install'], ['Name', 'Printer']])
             ->count();
-        $databar3 = DB::table('issues_tracker')
+        $databar3 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
             ->where([['TrackName', 'HW'], ['SubTrackName', 'Fix'], ['Name', 'PC']])
             ->count();
-        $databar4 = DB::table('issues_tracker')
+        $databar4 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
             ->where([['TrackName', 'HW'], ['SubTrackName', 'Fix'], ['Name', 'Printer']])
             ->count();
-        $databar5 = DB::table('issues_tracker')
+        $databar5 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
             ->where([['TrackName', 'HW'], ['SubTrackName', 'Move'], ['Name', 'PC']])
             ->count();
-        $databar6 = DB::table('issues_tracker')
+        $databar6 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
             ->where([['TrackName', 'HW'], ['SubTrackName', 'Move'], ['Name', 'Printer']])
             ->count();
         $datattbar = "'Install'," . $databar . "," . $databar2 . "";
@@ -48,19 +54,70 @@ class DashboardController extends Controller
         $datattbar3 = "'Move'," . $databar5 . "," . $databar6 . "";
 
         //Column SW
-        $databarsw = DB::table('issues_tracker')
-            ->where([['TrackName', 'SW'], ['SubTrackName', 'Install']])
+        $databarsw = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
+            ->where([['TrackName', 'SW'], ['SubTrackName', 'Install'], ['Name', 'HIS']])
             ->count();
-        $databarsw2 = DB::table('issues_tracker')
-            ->where([['TrackName', 'SW'], ['SubTrackName', 'Fix']])
+        $databarsw1 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
+            ->where([['TrackName', 'SW'], ['SubTrackName', 'Install'], ['Name', 'RROP']])
+            ->count();
+        $databarsw2 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
+            ->where([['TrackName', 'SW'], ['SubTrackName', 'Install'], ['Name', 'SAP']])
+            ->count();
+        $databarsw3 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
+            ->where([['TrackName', 'SW'], ['SubTrackName', 'Install'], ['Name', 'Cagent']])
+            ->count();
+        $databarsw4 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
+            ->where([['TrackName', 'SW'], ['SubTrackName', 'Install'], ['Name', 'Windows']])
+            ->count();
+        $databarsw5 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
+            ->where([['TrackName', 'SW'], ['SubTrackName', 'Install'], ['Name', 'Adobe']])
+            ->count();
+        $databarsw6 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
+            ->where([['TrackName', 'SW'], ['SubTrackName', 'Fix'], ['Name', 'HIS']])
+            ->count();
+        $databarsw7 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
+            ->where([['TrackName', 'SW'], ['SubTrackName', 'Fix'], ['Name', 'RROP']])
+            ->count();
+        $databarsw8 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
+            ->where([['TrackName', 'SW'], ['SubTrackName', 'Fix'], ['Name', 'SAP']])
+            ->count();
+        $databarsw9 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
+            ->where([['TrackName', 'SW'], ['SubTrackName', 'Fix'], ['Name', 'Cagent']])
+            ->count();
+        $databarsw10 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
+            ->where([['TrackName', 'SW'], ['SubTrackName', 'Fix'], ['Name', 'Windows']])
+            ->count();
+        $databarsw11 = DB::table('issues')
+            ->join('issues_tracker', 'issues_tracker.Trackerid', '=', 'issues.Trackerid')
+            ->where([['TrackName', 'SW'], ['SubTrackName', 'Fix'], ['Name', 'Adobe']])
             ->count();
 
-        $datattbarsw = "'Install'," . $databarsw . "";
-        $datattbarsw2 = "'Fix'," . $databarsw2 . "";
+
+        $datattbarsw = "'Install'," . $databarsw . "," . $databarsw1 . "," . $databarsw2 . "
+        ," . $databarsw3 . "," . $databarsw4 . "," . $databarsw5 . "";
+        $datattbarsw2 = "'Fix'," . $databarsw6 . "," . $databarsw7 . "," . $databarsw8 . "
+        ," . $databarsw9 . "," . $databarsw10 . "," . $databarsw11 . "";
 
         //Bar Month
-        $datamonthbar = DB::table('issues')->whereBetween('Date_In', ['2020-07-01','2020-07-31'])->count();
-        $datatotalmonthbar = "" . $datamonthbar . ",11,20,30,40,50";
+        $datamonthbar = DB::table('issues')->whereBetween('Date_In', ['2020-07-01', '2020-07-31'])->count();
+        $datamonthbar1 = DB::table('issues')->whereBetween('Date_In', ['2020-08-01', '2020-08-31'])->count();
+        $datamonthbar2 = DB::table('issues')->whereBetween('Date_In', ['2020-09-01', '2020-09-30'])->count();
+        $datamonthbar3 = DB::table('issues')->whereBetween('Date_In', ['2020-10-01', '2020-10-31'])->count();
+        $datamonthbar4 = DB::table('issues')->whereBetween('Date_In', ['2020-11-01', '2020-11-30'])->count();
+        $datamonthbar5 = DB::table('issues')->whereBetween('Date_In', ['2020-12-01', '2020-12-31'])->count();
+        $datatotalmonthbar = "" . $datamonthbar . "," . $datamonthbar1 . "," . $datamonthbar2 . "," . $datamonthbar3 . "
+        ," . $datamonthbar4 . "," . $datamonthbar5 . "";
 
         return view('admin.dashboard', compact(
             ['data'],

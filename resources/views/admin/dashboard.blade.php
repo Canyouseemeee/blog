@@ -336,9 +336,9 @@ Web Test
   var myBarChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ["July", "SW", "March", "April", "May", "June"],
+      labels: ["July", "August", "September", "October", "November", "December"],
       datasets: [{
-        label: "Revenue",
+        label: "Issues Unit",
         backgroundColor: "#4e73df",
         hoverBackgroundColor: "#2e59d9",
         borderColor: "#4e73df",
@@ -457,7 +457,7 @@ Web Test
 
   function drawChart() {
     var data = google.visualization.arrayToDataTable([
-      ['SW', ''],
+      ['SW', 'HIS','RROP','SAP','CAgent','Windows','Adobe'],
       [<?= $datattbarsw; ?>],
       [<?= $datattbarsw2; ?>],
     ]);
