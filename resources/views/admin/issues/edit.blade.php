@@ -126,7 +126,8 @@ Web Test
                     </div>
 
                     <div>
-                        <input type="file" name="Image" value="{{$data->Image}}">
+                        <input type="hidden" name="Image2" value="{{$data->Image}}">
+                        <input type="file" name="Image">
                     </div>
                     <br>
                     <input type="submit" value="Update" class="btn btn-primary ">
@@ -214,8 +215,7 @@ Web Test
                 var op = "";
                 $.ajax({
                     type: 'get',
-                    url: '{!!URL::to('
-                    findid ')!!}',
+                    url: '{!!URL::to("findid")!!}',
                     data: {
                         // 'Name': tracker_id,
                         TrackName: TrackName,
@@ -256,8 +256,7 @@ Web Test
             var op = "";
             $.ajax({
                 type: 'get',
-                url: '{!!URL::to('
-                findidother ')!!}',
+                url: '{!!URL::to("findidother")!!}',
                 data: {
                     TrackName: TrackName,
                     SubTrackName: SubTrackName,

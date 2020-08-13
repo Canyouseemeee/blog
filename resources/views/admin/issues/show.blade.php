@@ -30,13 +30,13 @@ function DateThai($strDate)
                 </div>
                 <style>
                     .w-11p {
-                        width: 300px;
-                        word-break: 'break-all';
+                        width: 900px;
+                        word-break: break-all;
                     }
                 </style>
                 <div class="container">
                     <div class="card-body row">
-                        <div class="" style="font-size:25px">
+                        <div class="" style="font-size:20px">
                             <div class="form-row ">
                                 <div class="form-group col-md-3">
                                     <b> <label>Tracker : </label></b>
@@ -82,9 +82,8 @@ function DateThai($strDate)
                                     @endif
                                     @endforeach
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-5">
+
+                                <div class="form-group col-md-3">
                                     <b> <label>Department : </label></b>
                                     @foreach($department as $row4)
                                     @if ($row4->Departmentid === $data->Departmentid)
@@ -97,37 +96,40 @@ function DateThai($strDate)
                                     <b> <label>Users : </label></b>
                                     <label>{{$data->Users}}</label>
                                 </div>
-
-                                <div class="form-group col-md-6">
+                            </div>
+                            <div class="form-row ">
+                                <div class="form-group col-md-4">
                                     <b> <label>Created : </label></b>
                                     <label>{{DateThai($data->created_at)}}</label>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <b> <label>Updated : </label></b>
                                     <label>{{DateThai($data->updated_at)}}</label>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <b><label>Subject : </label></b>
+                            <b><label>Subject : </label></b>
+                            <div class="form-group col-md-6">
                                 <label class="w-11p">{{$data->Subject}}</label>
                             </div>
 
-                            <div class="form-group">
-                                <b><label>Description : </label></b>
+                            <b><label>Description : </label></b>
+                            <div class="form-group col-md-6">
                                 <label class="w-11p">{{$data->Description}}</label>
                             </div>
 
                             <div class="form-group">
                                 <b><label>Image : </label></b>
-                                <img src="{{ asset('/storage/'.$data->Image) }}" alt="Image" width="500"/>
+                                <img src="{{ asset('/storage/'.$data->Image) }}" alt="Image" width="500" />
                             </div>
 
                         </div>
                         <a href="{{ url('issues-edit/'.$data->Issuesid) }}" class="btn btn-primary">Edit</a>
                         &nbsp;&nbsp;
                         <a href="/issues" class="btn btn-danger">Back</a>
+                        &nbsp;&nbsp;
+                        <a href="/pdf" class="btn btn-warning"> PDF</a>
                     </div>
                 </div>
             </div>

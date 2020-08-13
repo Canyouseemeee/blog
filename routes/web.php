@@ -28,7 +28,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 //     return view('admin.dashboard');
 // });
 
+Route::get('pdf','Admin\PDFController@pdf');
+
 Route::get('/dashboard', 'Admin\DashboardController@index');
+Route::post('/dashboard-between', 'Admin\DashboardController@getReport');
 
 
 Route::get('/role-register', 'Admin\RoleController@registered');

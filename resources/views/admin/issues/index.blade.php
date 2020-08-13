@@ -136,32 +136,29 @@ function DateThai($strDate)
 @endsection
 
 @section('scripts')
-<!-- Page level plugins -->
-<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-<!-- Page level custom scripts -->
-<script src="/js/demo/datatables-demo.js"></script>
-<script src="{{ asset('js/dataTables.min.js') }}"></script>
 
 <script>
     $(document).ready(function() {
-        $('#datatable').DataTable();
-
-        $('#datatable').on('click', '.deletebtn', function() {
-            $tr = $(this).closest('tr');
-
-            var data = $tr.children('td').map(function() {
-                return $(this).text();
-            }).get();
-
-            // console.log(data);
-
-            $('#delete_department_id').val(data[0]);
-
-            $('#delete_modal_Form').attr('action', '/department-delete/' + data[0]);
-
-            $('#deletemodalpop').modal('show');
+        $('#datatable').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
         });
+    });
+
+    $('#datatable').on('click', '.deletebtn', function() {
+    $tr = $(this).closest('tr');
+
+    var data = $tr.children('td').map(function() {
+        return $(this).text();
+    }).get();
+
+    // console.log(data);
+
+    $('#delete_department_id').val(data[0]);
+
+    $('#delete_modal_Form').attr('action', '/department-delete/' + data[0]);
+
+    $('#deletemodalpop').modal('show');
     });
 </script>
 @endsection

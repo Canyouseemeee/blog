@@ -242,7 +242,7 @@ class IssuesController extends Controller
             'Trackerid' => 'required' ,
             'Subject' => 'required',
             'Description' => 'required',
-            'Image' => 'required|image',
+            // 'Image' => 'required|image',
 
         ),[
             'Trackerid.required' => 'You have select TrackName and SubTrackName and Name',
@@ -265,6 +265,8 @@ class IssuesController extends Controller
             $file = time() . '.' . $filename;
             $issues->Image = $request->Image->storeAs('images',$file,'public');
             // dd($file);
+        }else{
+            $issues->Image = $request->input('Image2');
         }
 
         // if ($request->file('Image')) {

@@ -64,7 +64,7 @@ Web Test
 
                         <div class="col-md-3">
                             <label>Status</label>
-                            <select name="Statusid" class="form-control create" require>
+                            <select name="Statusid" class="form-control create"  require>
                                 @foreach($issuesstatus as $row3)
                                 <option value="{{$row3->Statusid}}">{{$row3->ISSName}}</option>
                                 @endforeach
@@ -185,7 +185,7 @@ Web Test
                 var op = "";
                 $.ajax({
                     type: 'get',
-                    url: '{!!URL::to('findid')!!}',
+                    url: '{!!URL::to("findid")!!}',
                     data: {
                         // 'Name': tracker_id,
                         TrackName: TrackName,
@@ -226,7 +226,7 @@ Web Test
             var op = "";
             $.ajax({
                 type: 'get',
-                url: '{!!URL::to('findidother')!!}',
+                url: '{!!URL::to("findidother")!!}',
                 data: {
                     TrackName: TrackName,
                     SubTrackName: SubTrackName,

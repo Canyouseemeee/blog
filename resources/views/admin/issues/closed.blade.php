@@ -137,16 +137,14 @@ function DateThai($strDate)
 @endsection
 
 @section('scripts')
-<!-- Page level plugins -->
-<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-<!-- Page level custom scripts -->
-<script src="/js/demo/datatables-demo.js"></script>
-<script src="{{ asset('js/dataTables.min.js') }}"></script>
-
 <script>
     $(document).ready(function() {
-        $('#datatable').DataTable();
+        $(document).ready(function() {
+        $('#datatable').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+        });
+    });
 
         $('#datatable').on('click', '.deletebtn', function() {
             $tr = $(this).closest('tr');
