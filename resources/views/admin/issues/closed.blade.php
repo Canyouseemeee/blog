@@ -83,7 +83,7 @@ function DateThai($strDate)
                             <th class="w-10p">Priority</th>
                             <th class="w-10p">Users</th>
                             <th class="w-10p">Subject</th>
-                            <th class="w-10p">Updated</th>
+                            <th class="w-10p">Closed</th>
                             <th class="w-10p">Views</th>
                         </thead>
                         @if (!is_null($issues))
@@ -100,7 +100,7 @@ function DateThai($strDate)
                                         <a href="{{ url('issues-show/'.$row->Issuesid) }}">{{$row->Subject}}</a>
                                     </div>
                                 </td>
-                                <td>{{DateThai($row->updated_at)}}</td>
+                                <td>{{DateThai($row->closed_at)}}</td>
                                 <td>
                                     <a href="{{ url('issues-show/'.$row->Issuesid) }}" class="btn btn-success">View</a>
                                 </td>
@@ -120,7 +120,7 @@ function DateThai($strDate)
                                         <a href="{{ url('issues-show/'.$betweens->Issuesid) }}">{{$betweens->Subject}}</a>
                                     </div>
                                 </td>
-                                <td style="text-align:center">{{DateThai($betweens->updated_at)}}</td>
+                                <td style="text-align:center">{{DateThai($betweens->closed_at)}}</td>
                                 <td>
                                     <a href="{{ url('issues-show/'.$betweens->Issuesid) }}" class="btn btn-success">View</a>
                                 </td>
@@ -142,7 +142,7 @@ function DateThai($strDate)
         $(document).ready(function() {
         $('#datatable').DataTable({
             dom: 'Bfrtip',
-            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+            buttons: ['copy', 'csv', 'excel', 'print']
         });
     });
 

@@ -69,7 +69,7 @@
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
+          <i class="fas fa-fw fa-table"></i>
           <span>Issues</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -99,6 +99,12 @@
         </div>
       </li>
 
+      <li class="{{ 'history' == request()->path() ? 'active' : '' }} nav-item ">
+        <a class="nav-link" href="/history">
+          <i class="fas fa-fw fa-cog"></i>
+          <span>History</span></a>
+      </li>
+
       <!-- Divider -->
       <hr class="sidebar-divider">
 
@@ -124,6 +130,8 @@
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
           </button>
+
+          <div class="text-white mx-3">CNMI RAMATHIBODI</div>
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">

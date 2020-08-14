@@ -107,6 +107,16 @@ function DateThai($strDate)
                                     <b> <label>Updated : </label></b>
                                     <label>{{DateThai($data->updated_at)}}</label>
                                 </div>
+
+                                <div class="form-group col-md-4">
+                                    <b> <label>Closed : </label></b>
+                                    @if($data->closed_at == null)
+                                        <label>ยังไม่ปิดงาน</label>
+                                    @else
+                                        <label>{{DateThai($data->closed_at)}}</label>
+                                    @endif
+
+                                </div>
                             </div>
 
                             <b><label>Subject : </label></b>
@@ -129,7 +139,7 @@ function DateThai($strDate)
                         &nbsp;&nbsp;
                         <a href="/issues" class="btn btn-danger">Back</a>
                         &nbsp;&nbsp;
-                        <a href="/pdf" class="btn btn-warning"> PDF</a>
+                        <a href="{{ url('pdf/'.$data->Issuesid)}}" class="btn btn-warning"> PDF</a>
                     </div>
                 </div>
             </div>

@@ -278,10 +278,8 @@ class DashboardController extends Controller
         $datatotalmonthbar = "" . $datamonthbar . "," . $datamonthbar1 . "," . $datamonthbar2 . "," . $datamonthbar3 . "
         ," . $datamonthbar4 . "," . $datamonthbar5 . "";
 
-        $issueschange = DB::table('issues')->where([['Statusid', 1], ['Date_In', '!=', now()->toDateString()]])->update(['Statusid' => 3]);
         // dd($issueschange);
         return view('admin.dashboard', compact(
-            ['issueschange'],
             ['data'],
             ['data2'],
             ['data3'],

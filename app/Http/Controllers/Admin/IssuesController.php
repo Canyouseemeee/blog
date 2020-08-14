@@ -10,14 +10,15 @@ use App\Models\Issuesstatus;
 use App\Models\Issuestracker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Null_;
 
 class IssuesController extends Controller
 {
     public function index()
     {
-        $issues = DB::table('tracker')
-            ->select('Issuesid', 'tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
-            ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
+        $issues = DB::table('issues_tracker')
+            ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+            ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
             ->where([['issues.Statusid', 1], ['issues.Date_In', now()->toDateString()]])
@@ -32,9 +33,9 @@ class IssuesController extends Controller
         $fromdate = $request->input('fromdate');
         $todate = $request->input('todate');
         if ($request->isMethod('post')) {
-            $between = DB::table('tracker')
-                ->select('Issuesid', 'tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
-                ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
+            $between = DB::table('issues_tracker')
+                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
                 ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
                 ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
                 ->where('issues.Statusid', 1)
@@ -50,9 +51,9 @@ class IssuesController extends Controller
 
     public function defer()
     {
-        $issues = DB::table('tracker')
-            ->select('Issuesid', 'tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
-            ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
+        $issues = DB::table('issues_tracker')
+            ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+            ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
             ->where('issues.Statusid', 3)
@@ -67,9 +68,9 @@ class IssuesController extends Controller
         $fromdate = $request->input('fromdate');
         $todate = $request->input('todate');
         if ($request->isMethod('post')) {
-            $between = DB::table('tracker')
-                ->select('Issuesid', 'tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
-                ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
+            $between = DB::table('issues_tracker')
+                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
                 ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
                 ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
                 ->where('issues.Statusid', 3)
@@ -85,9 +86,9 @@ class IssuesController extends Controller
 
     public function closed()
     {
-        $issues = DB::table('tracker')
-            ->select('Issuesid', 'tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
-            ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
+        $issues = DB::table('issues_tracker')
+            ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.closed_at')
+            ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
             ->where('issues.Statusid', 2)
@@ -102,9 +103,9 @@ class IssuesController extends Controller
         $fromdate = $request->input('fromdate');
         $todate = $request->input('todate');
         if ($request->isMethod('post')) {
-            $between = DB::table('tracker')
-                ->select('Issuesid', 'tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
-                ->join('issues', 'issues.Trackerid', '=', 'tracker.Trackerid')
+            $between = DB::table('issues_tracker')
+                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.closed_at')
+                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
                 ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
                 ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
                 ->where('issues.Statusid', 2)
@@ -120,7 +121,7 @@ class IssuesController extends Controller
 
     public function create()
     {
-        $tracker = DB::table('tracker')
+        $tracker = DB::table('issues_tracker')
             ->groupBy('TrackName')
             ->get();
         $issues = Issues::all();
@@ -161,6 +162,8 @@ class IssuesController extends Controller
         $issues->Subject = $request->input('Subject');
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
+
+        $issues->closed_at = null;
 
         if($request->hasFile('Image')){
             $filename = $request->Image->getClientOriginalName();
@@ -210,13 +213,13 @@ class IssuesController extends Controller
     {
         $data = Issues::find($Issuesid);
         $issues = Issues::all();
-        $trackname = DB::table('tracker')
+        $trackname = DB::table('issues_tracker')
         ->groupBy('TrackName')
         ->get();
         $find = DB::table('issues')
-        ->select('tracker.TrackName')
-        ->join('tracker', 'issues.Trackerid', '=', 'tracker.Trackerid')
-        ->where('tracker.Trackerid',$data->Trackerid)
+        ->select('issues_tracker.TrackName')
+        ->join('issues_tracker', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+        ->where('issues_tracker.Trackerid',$data->Trackerid)
         ->groupBy('TrackName')
         ->get();
         $tracker = Issuestracker::all();
@@ -260,6 +263,12 @@ class IssuesController extends Controller
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
 
+        if($issues->Statusid == 2){
+            $issues->closed_at = now();
+        }else{
+            $issues->closed_at = Null;
+        }
+
         if($request->hasFile('Image')){
             $filename = $request->Image->getClientOriginalName();
             $file = time() . '.' . $filename;
@@ -293,11 +302,11 @@ class IssuesController extends Controller
         $Name = $request->get('Name');
         $dependent = $request->get('dependent');
         // echo $select . "," . $value . "," . $dependent;
-        $data = DB::table('tracker')
+        $data = DB::table('issues_tracker')
             ->where($select, $TrackName)
             ->groupBy($dependent)
             ->get();
-        $data2 = DB::table('tracker')
+        $data2 = DB::table('issues_tracker')
             ->where([['TrackName', $TrackName], [$select, $SubTrackName]])
             ->groupBy($dependent)
             ->get();

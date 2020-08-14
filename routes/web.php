@@ -28,16 +28,21 @@ Route::get('/home', 'HomeController@index')->name('home');
 //     return view('admin.dashboard');
 // });
 
-Route::get('pdf','Admin\PDFController@pdf');
+//PDF
+Route::get('pdf/{id}','Admin\PDFController@pdf');
 
+// Dashboard
 Route::get('/dashboard', 'Admin\DashboardController@index');
 Route::post('/dashboard-between', 'Admin\DashboardController@getReport');
 
-
+// Role
 Route::get('/role-register', 'Admin\RoleController@registered');
 Route::get('/role-edit/{id}', 'Admin\RoleController@registeredit');
 Route::put('/role-register-update/{id}', 'Admin\RoleController@registerupdate');
 Route::delete('/role-delete/{id}', 'Admin\RoleController@registerdelete');
+
+//Logs
+Route::get('/history', 'Admin\LogsController@index');
 
 //issues//
 Route::get('/issues', 'Admin\IssuesController@index');
