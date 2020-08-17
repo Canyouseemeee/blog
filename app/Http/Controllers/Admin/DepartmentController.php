@@ -22,10 +22,12 @@ class DepartmentController extends Controller
         $this->validate($request, 
         array(
             'DmName' => 'required' ,
+            'DmCode' => 'required' ,
             'Dm_Tel' => 'required|max:5'
 
         ),[
             'DmName.required' => 'You have enter Department Name',
+            'DmCode.required' => 'You have enter Department CodeName',
             'Dm_Tel.required' => 'You have enter Department Tel'
         ]);
 
@@ -47,10 +49,12 @@ class DepartmentController extends Controller
         $this->validate($request, 
         array(
             'DmName' => 'required' ,
+            'DmCode' => 'required' ,
             'Dm_Tel' => 'required|max:5'
 
         ),[
             'DmName.required' => 'You have enter Department Name',
+            'DmCode.required' => 'You have enter Department CodeName',
             'Dm_Tel.required' => 'You have enter Department Tel'
         ]);
 

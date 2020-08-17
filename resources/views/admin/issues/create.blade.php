@@ -75,7 +75,7 @@ Web Test
                             <label>Department</label>
                             <select name="Departmentid" class="form-control create" require>
                                 @foreach($department as $row4)
-                                <option value="{{$row4->Departmentid}}">{{$row4->DmName}}</option>
+                                <option value="{{$row4->Departmentid}}">{{$row4->DmCode}}-{{$row4->DmName}}</option>
                                 @endforeach
                             </select>
                         </div>

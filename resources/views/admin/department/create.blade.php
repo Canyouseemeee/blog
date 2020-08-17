@@ -27,6 +27,17 @@ Web Test
                                 @endif
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label> Department CodeName</label>
+                                <input type="text" name="DmCode" class="form-control" placeholder="Enter Department CodeName">
+                                @if($errors->has('DmCode'))
+                                <div class="alert alert-danger">
+                                    <li>{{$errors->first('DmCode')}}</li>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label> Department Tel</label>

@@ -83,6 +83,16 @@ Web Test
 
                         <div class="col-md-3">
                             <label>Status</label>
+                            @if($data->Statusid === 2)
+                            <select name="Statusid" class="form-control create" require disabled>
+                                @foreach($issuesstatus as $row3)
+                                <option value="{{$row3->Statusid}}" @if ($row3->Statusid === $data->Statusid)
+                                    selected
+                                    @endif
+                                    >{{$row3->ISSName}}</option>
+                                @endforeach
+                            </select>
+                            @else
                             <select name="Statusid" class="form-control create" require>
                                 @foreach($issuesstatus as $row3)
                                 <option value="{{$row3->Statusid}}" @if ($row3->Statusid === $data->Statusid)
@@ -91,6 +101,9 @@ Web Test
                                     >{{$row3->ISSName}}</option>
                                 @endforeach
                             </select>
+
+                            @endif
+
                         </div>
 
                         <div class="col-md-3">
@@ -100,7 +113,7 @@ Web Test
                                 <option value="{{$row4->Departmentid}}" @if ($row4->Departmentid === $data->Departmentid)
                                     selected
                                     @endif
-                                    >{{$row4->DmName}}</option>
+                                    >{{$row4->DmCode}}-{{$row4->DmName}}</option>
                                 @endforeach
                             </select>
                         </div>

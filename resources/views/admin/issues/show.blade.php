@@ -19,6 +19,19 @@ function DateThai($strDate)
     $strMonthThai = $strMonthCut[$strMonth];
     return "$strDay $strMonthThai $strYear $strHour:$strMinute น.";
 }
+
+function DateThai2($strDate)
+{
+    $strYear = date("Y", strtotime($strDate)) + 543;
+    $strMonth = date("n", strtotime($strDate));
+    $strDay = date("j", strtotime($strDate));
+    $strHour = date("H", strtotime($strDate));
+    $strMinute = date("i", strtotime($strDate));
+    $strSeconds = date("s", strtotime($strDate));
+    $strMonthCut = array("", "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค.");
+    $strMonthThai = $strMonthCut[$strMonth];
+    return "$strDay $strMonthThai $strYear $strHour:$strMinute น.";
+}
 ?>
 <form action="{{ url('issues-show/'.$data->Issuesid) }}" method="PUT">
     {{ csrf_field() }}
@@ -83,11 +96,11 @@ function DateThai($strDate)
                                     @endforeach
                                 </div>
 
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-7">
                                     <b> <label>Department : </label></b>
                                     @foreach($department as $row4)
                                     @if ($row4->Departmentid === $data->Departmentid)
-                                    <label>{{$row4->DmName}}</label>
+                                    <label>{{$row4->DmCode}}-{{$row4->DmName}}</label>
                                     @endif
                                     @endforeach
                                 </div>
@@ -110,10 +123,12 @@ function DateThai($strDate)
 
                                 <div class="form-group col-md-4">
                                     <b> <label>Closed : </label></b>
-                                    @if($data->closed_at == null)
-                                        <label>ยังไม่ปิดงาน</label>
+                                    @if($data->Statusid === 1 || $data->Statusid === 3)
+                                    <label>ยังไม่ปิดงาน</label>
                                     @else
-                                        <label>{{DateThai($data->closed_at)}}</label>
+                                    @foreach($issueslog as $log)
+                                    <label>{{DateThai2($log->create_at)}}</label>
+                                    @endforeach
                                     @endif
 
                                 </div>

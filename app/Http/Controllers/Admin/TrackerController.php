@@ -20,7 +20,7 @@ class TrackerController extends Controller
 
     public function create()
     {
-        $trackname = DB::table('tracker')
+        $trackname = DB::table('issues_tracker')
             ->groupBy('TrackName')
             ->get();
         return view('admin.tracker.create', compact('trackname'));
@@ -52,7 +52,7 @@ class TrackerController extends Controller
 
     public function edit($Trackerid)
     {
-        $trackname = DB::table('tracker')
+        $trackname = DB::table('issues_tracker')
             ->groupBy('TrackName')
             ->get();
         $tracker = Issuestracker::find($Trackerid);

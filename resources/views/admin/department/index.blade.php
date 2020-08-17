@@ -37,7 +37,7 @@ Web Test
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title"> Department
+                <h4 class="card-title"> Department 
                     <a href="{{ url('department-create') }}" class="btn btn-primary float-right">Add</a>
                 </h4>
             </div>
@@ -46,7 +46,9 @@ Web Test
                     <thead class="text-primary">
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Code</th>
                         <th>Tel</th>
+                        <th>Active</th>
                         <th>EDIT</th>
                         <th>DELETE</th>
                     </thead>
@@ -56,11 +58,13 @@ Web Test
                             <input type="hidden" class="departmentdelete_val" value="{{$row->Departmentid}}">
                             <td>{{$row->Departmentid}}</td>
                             <td>{{$row->DmName}}</td>
+                            <td>{{$row->DmCode}}</td>
                             <td>
                                 <div style="height: 30px; overflow: hidden;">
                                     {{$row->Dm_Tel}}
                                 </div>
                             </td>
+                            <td><input type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled"></td>
                             <td>
                                 <a href="{{ url('department-edit/'.$row->Departmentid) }}" class="btn btn-success">EDIT</a>
                             </td>
@@ -84,6 +88,16 @@ Web Test
 <!-- Page level custom scripts -->
 <script src="/js/demo/datatables-demo.js"></script>
 <script src="{{ asset('js/dataTables.min.js') }}"></script>
+
+<script>
+  $(function() {
+    $('#toggle-two').bootstrapToggle({
+      on: 'Enabled',
+      off: 'Disabled',
+      onstyle: 'primary'
+    });
+  });
+</script>
 
 <script>
     $(document).ready(function() {
