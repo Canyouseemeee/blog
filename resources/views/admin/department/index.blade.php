@@ -37,6 +37,9 @@ Web Test
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
+                <div id="message">
+
+                </div>
                 <h4 class="card-title"> Department 
                     <a href="{{ url('department-create') }}" class="btn btn-primary float-right">Add</a>
                 </h4>
@@ -61,10 +64,11 @@ Web Test
                             <td>{{$row->DmCode}}</td>
                             <td>
                                 <div style="height: 30px; overflow: hidden;">
-                                    {{$row->Dm_Tel}}
+                                    {{$row->DmTel}}
                                 </div>
                             </td>
-                            <td><input type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled"></td>
+                            <td><input type="checkbox" class="toggle-class" data-id="{{$row->Departmentid}}" 
+                            data-toggle="toggle" data-on="Enabled" data-off="Disabled" {{$row->DmStatus==true ? 'checked':''}}></td>
                             <td>
                                 <a href="{{ url('department-edit/'.$row->Departmentid) }}" class="btn btn-success">EDIT</a>
                             </td>
@@ -95,6 +99,21 @@ Web Test
       on: 'Enabled',
       off: 'Disabled',
       onstyle: 'primary'
+    });
+  });
+
+  $('.toggle-class').on('change',function(){
+    var DmStatus=$(this).prop('checked')==true ? 1:0;
+    var Departmentid=$(this).data('id');
+    // alert(Departmentid);
+    $.ajax({
+        type:'GET',
+        dataType:'json',
+        url:'{{route("change_Status")}}',
+        data:{'DmStatus':DmStatus,'Departmentid':Departmentid},
+        success:function(data){
+            $('.message').html('<p class="alert alert-danger">'+data.success+'</p>');
+        }
     });
   });
 </script>

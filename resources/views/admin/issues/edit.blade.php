@@ -113,7 +113,7 @@ Web Test
                                 <option value="{{$row4->Departmentid}}" @if ($row4->Departmentid === $data->Departmentid)
                                     selected
                                     @endif
-                                    >{{$row4->DmCode}}-{{$row4->DmName}}</option>
+                                    >{{$row4->DmCode}} - {{$row4->DmName}}</option>
                                 @endforeach
                             </select>
                         </div>

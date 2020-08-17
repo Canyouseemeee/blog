@@ -17,7 +17,8 @@ class CreateDepartmentTable extends Migration
             $table->bigIncrements('Departmentid');
             $table->string('DmName');
             $table->string('DmCode');
-            $table->string('Dm_Tel');
+            $table->string('DmTel');
+            $table->integer('DmStatus');
             $table->timestamps();
         });
     }

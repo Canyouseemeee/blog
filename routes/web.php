@@ -93,6 +93,8 @@ Route::post('/department-store', 'Admin\DepartmentController@store');
 Route::get('/department-edit/{id}', 'Admin\DepartmentController@edit');
 Route::put('/department-update/{id}', 'Admin\DepartmentController@update');
 Route::delete('/department-delete/{id}', 'Admin\DepartmentController@delete');
+Route::get('/changStatus', 'Admin\DepartmentController@changStatus')->name('change_Status');
+
 
 Route::get('/abouts', 'Admin\AboutusController@index');
 Route::post('/save-aboutus', 'Admin\AboutusController@store');

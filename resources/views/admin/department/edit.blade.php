@@ -42,10 +42,10 @@ Web Test
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label> Department Tel</label>
-                                <input type="text" name="Dm_Tel" class="form-control" value="{{$department->Dm_Tel}}">
-                                @if($errors->has('Dm_Tel'))
+                                <input type="text" name="DmTel" class="form-control" value="{{$department->DmTel}}">
+                                @if($errors->has('DmTel'))
                                 <div class="alert alert-danger">
-                                    <li>{{$errors->first('Dm_Tel')}}</li>
+                                    <li>{{$errors->first('DmTel')}}</li>
                                 </div>
                                 @endif
                             </div>

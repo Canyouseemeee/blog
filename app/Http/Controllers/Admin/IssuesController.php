@@ -93,7 +93,7 @@ class IssuesController extends Controller
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
             ->join('issues_logs', 'issues_logs.Issuesid', '=', 'issues.Issuesid')
-            ->where([['issues.Statusid', 2],['Action','Closed']])
+            ->where([['issues.Statusid', 2], ['Action', 'Closed']])
             ->orderBy('Issuesid', 'DESC')
             ->get();
         $between = null;
@@ -130,7 +130,10 @@ class IssuesController extends Controller
         // $issuestracker = Issuestracker::all();
         $issuespriority = Issuespriority::all();
         $issuesstatus = Issuesstatus::all();
-        $department = Department::all();
+        $department = DB::table('department')
+            ->select('*')
+            ->where('DmStatus', 1)
+            ->get();
         return view('admin.issues.create', compact(
             ['issues'],
             ['issuespriority'],
@@ -204,10 +207,10 @@ class IssuesController extends Controller
         $issuesstatus = Issuesstatus::all();
         $department = Department::all();
         $issueslog = DB::table('issues_logs')
-        ->select('issues_logs.create_at')
-        ->join('issues', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
-        ->where([['Action','Closed'],['issues_logs.Issuesid',$data->Issuesid]])
-        ->get();
+            ->select('issues_logs.create_at')
+            ->join('issues', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
+            ->where([['Action', 'Closed'], ['issues_logs.Issuesid', $data->Issuesid]])
+            ->get();
         return view('admin.issues.show', compact(
             ['issues'],
             ['issueslog'],
@@ -236,7 +239,10 @@ class IssuesController extends Controller
         $tracker = Issuestracker::all();
         $issuespriority = Issuespriority::all();
         $issuesstatus = Issuesstatus::all();
-        $department = Department::all();
+        $department = DB::table('department')
+            ->select('*')
+            ->where('DmStatus', 1)
+            ->get();
         return view('admin.issues.edit', compact(
             ['issues'],
             ['data'],
