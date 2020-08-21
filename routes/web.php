@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -51,9 +52,15 @@ Route::get('/defer', 'Admin\IssuesController@defer');
 Route::post('/issues-filter-news', 'Admin\IssuesController@getReport');
 Route::post('/issues-filter-defers', 'Admin\IssuesController@getReportdefers');
 Route::post('/issues-filter-closed', 'Admin\IssuesController@getReportclosed');
-Route::get('/issues-edit/{id}', 'Admin\IssuesController@edit');
-Route::put('/issues-update/{id}', 'Admin\IssuesController@update');
-Route::get('/issues-show/{id}', 'Admin\IssuesController@show');
+Route::get('/issues-edit/{id}', 'Admin\IssuesController@edit',function(){
+    Artisan::call('storage:link');
+});
+Route::put('/issues-update/{id}', 'Admin\IssuesController@update',function(){
+    Artisan::call('storage:link');
+});
+Route::get('/issues-show/{id}', 'Admin\IssuesController@show',function(){
+    Artisan::call('storage:link');
+});
 Route::get('/dynamic/fetch', 'Admin\IssuesController@fetch')->name('dynamiccontroller.fetch');
 Route::get('/findid', 'Admin\IssuesController@findid');
 Route::get('/findidother', 'Admin\IssuesController@findidother');

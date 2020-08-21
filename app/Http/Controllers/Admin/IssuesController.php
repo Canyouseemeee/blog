@@ -151,7 +151,6 @@ class IssuesController extends Controller
                 'Trackerid' => 'required',
                 'Subject' => 'required',
                 'Description' => 'required',
-                'Image' => 'required|image',
 
             ),
             [
@@ -171,13 +170,13 @@ class IssuesController extends Controller
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
 
-        $issues->closed_at = null;
-
         if ($request->hasFile('Image')) {
             $filename = $request->Image->getClientOriginalName();
             $file = time() . '.' . $filename;
             $issues->Image = $request->Image->storeAs('images', $file, 'public');
             // dd($file);
+        } else{
+            $issues->Image = null;
         }
 
 
@@ -293,21 +292,9 @@ class IssuesController extends Controller
             $filename = $request->Image->getClientOriginalName();
             $file = time() . '.' . $filename;
             $issues->Image = $request->Image->storeAs('images', $file, 'public');
-            // dd($file);
         } else {
             $issues->Image = $request->input('Image2');
         }
-
-        // if ($request->file('Image')) {
-        //     $file = $request->file('Image');
-        //     $extension = $file->getClientOriginalExtension();
-        //     $filename = time() . '.' . $extension;
-        //     $file->move('uploads/issues/' . $filename);
-        //     $issues->Image = $filename;
-        // } else {
-        //     return $request;
-        //     $issues->Image = '';
-        // }
 
         $issues->update();
 

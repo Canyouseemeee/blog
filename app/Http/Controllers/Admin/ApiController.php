@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
+    public function login(){
+        
+    }
+
     public function index()
     {
         $demodata = DB::table('issues_tracker')
