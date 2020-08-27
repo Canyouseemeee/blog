@@ -23,7 +23,8 @@ Route::group(['middleware'=>'auth.jwt'],function(){
     Route::post('/logout','AuthController@logout');
 });
 
-
-// Route::get('/ApiIssues','Admin\ApiController@index');
-// Route::get('/issues-show/{id}', 'Admin\ApiController@show');
+Route::get('/issues-closed','Admin\ApiController@Closed');
+Route::get('/issues-new','Admin\ApiController@New');
+Route::get('/issues-defer','Admin\ApiController@Defer');
+Route::get('/issues-show/{id}', 'Admin\ApiController@show');
 

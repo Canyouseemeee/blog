@@ -13,18 +13,46 @@ use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
-    public function login(){
-        
-    }
-
-    public function index()
+ 
+    public function Closed()
     {
         $demodata = DB::table('issues_tracker')
-            ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+            ->select('Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
+            'ISSName', 'ISPName', 'Users', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at')
             ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
             ->where('issues.Statusid', 2)
+            ->orderBy('Issuesid', 'DESC')
+            ->get();
+        $issues = Issues::all();
+
+        return response()->json($demodata);
+    }
+
+    public function New(){
+        $demodata = DB::table('issues_tracker')
+        ->select('Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
+        'ISSName', 'ISPName', 'Users', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at')
+        ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+        ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
+        ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+        ->where('issues.Statusid', 1)
+        ->orderBy('Issuesid', 'DESC')
+        ->get();
+        $issues = Issues::all();
+
+        return response()->json($demodata);
+    }
+
+    public function Defer(){
+        $demodata = DB::table('issues_tracker')
+            ->select('Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
+            'ISSName', 'ISPName', 'Users', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at')
+            ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+            ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
+            ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+            ->where('issues.Statusid', 3)
             ->orderBy('Issuesid', 'DESC')
             ->get();
         $issues = Issues::all();
