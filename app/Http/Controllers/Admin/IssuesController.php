@@ -13,6 +13,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\Null_;
 
+function DateThai($strDate)
+{
+    $strYear = date("Y", strtotime($strDate));
+    $strMonth = date("n", strtotime($strDate));
+    $strDay = date("j", strtotime($strDate));
+    $strHour = date("H", strtotime($strDate)) + 7;
+    $strMinute = date("i", strtotime($strDate));
+    $strSeconds = date("s", strtotime($strDate));
+    return "$strDay-$strMonth-$strYear $strHour:$strMinute:$strSeconds";
+}
+
 class IssuesController extends Controller
 {
     public function index()
@@ -169,6 +180,8 @@ class IssuesController extends Controller
         $issues->Subject = $request->input('Subject');
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
+        $issues->created_at = DateThai(now());
+        $issues->updated_at = DateThai(now());
 
         if ($request->hasFile('Image')) {
             $filename = $request->Image->getClientOriginalName();
@@ -285,7 +298,7 @@ class IssuesController extends Controller
         $issues->Subject = $request->input('Subject');
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
-
+        $issues->updated_at = DateThai(now());
 
 
         if ($request->hasFile('Image')) {

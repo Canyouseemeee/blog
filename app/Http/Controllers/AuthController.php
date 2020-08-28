@@ -13,6 +13,7 @@ class AuthController extends Controller
 
     public function login(Request $request){
         $input = $request->only('email','password');
+        $email = $request->only('email');
         $jwt_token = null;
         if(!$jwt_token = JWTAuth::attempt($input)){
             return response()->json([
@@ -24,6 +25,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'OK',
             'token' => $jwt_token,
+            'input' => $email
         ]);
     }
 

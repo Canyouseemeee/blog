@@ -17,12 +17,15 @@ class ApiController extends Controller
     public function Closed()
     {
         $demodata = DB::table('issues_tracker')
-            ->select('Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-            'ISSName', 'ISPName', 'Users', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at')
+            ->select('issues.Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
+            'ISSName', 'ISPName', 'issues.Users', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at',
+            'DmName','issues_logs.create_at')
             ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
-            ->where('issues.Statusid', 2)
+            ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
+            ->join('issues_logs', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
+            ->where([['issues.Statusid', 2],['Action','Closed']])
             ->orderBy('Issuesid', 'DESC')
             ->get();
         $issues = Issues::all();
@@ -33,10 +36,12 @@ class ApiController extends Controller
     public function New(){
         $demodata = DB::table('issues_tracker')
         ->select('Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-        'ISSName', 'ISPName', 'Users', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at')
+        'ISSName', 'ISPName', 'Users', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at',
+        'DmName')
         ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
         ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
         ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+        ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
         ->where('issues.Statusid', 1)
         ->orderBy('Issuesid', 'DESC')
         ->get();
@@ -48,10 +53,12 @@ class ApiController extends Controller
     public function Defer(){
         $demodata = DB::table('issues_tracker')
             ->select('Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-            'ISSName', 'ISPName', 'Users', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at')
+            'ISSName', 'ISPName', 'Users', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at',
+            'DmName')
             ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+            ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
             ->where('issues.Statusid', 3)
             ->orderBy('Issuesid', 'DESC')
             ->get();
