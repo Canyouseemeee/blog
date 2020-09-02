@@ -67,6 +67,7 @@ class ApiController extends Controller
         return response()->json($demodata);
     }
 
+
     public function show($Issuesid)
     {
         $data = Issues::find($Issuesid);
