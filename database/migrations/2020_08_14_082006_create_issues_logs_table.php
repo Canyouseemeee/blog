@@ -13,13 +13,13 @@ class CreateIssuesLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('issues_logs', function (Blueprint $table) {
-            $table->bigIncrements('logs_id');
-            $table->Integer('Issuesid');
-            $table->string('Users');
-            $table->string('Action');
-            $table->timestamps();
-        });
+        // Schema::create('issues_logs', function (Blueprint $table) {
+        //     $table->bigIncrements('logs_id');
+        //     $table->Integer('Issuesid');
+        //     $table->string('Users');
+        //     $table->string('Action');
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -29,6 +29,6 @@ class CreateIssuesLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('issues_logs');
+        // Schema::dropIfExists('issues_logs');
     }
 }

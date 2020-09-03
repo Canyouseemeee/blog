@@ -2,11 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\User;
-use JWTAuth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\RegisterAuthRequest;
+use Exception;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+
+function DateThai($strDate)
+{
+    $strYear = date("Y", strtotime($strDate));
+    $strMonth = date("n", strtotime($strDate));
+    $strDay = date("j", strtotime($strDate));
+    $strHour = date("H", strtotime($strDate)) + 7;
+    $strMinute = date("i", strtotime($strDate));
+    $strSeconds = date("s", strtotime($strDate));
+    return "0$strDay-0$strMonth-$strYear $strHour:$strMinute:$strSeconds";
+}
 
 class AuthController extends Controller
 {
@@ -17,17 +31,28 @@ class AuthController extends Controller
         $input = $request->only('username','password');
         $username = $request->only('username');
         $jwt_token = null;
-        if(!$jwt_token = JWTAuth::attempt($input)){
+        $token = openssl_random_pseudo_bytes(20);
+        $token2 = bin2hex($token);
+        if(!$token = Auth::attempt($input)){
             return response()->json([
                 'status' => 'Faild',
                 'message' => 'Login Faild',
             ],401);
         }
+        $expires_at = DateThai(now()->addHour(1));
+        // if(!$token = JWTAuth::attempt($input)){
+        //     return response()->json([
+        //         'status' => 'Faild',
+        //         'message' => 'Login Faild',
+        //     ],401);
+        // }
 
         return response()->json([
             'status' => 'Success',
-            'token' => $jwt_token,
-            'input' => $username
+            'token' => $token2,
+            // 'token' => $jwt_token,
+            'input' => $username,
+            'expires_at' => $expires_at
         ]);
     }
 
@@ -37,12 +62,12 @@ class AuthController extends Controller
         ]);
 
         try{
-            JWTAuth::invalidate($request->token);
+            Auth::invalidate($request->token);
             return response()->json([
                 'status' => 'Success',
                 'message' => 'Logout Success',
             ]);
-        } catch(JWTException $exception){
+        } catch(Exception $exception){
             return response()->json([
                 'status' => 'Error',
                 'message' => 'Logout Error',
@@ -55,7 +80,7 @@ class AuthController extends Controller
             'token' => 'required'
         ]);
 
-        $user = JWTAuth::authenticate($request->token);
+        $user = Auth::authenticate($request->token);
         return response()->json(['user' => $user]);
     }
 

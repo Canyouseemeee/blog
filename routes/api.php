@@ -26,5 +26,6 @@ Route::group(['middleware'=>'auth.jwt'],function(){
 Route::get('/issues-closed','Admin\ApiController@Closed');
 Route::get('/issues-new','Admin\ApiController@New');
 Route::get('/issues-defer','Admin\ApiController@Defer');
-Route::get('/issues-show/{id}', 'Admin\ApiController@show');
+Route::get('/issues-getMacAddress','Admin\ApiController@getMacAddress');
+Route::post('/issues-postmacAddress', 'Admin\ApiController@postMacAddress');
 

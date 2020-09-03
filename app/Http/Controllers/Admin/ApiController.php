@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Department;
 use App\Models\Issues;
-use App\Models\Issuespriority;
-use App\Models\Issuesstatus;
-use App\Models\Issuestracker;
+use App\Models\MacAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -68,20 +65,23 @@ class ApiController extends Controller
     }
 
 
-    public function show($Issuesid)
+    public function postMacAddress(Request $request)
     {
-        $data = Issues::find($Issuesid);
-        $tracker = Issuestracker::find($Issuesid);
-        $issues = Issues::all();
-        $trackname = Issuestracker::all();
-        $issuespriority = Issuespriority::all();
-        $issuesstatus = Issuesstatus::all();
-        $department = Department::all();
-        $issueslog = DB::table('issues_logs')
-            ->select('issues_logs.create_at')
-            ->join('issues', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
-            ->where([['Action', 'Closed'], ['issues_logs.Issuesid', $data->Issuesid]])
-            ->get();
-        return response()->json($data);
+        $_macAddress = $request->input('macAddress');
+
+        // $MacAddress = new MacAddress();
+        // $MacAddress->MacAddress = $_macAddress;
+        // $MacAddress->save();
+
+        return response()->json([
+            'status' => 'Success',
+            'input' => $_macAddress
+        ]);
+    }
+
+    public function getMacAddress(){
+        $dataMacAddress = MacAddress::all();
+
+        return response()->json($dataMacAddress);
     }
 }
