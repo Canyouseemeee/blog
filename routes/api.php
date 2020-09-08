@@ -27,5 +27,9 @@ Route::get('/issues-closed','Admin\ApiController@Closed');
 Route::get('/issues-new','Admin\ApiController@New');
 Route::get('/issues-defer','Admin\ApiController@Defer');
 Route::get('/issues-getMacAddress','Admin\ApiController@getMacAddress');
+Route::post('/issues-postlogin', 'Admin\ApiController@postlogin');
+Route::post('/issues-delete', 'Admin\ApiController@delete');
+
+//
 Route::post('/issues-postmacAddress', 'Admin\ApiController@postMacAddress');
 

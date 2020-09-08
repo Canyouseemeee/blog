@@ -14,12 +14,12 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 function DateThai($strDate)
 {
     $strYear = date("Y", strtotime($strDate));
-    $strMonth = date("n", strtotime($strDate));
-    $strDay = date("j", strtotime($strDate));
+    $strMonth = date("m", strtotime($strDate));
+    $strDay = date("d", strtotime($strDate));
     $strHour = date("H", strtotime($strDate)) + 7;
     $strMinute = date("i", strtotime($strDate));
     $strSeconds = date("s", strtotime($strDate));
-    return "0$strDay-0$strMonth-$strYear $strHour:$strMinute:$strSeconds";
+    return "$strDay-$strMonth-$strYear $strHour:$strMinute:$strSeconds";
 }
 
 class AuthController extends Controller
