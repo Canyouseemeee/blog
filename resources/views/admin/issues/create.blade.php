@@ -81,15 +81,26 @@ Web Test
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label>User</label>
-                            <input name="Users" class="form-control" readonly="readonly" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}">
+                            <label>Createby</label>
+                            <input name="Createby" class="form-control" readonly="readonly" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}">
                         </div>
 
                         <div class="form-group col-md-3">
                             <label>DateIn</label>
                             <input name="Date_In" class="form-control" readonly="readonly" value="{{now()->toDateString()}}" placeholder="{{now()->toDateString()}}">
                         </div>
+
+                        <div class="form-group col-md-3">
+                            <label>Assignment</label>
+                            <select name="Assignment" class="form-control create" require>
+                            <option value="">Select Assignment</option>
+                                @foreach($user as $row5)
+                                <option value="{{$row5->id}}">{{$row5->id}}{{$row5->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label>Subject</label>
                         <input type="text" name="Subject" class="form-control" placeholder="Enter Subject">

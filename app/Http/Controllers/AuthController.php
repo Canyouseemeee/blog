@@ -9,6 +9,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\RegisterAuthRequest;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 function DateThai($strDate)
@@ -27,56 +28,117 @@ class AuthController extends Controller
 
     public $loginAfterSignUp = true;
 
-    public function login(Request $request){
-        $input = $request->only('username','password');
+    public function login(Request $request)
+    {
+        $input = $request->only('username', 'password');
         $username = $request->only('username');
-        $jwt_token = null;
+        $userinfo = DB::table('users')
+            ->select('*')
+            ->where([['username', $username], ['active', 1]])
+            ->get();
+
+        $logintype = 0;
+        foreach ($userinfo as $uinfo) {
+            // echo $uinfo->name;
+            $isuser = 1;
+            $logintype = $uinfo->logintype;
+            $userprofile = array("id" => $uinfo->id, "logintype" => $logintype);
+        }
         $token = openssl_random_pseudo_bytes(20);
         $token2 = bin2hex($token);
-        if(!$token = Auth::attempt($input)){
+        $expires_at = DateThai(now()->addHour(1));
+
+        if($logintype == 1){
+            if(Auth::loginUsingId($uinfo->id, TRUE)){
+                return response()->json([
+                    'status' => 'Success',
+                    'token' => $token2,
+                    // 'token' => $jwt_token,
+                    'logintype' => 'AD',
+                    'input' => $username,
+                    'expires_at' => $expires_at
+                ]);
+            }
+        }else if($logintype == 0){
+            if ($token = Auth::attempt($input)) {
+                return response()->json([
+                    'status' => 'Success',
+                    'token' => $token2,
+                    // 'token' => $jwt_token,
+                    'logintype' => 'DB',
+                    'input' => $username,
+                    'expires_at' => $expires_at
+                ]);
+            }
+        }
+        if (!$token = Auth::attempt($input)) {
             return response()->json([
                 'status' => 'Faild',
                 'message' => 'Login Faild',
-            ],401);
+            ], 401);
+        }
+        
+
+        
+    }
+
+    public function loginad(Request $request)
+    {
+        $input = $request->only('username');
+        $userinfo = DB::table('users')
+            ->select('*')
+            ->where([['username', $input], ['active', 1]])
+            ->get();
+
+        $logintype = 0;
+        foreach ($userinfo as $uinfo) {
+            echo $uinfo->name;
+            $isuser = 1;
+            $logintype = $uinfo->logintype;
+            $userprofile = array("id" => $uinfo->id, "logintype" => $logintype);
+        }
+        $token = openssl_random_pseudo_bytes(20);
+        $token2 = bin2hex($token);
+        if (!Auth::loginUsingId($uinfo->id, TRUE)) {
+            return response()->json([
+                'status' => 'Faild',
+                'message' => 'Login Faild',
+            ], 401);
         }
         $expires_at = DateThai(now()->addHour(1));
-        // if(!$token = JWTAuth::attempt($input)){
-        //     return response()->json([
-        //         'status' => 'Faild',
-        //         'message' => 'Login Faild',
-        //     ],401);
-        // }
 
         return response()->json([
             'status' => 'Success',
             'token' => $token2,
             // 'token' => $jwt_token,
-            'input' => $username,
+            'input' => $input,
             'expires_at' => $expires_at
         ]);
     }
 
-    public function logout(Request $request) {
-        $this->validate($request,[
+    public function logout(Request $request)
+    {
+        $this->validate($request, [
             'token' => 'required'
         ]);
 
-        try{
+        try {
             Auth::invalidate($request->token);
             return response()->json([
                 'status' => 'Success',
                 'message' => 'Logout Success',
             ]);
-        } catch(Exception $exception){
+        } catch (Exception $exception) {
             return response()->json([
                 'status' => 'Error',
                 'message' => 'Logout Error',
-            ],500);
+            ], 500);
         }
     }
 
-    public function getAuthUser(Request $request){
-        $this->validate($request,[
+    public function getAuthUser(Request $request)
+    {
+        $this->validate($request, [
             'token' => 'required'
         ]);
 
@@ -84,9 +146,10 @@ class AuthController extends Controller
         return response()->json(['user' => $user]);
     }
 
-    protected function jsonRespones($data,$code = 200){
-        return response()->json($data,$code,[
-            'Content-Type' => 'application/json;charset=UTF-8','Charset'=>'utf-8'
+    protected function jsonRespones($data, $code = 200)
+    {
+        return response()->json($data, $code, [
+            'Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'
         ], JSON_UNESCAPED_UNICODE);
     }
 }

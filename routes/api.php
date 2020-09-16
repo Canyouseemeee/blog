@@ -18,18 +18,25 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('/login','AuthController@login');
-Route::group(['middleware'=>'auth.jwt'],function(){
-    Route::post('/logout','AuthController@logout');
-});
 
+// Route::group(['middleware'=>'auth.jwt'],function(){
+//     Route::post('/logout','AuthController@logout');
+// });
+
+//login
+Route::post('/login','AuthController@login');
+Route::post('/login-ad','AuthController@loginad');
+
+//Menu
 Route::get('/issues-closed','Admin\ApiController@Closed');
 Route::get('/issues-new','Admin\ApiController@New');
 Route::get('/issues-defer','Admin\ApiController@Defer');
-Route::get('/issues-getMacAddress','Admin\ApiController@getMacAddress');
-Route::post('/issues-postlogin', 'Admin\ApiController@postlogin');
-Route::post('/issues-delete', 'Admin\ApiController@delete');
 
-//
-Route::post('/issues-postmacAddress', 'Admin\ApiController@postMacAddress');
+//service ย่อยต่างๆ
+Route::post('/issues-deviceid','Admin\ApiController@Deviceid'); //รับค่า MacAddress
+Route::post('/issues-postlogin', 'Admin\ApiController@postlogin'); //รับค่า MacAddress IpAddress Token วันหมดอายุ
+Route::post('/issues-delete', 'Admin\ApiController@delete'); //ไม่ได้ใช้
+Route::get('/issues-lastedVersion','Admin\ApiController@lastedVersion'); // เช็คเวอร์ชั้นล่าสุด
+
+
 

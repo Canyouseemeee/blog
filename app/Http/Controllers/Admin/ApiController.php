@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Issues;
 use App\Models\Loginlog;
 use App\Models\MacAddress;
+use App\Models\VersionApp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,6 +19,17 @@ function DateThai($strDate)
     $strMinute = date("i", strtotime($strDate));
     $strSeconds = date("s", strtotime($strDate));
     return "$strYear-$strMonth-$strDay $strHour:$strMinute:$strSeconds";
+}
+
+function DateThai2($strDate)
+{
+    $strYear = date("Y", strtotime($strDate));
+    $strMonth = date("m", strtotime($strDate));
+    $strDay = date("d", strtotime($strDate));
+    $strHour = date("H", strtotime($strDate)) + 7;
+    $strMinute = date("i", strtotime($strDate));
+    $strSeconds = date("s", strtotime($strDate));
+    return "$strYear$strMonth$strDay$strHour$strMinute$strSeconds";
 }
 
 
@@ -80,9 +92,10 @@ class ApiController extends Controller
     public function postlogin(Request $request)
     {
         $_username = $request->input('username');
-        $_macaddress = $request->input('macaddress');
+        $_deviceid = $request->input('deviceid');
         $_ip = $request->input('ip');
         $_token = $request->input('token');
+        $_expired = DateThai2(now()->addMinutes(59));
 
         $data = DB::table('users')
         ->select('id')
@@ -90,11 +103,11 @@ class ApiController extends Controller
         ->get();
 
         $Loginlog = new Loginlog();
-        $Loginlog->MacAddress = $_macaddress;
+        $Loginlog->Deviceid = $_deviceid;
         $Loginlog->Userid = $data[0]->id;
         $Loginlog->Token = $_token;
         $Loginlog->Ip = $_ip;
-        $Loginlog->expired = DateThai(now()->addMinutes(5));
+        $Loginlog->expired = DateThai(now()->addMinutes(59));
         $Loginlog->created_at = DateThai(now());
         $Loginlog->updated_at = DateThai(now());
         $Loginlog->save();
@@ -102,9 +115,10 @@ class ApiController extends Controller
         return response()->json([
             'status' => 'Success',
             'data' => $data,
-            'macaddress' => $_macaddress,
+            'deviceid' => $_deviceid,
             'ip' => $_ip,
-            'token' => $_token
+            'token' => $_token,
+            'expired' => $_expired
         ]);
     }
 
@@ -123,24 +137,27 @@ class ApiController extends Controller
         ]);
     }
 
+    public function Deviceid(Request $request){
+        $_deviceid = $request->input('deviceid');
 
-    public function postMacAddress(Request $request)
-    {
-        $_macAddress = $request->input('macAddress');
-
-        // $MacAddress = new MacAddress();
-        // $MacAddress->MacAddress = $_macAddress;
-        // $MacAddress->save();
+        $data = DB::table('deviceinfo')
+        ->select('deviceid')
+        ->where('deviceid',$_deviceid)
+        ->get();
 
         return response()->json([
             'status' => 'Success',
-            'input' => $_macAddress
-        ]);
+            'deviceid' => $data
+            ]);
     }
 
-    public function getMacAddress(){
-        $dataMacAddress = MacAddress::all();
+    public function lastedVersion(){
+        $VersionApp = DB::table('version_app')
+        ->select('AppVersion')
+        ->max('AppVersion');
 
-        return response()->json($dataMacAddress);
+        return response()->json([
+            'version' => $VersionApp
+        ]);
     }
 }

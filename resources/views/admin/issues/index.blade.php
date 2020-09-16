@@ -80,7 +80,7 @@ function DateThai($strDate)
                             <th class="w-10p">Tracker</th>
                             <th class="w-10p">Status</th>
                             <th class="w-10p">Priority</th>
-                            <th class="w-10p">Users</th>
+                            <th class="w-10p">Createby</th>
                             <th class="w-10p">Subject</th>
                             <th class="w-10p">Updated</th>
                             <th class="w-10p">Views</th>
@@ -93,7 +93,7 @@ function DateThai($strDate)
                                 <td>{{$row->TrackName}}</td>
                                 <td>{{$row->ISSName}}</td>
                                 <td>{{$row->ISPName}}</td>
-                                <td>{{$row->Users}}</td>
+                                <td>{{$row->Createby}}</td>
                                 <td>
                                     <div class="w-11p" style="height: 30px; overflow: hidden;">
                                         <a href="{{ url('issues-show/'.$row->Issuesid) }}">{{$row->Subject}}</a>
@@ -113,7 +113,7 @@ function DateThai($strDate)
                                 <td style="text-align:center">{{$betweens->TrackName}}</td>
                                 <td style="text-align:center">{{$betweens->ISSName}}</td>
                                 <td style="text-align:center">{{$betweens->ISPName}}</td>
-                                <td style="text-align:center">{{$betweens->Users}}</td>
+                                <td style="text-align:center">{{$betweens->Createby}}</td>
                                 <td>
                                     <div class="w-11p" style="height: 30px; overflow: hidden;">
                                         <a href="{{ url('issues-show/'.$betweens->Issuesid) }}">{{$betweens->Subject}}</a>

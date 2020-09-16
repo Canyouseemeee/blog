@@ -15,7 +15,7 @@ class CreateLoginlogTable extends Migration
     {
         Schema::create('loginlog', function (Blueprint $table) {
             $table->bigIncrements('Loginid');
-            $table->String('MacAddress');
+            $table->String('Deviceid');
             $table->integer('Userid');
             $table->String('Token');
             $table->String('Ip');

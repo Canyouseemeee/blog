@@ -9,6 +9,7 @@ use App\Models\IssuesLogs;
 use App\Models\Issuespriority;
 use App\Models\Issuesstatus;
 use App\Models\Issuestracker;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\Null_;
@@ -29,7 +30,7 @@ class IssuesController extends Controller
     public function index()
     {
         $issues = DB::table('issues_tracker')
-            ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+            ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.updated_at')
             ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
@@ -46,7 +47,7 @@ class IssuesController extends Controller
         $todate = $request->input('todate');
         if ($request->isMethod('post')) {
             $between = DB::table('issues_tracker')
-                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.updated_at')
                 ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
                 ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
                 ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
@@ -64,7 +65,7 @@ class IssuesController extends Controller
     public function defer()
     {
         $issues = DB::table('issues_tracker')
-            ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+            ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.updated_at')
             ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
@@ -81,7 +82,7 @@ class IssuesController extends Controller
         $todate = $request->input('todate');
         if ($request->isMethod('post')) {
             $between = DB::table('issues_tracker')
-                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.updated_at')
+                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.updated_at')
                 ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
                 ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
                 ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
@@ -99,7 +100,7 @@ class IssuesController extends Controller
     public function closed()
     {
         $issues = DB::table('issues_tracker')
-            ->select('issues.Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'issues.Users', 'Subject', 'issues_logs.create_at')
+            ->select('issues.Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'issues.Createby', 'Subject', 'issues_logs.create_at')
             ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
@@ -117,7 +118,7 @@ class IssuesController extends Controller
         $todate = $request->input('todate');
         if ($request->isMethod('post')) {
             $between = DB::table('issues_tracker')
-                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Users', 'Subject', 'issues.closed_at')
+                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.closed_at')
                 ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
                 ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
                 ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
@@ -145,12 +146,14 @@ class IssuesController extends Controller
             ->select('*')
             ->where('DmStatus', 1)
             ->get();
+        $user = User::all();
         return view('admin.issues.create', compact(
             ['issues'],
             ['issuespriority'],
             ['issuesstatus'],
             ['department'],
-            ['tracker']
+            ['tracker'],
+            ['user']
         ));
     }
 
@@ -176,7 +179,8 @@ class IssuesController extends Controller
         $issues->Priorityid = $request->input('Priorityid');
         $issues->Statusid = $request->input('Statusid');
         $issues->Departmentid = $request->input('Departmentid');
-        $issues->Users = $request->input('Users');
+        $issues->Createby = $request->input('Createby');
+        $issues->Assignment = $request->input('Assignment');
         $issues->Subject = $request->input('Subject');
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
@@ -255,6 +259,7 @@ class IssuesController extends Controller
             ->select('*')
             ->where('DmStatus', 1)
             ->get();
+        $user = User::all();
         return view('admin.issues.edit', compact(
             ['issues'],
             ['data'],
@@ -263,7 +268,8 @@ class IssuesController extends Controller
             ['tracker'],
             ['issuespriority'],
             ['issuesstatus'],
-            ['department']
+            ['department'],
+            ['user']
         ));
     }
 
@@ -294,7 +300,8 @@ class IssuesController extends Controller
             $issues->Statusid = $request->input('Statusid');
         }
         $issues->Departmentid = $request->input('Departmentid');
-        $issues->Users = $request->input('Users');
+        $issues->Createby = $request->input('Createby');
+        $issues->Assignment = $request->input('Assignment');
         $issues->Subject = $request->input('Subject');
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
