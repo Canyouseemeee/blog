@@ -105,9 +105,36 @@ function DateThai2($strDate)
                                     @endforeach
                                 </div>
 
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-2">
                                     <b> <label>Createby : </label></b>
                                     <label>{{$data->Createby}}</label>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <b> <label>Assignment : </label></b>
+                                    @foreach($user as $row5)
+                                    @if ($row5->id === $data->Assignment)
+                                    <label>{{$row5->name}}</label>
+                                    @endif
+                                    @endforeach
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <b> <label>Updatedby : </label></b>
+                                    @foreach($issueslogupdate as $logupdate)
+                                    <label>{{$logupdate->Createby}}</label>
+                                    @endforeach
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <b> <label>Closedby : </label></b>
+                                    @if($data->Statusid === 1 || $data->Statusid === 3)
+                                    <label>ยังไม่ปิดงาน</label>
+                                    @else
+                                    @foreach($issueslogclosed as $logclosed)
+                                    <label>{{$logclosed->Createby}}</label>
+                                    @endforeach
+                                    @endif
                                 </div>
                             </div>
                             <div class="form-row ">
@@ -118,7 +145,7 @@ function DateThai2($strDate)
 
                                 <div class="form-group col-md-4">
                                     <b> <label>Updated : </label></b>
-                                    <label>{{DateThai($data->updated_at)}}</label>
+                                    <label>{{DateThai2($data->updated_at)}}</label>
                                 </div>
 
                                 <div class="form-group col-md-4">

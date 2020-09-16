@@ -9,6 +9,6 @@ class IssuesLogs extends Model
     protected $table ='issues_logs';
     protected $primaryKey = 'logs_id';
     protected $fillable = [
-        'Issuesid','Users','Action','created_at','updated_at'
+        'Issuesid','Createby','Action','created_at','updated_at'
     ];
 }

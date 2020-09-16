@@ -22,7 +22,7 @@ function DateThai($strDate)
 ?>
 
 <div class="card-body">
-    <form action="{{ url('issues-filter-news') }}" method="post">
+    <form action="{{ url('issues-filter-closed') }}" method="post">
         {{ csrf_field() }}
         <div class="container">
             <div class="row justify-content-center">

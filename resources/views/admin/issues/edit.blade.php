@@ -135,7 +135,7 @@ Web Test
                                 <option value="{{$row5->id}}" @if ($row5->id === $data->Assignment)
                                     selected
                                     @endif
-                                    >{{$row5->name}} {{$row5->id}}{{$data->Assignment}}</option>
+                                    >{{$row5->name}}</option>
                                 @endforeach
                             </select>
                         </div>

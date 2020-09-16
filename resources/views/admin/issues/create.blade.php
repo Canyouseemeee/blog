@@ -95,7 +95,7 @@ Web Test
                             <select name="Assignment" class="form-control create" require>
                             <option value="">Select Assignment</option>
                                 @foreach($user as $row5)
-                                <option value="{{$row5->id}}">{{$row5->id}}{{$row5->name}}</option>
+                                <option value="{{$row5->id}}">{{$row5->name}}</option>
                                 @endforeach
                             </select>
                         </div>

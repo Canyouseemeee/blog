@@ -105,8 +105,8 @@ class IssuesController extends Controller
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
             ->join('issues_logs', 'issues_logs.Issuesid', '=', 'issues.Issuesid')
-            ->where([['issues.Statusid', 2], ['Action', 'Closed']])
-            ->orderBy('Issuesid', 'DESC')
+            ->where([['issues.Statusid', 2],['issues_logs.Action','Closed']])
+            ->orderBy('issues.Issuesid', 'DESC')
             ->get();
         $between = null;
         return view('admin.issues.closed', compact(['issues'], ['between']));
@@ -118,11 +118,12 @@ class IssuesController extends Controller
         $todate = $request->input('todate');
         if ($request->isMethod('post')) {
             $between = DB::table('issues_tracker')
-                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.closed_at')
-                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
-                ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
-                ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
-                ->where('issues.Statusid', 2)
+            ->select('issues.Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'issues.Createby', 'Subject', 'issues_logs.create_at')
+            ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+            ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
+            ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+            ->join('issues_logs', 'issues_logs.Issuesid', '=', 'issues.Issuesid')
+            ->where([['issues.Statusid', 2],['issues_logs.Action','Closed']])
                 ->whereBetween('issues.Date_In', [$fromdate, $todate])
                 ->orderBy('Issuesid', 'DESC')
                 ->get();
@@ -222,20 +223,37 @@ class IssuesController extends Controller
         $issuespriority = Issuespriority::all();
         $issuesstatus = Issuesstatus::all();
         $department = Department::all();
+        $user = User::all();
         $issueslog = DB::table('issues_logs')
             ->select('issues_logs.create_at')
             ->join('issues', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
             ->where([['Action', 'Closed'], ['issues_logs.Issuesid', $data->Issuesid]])
             ->get();
+        $issueslogclosed = DB::table('issues_logs')
+            ->select('issues_logs.Createby')
+            ->join('issues', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
+            ->where([['Action', 'Closed'], ['issues_logs.Issuesid', $data->Issuesid]])
+            ->get();
+        $issueslogupdate = DB::table('issues_logs')
+            ->select('issues_logs.Createby')
+            ->join('issues', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
+            ->where([['Action', 'Updated'], ['issues_logs.Issuesid', $data->Issuesid]])
+            ->orderBy('logs_id','DESC')
+            ->limit(1)
+            ->get();
+    
         return view('admin.issues.show', compact(
             ['issues'],
             ['issueslog'],
+            ['issueslogupdate'],
+            ['issueslogclosed'],
             ['data'],
             ['trackname'],
             ['issuespriority'],
             ['issuesstatus'],
             ['department'],
-            ['tracker']
+            ['tracker'],
+            ['user']
         ));
     }
 

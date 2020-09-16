@@ -20,7 +20,7 @@ class CreateIssuesTable extends Migration
             $table->Integer('Statusid');
             $table->Integer('Departmentid');
             $table->string('Createby');
-            $table->string('Assignment');
+            $table->string('Userid');
             $table->string('Subject');
             $table->longText('Description');
             $table->date('Date_In');
