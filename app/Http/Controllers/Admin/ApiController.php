@@ -40,15 +40,16 @@ class ApiController extends Controller
     {
         $demodata = DB::table('issues_tracker')
             ->select('issues.Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-            'ISSName', 'ISPName', 'issues.Users', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at',
-            'DmName','issues_logs.create_at')
+            'issues_status.ISSName', 'issues_priority.ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at',
+            'department.DmName','issues.ClosedBy','issues_logs.create_at')
             ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
             ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
             ->join('issues_logs', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
-            ->where([['issues.Statusid', 2],['Action','Closed']])
-            ->orderBy('Issuesid', 'DESC')
+            ->join('users', 'issues.Assignment', '=', 'users.id')
+            ->where([['issues.Statusid', 2],['issues_logs.Action','Closed']])
+            ->orderBy('issues.Issuesid', 'DESC')
             ->get();
         $issues = Issues::all();
 
@@ -58,14 +59,15 @@ class ApiController extends Controller
     public function New(){
         $demodata = DB::table('issues_tracker')
         ->select('Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-        'ISSName', 'ISPName', 'Users', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at',
+        'ISSName', 'ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at',
         'DmName')
         ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
         ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
         ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
         ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
+        ->join('users', 'issues.Assignment', '=', 'users.id')
         ->where('issues.Statusid', 1)
-        ->orderBy('Issuesid', 'DESC')
+        ->orderBy('issues.Issuesid', 'DESC')
         ->get();
         $issues = Issues::all();
 
@@ -74,19 +76,38 @@ class ApiController extends Controller
 
     public function Defer(){
         $demodata = DB::table('issues_tracker')
-            ->select('Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-            'ISSName', 'ISPName', 'Users', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at',
+            ->select('issues.Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
+            'ISSName', 'ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at',
             'DmName')
             ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
             ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
-            ->where('issues.Statusid', 3)
-            ->orderBy('Issuesid', 'DESC')
+            ->join('issues_logs', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
+            ->join('users', 'issues.Assignment', '=', 'users.id')
+            ->where([['issues.Statusid', 3],['issues_logs.Action','Updated']])
+            ->groupBy('issues.Issuesid')
+            ->orderBy('issues.Issuesid', 'DESC')
             ->get();
         $issues = Issues::all();
 
         return response()->json($demodata);
+    }
+
+    public function updatestatus(Request $request){
+        $_issuesid = $request->input('issuesid');
+        $_user = $request->input('user');
+
+        $issues = Issues::find($_issuesid);
+        $issues->Statusid = 2;
+        $issues->Closedby = $_user;
+        $issues->Updatedby = $_user;
+        $issues->updated_at = DateThai(now());
+        $issues->update();
+
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
 
     public function postlogin(Request $request)
@@ -153,11 +174,15 @@ class ApiController extends Controller
 
     public function lastedVersion(){
         $VersionApp = DB::table('version_app')
-        ->select('AppVersion')
+        ->select('AppVersion',)
         ->max('AppVersion');
+        $url = DB::table('version_app')
+        ->select('url',)
+        ->max('url');
 
         return response()->json([
-            'version' => $VersionApp
+            'version' => $VersionApp,
+            'url' => $url
         ]);
     }
 }

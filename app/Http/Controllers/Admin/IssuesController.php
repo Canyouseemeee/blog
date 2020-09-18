@@ -166,12 +166,15 @@ class IssuesController extends Controller
                 'Trackerid' => 'required',
                 'Subject' => 'required',
                 'Description' => 'required',
+                'Assignment' => 'required',
 
             ),
             [
                 'Trackerid.required' => 'You have select TrackName and SubTrackName and Name',
                 'Subject.required' => 'You have enter Subject',
                 'Description.required' => 'You have enter Description',
+                'Assignment.required' => 'You have select Assignment',
+
             ]
         );
 
@@ -181,6 +184,7 @@ class IssuesController extends Controller
         $issues->Statusid = $request->input('Statusid');
         $issues->Departmentid = $request->input('Departmentid');
         $issues->Createby = $request->input('Createby');
+        $issues->Updatedby = $issues->Createby;
         $issues->Assignment = $request->input('Assignment');
         $issues->Subject = $request->input('Subject');
         $issues->Description = $request->input('Description');
@@ -316,9 +320,13 @@ class IssuesController extends Controller
             $issues->Statusid = $issues->Statusid;
         } else {
             $issues->Statusid = $request->input('Statusid');
+            if($issues->Statusid == 2){
+                $issues->Closedby = $request->input('Updatedby');
+            }
         }
         $issues->Departmentid = $request->input('Departmentid');
-        $issues->Createby = $request->input('Createby');
+        // $issues->Createby = $request->input('Updatedby');
+        $issues->Updatedby = $request->input('Updatedby');
         $issues->Assignment = $request->input('Assignment');
         $issues->Subject = $request->input('Subject');
         $issues->Description = $request->input('Description');

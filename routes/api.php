@@ -32,6 +32,8 @@ Route::get('/issues-closed','Admin\ApiController@Closed');
 Route::get('/issues-new','Admin\ApiController@New');
 Route::get('/issues-defer','Admin\ApiController@Defer');
 
+Route::post('/issues-updatestatus','Admin\ApiController@updatestatus');
+
 //service ย่อยต่างๆ
 Route::post('/issues-deviceid','Admin\ApiController@Deviceid'); //รับค่า MacAddress
 Route::post('/issues-postlogin', 'Admin\ApiController@postlogin'); //รับค่า MacAddress IpAddress Token วันหมดอายุ

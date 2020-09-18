@@ -72,7 +72,7 @@
                     @else
                         <a href="{{ route('login') }}">Login</a>
 
-                        <a href="{{url('/apk/1.0.1.apk')}}">Dowload App</a>
+                        <a href="{{url('/apk/1.0.3.apk')}}">Dowload App</a>
                     @endauth
                 </div>
             @endif

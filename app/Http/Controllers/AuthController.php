@@ -42,6 +42,7 @@ class AuthController extends Controller
             // echo $uinfo->name;
             $isuser = 1;
             $logintype = $uinfo->logintype;
+            $name = $uinfo->name;
             $userprofile = array("id" => $uinfo->id, "logintype" => $logintype);
         }
         $token = openssl_random_pseudo_bytes(20);
@@ -56,6 +57,7 @@ class AuthController extends Controller
                     // 'token' => $jwt_token,
                     'logintype' => 'AD',
                     'input' => $username,
+                    'name' => $name,
                     'expires_at' => $expires_at
                 ]);
             }

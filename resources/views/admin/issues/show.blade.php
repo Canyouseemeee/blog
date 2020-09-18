@@ -105,7 +105,7 @@ function DateThai2($strDate)
                                     @endforeach
                                 </div>
 
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <b> <label>Createby : </label></b>
                                     <label>{{$data->Createby}}</label>
                                 </div>
@@ -121,19 +121,15 @@ function DateThai2($strDate)
 
                                 <div class="form-group col-md-3">
                                     <b> <label>Updatedby : </label></b>
-                                    @foreach($issueslogupdate as $logupdate)
-                                    <label>{{$logupdate->Createby}}</label>
-                                    @endforeach
+                                    <label>{{$data->Updatedby}}</label>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <b> <label>Closedby : </label></b>
-                                    @if($data->Statusid === 1 || $data->Statusid === 3)
+                                    @if($data->Statusid === 1 || $data->Statusid === 3 || $data->Closedby === null)
                                     <label>ยังไม่ปิดงาน</label>
                                     @else
-                                    @foreach($issueslogclosed as $logclosed)
-                                    <label>{{$logclosed->Createby}}</label>
-                                    @endforeach
+                                    <label>{{$data->Closedby}}</label>
                                     @endif
                                 </div>
                             </div>

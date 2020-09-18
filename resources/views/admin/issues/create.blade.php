@@ -86,7 +86,7 @@ Web Test
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label>DateIn</label>
+                            <label>Date</label>
                             <input name="Date_In" class="form-control" readonly="readonly" value="{{now()->toDateString()}}" placeholder="{{now()->toDateString()}}">
                         </div>
 

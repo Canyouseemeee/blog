@@ -46,7 +46,7 @@
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url('/apk/app-1.0.1.apk')}}">Dowload App</a>
+                            <a class="nav-link" href="{{url('/apk/app-1.0.3.apk')}}">Dowload App</a>
                         </li>
                         @else
                         <li class="nav-item dropdown">

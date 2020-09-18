@@ -119,8 +119,8 @@ Web Test
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label>Createby</label>
-                            <input name="Createby" class="form-control" readonly="readonly" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}">
+                            <label>Updatedby</label>
+                            <input name="Updatedby" class="form-control" readonly="readonly" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}">
                         </div>
 
                         <div class="form-group col-md-3">
