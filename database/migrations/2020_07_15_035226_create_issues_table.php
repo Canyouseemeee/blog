@@ -24,6 +24,8 @@ class CreateIssuesTable extends Migration
             $table->string('Closedby');
             $table->string('Assignment');
             $table->string('Subject');
+            $table->string('Tel');
+            $table->string('Comname');
             $table->longText('Description');
             $table->date('Date_In');
             $table->mediumText('Image')->nullable();

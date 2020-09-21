@@ -12,7 +12,7 @@ function DateThai($strDate)
     $strYear = date("Y", strtotime($strDate)) + 543;
     $strMonth = date("n", strtotime($strDate));
     $strDay = date("j", strtotime($strDate));
-    $strHour = date("H", strtotime($strDate)) + 7;
+    $strHour = date("H", strtotime($strDate));
     $strMinute = date("i", strtotime($strDate));
     $strSeconds = date("s", strtotime($strDate));
     $strMonthCut = array("", "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค.");
@@ -106,8 +106,13 @@ function DateThai2($strDate)
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <b> <label>Createby : </label></b>
-                                    <label>{{$data->Createby}}</label>
+                                    <b> <label>Tel : </label></b>
+                                    <label>{{$data->Tel}}</label>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <b> <label>Comname : </label></b>
+                                    <label>{{$data->Comname}}</label>
                                 </div>
 
                                 <div class="form-group col-md-3">
@@ -118,8 +123,26 @@ function DateThai2($strDate)
                                     @endif
                                     @endforeach
                                 </div>
+                            </div>
 
-                                <div class="form-group col-md-3">
+                            <b><label>Subject : </label></b>
+                            <div class="form-group col-md-6">
+                                <label class="w-11p">{{$data->Subject}}</label>
+                            </div>
+
+
+                            <b><label>Description : </label></b>
+                            <div class="form-group col-md-6">
+                                <label class="w-11p">{{$data->Description}}</label>
+                            </div>
+
+                            <div class="form-row ">
+                                <div class="form-group col-md-4">
+                                    <b> <label>Createby : </label></b>
+                                    <label>{{$data->Createby}}</label>
+                                </div>
+
+                                <div class="form-group col-md-4">
                                     <b> <label>Updatedby : </label></b>
                                     <label>{{$data->Updatedby}}</label>
                                 </div>
@@ -132,8 +155,7 @@ function DateThai2($strDate)
                                     <label>{{$data->Closedby}}</label>
                                     @endif
                                 </div>
-                            </div>
-                            <div class="form-row ">
+
                                 <div class="form-group col-md-4">
                                     <b> <label>Created : </label></b>
                                     <label>{{DateThai($data->created_at)}}</label>
@@ -157,19 +179,9 @@ function DateThai2($strDate)
                                 </div>
                             </div>
 
-                            <b><label>Subject : </label></b>
-                            <div class="form-group col-md-6">
-                                <label class="w-11p">{{$data->Subject}}</label>
-                            </div>
-
-                            <b><label>Description : </label></b>
-                            <div class="form-group col-md-6">
-                                <label class="w-11p">{{$data->Description}}</label>
-                            </div>
-
                             <div class="form-group">
                                 <b><label>Image : </label></b>
-                                <img src="{{ asset('/storage/'.$data->Image) }}" alt="Image" width="500" />
+                                <img src="{{ url('storage/'.$data->Image) }}" alt="Image" width="500" />
                             </div>
 
                         </div>

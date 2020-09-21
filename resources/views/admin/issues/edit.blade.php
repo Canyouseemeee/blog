@@ -139,7 +139,18 @@ Web Test
                                 @endforeach
                             </select>
                         </div>
+
+                        <div class="form-group col-md-3">
+                            <label>Tel</label>
+                            <input name="Tel" class="form-control" value="{{$data->Tel}}" placeholder="{{$data->Tel}}">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label>Comname</label>
+                            <input name="Comname" class="form-control" value="{{$data->Comname}}" placeholder="{{$data->Comname}}">
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label>Subject</label>
                         <input type="text" name="Subject" class="form-control" value="{{$data->Subject}}">

@@ -99,6 +99,16 @@ Web Test
                                 @endforeach
                             </select>
                         </div>
+
+                        <div class="form-group col-md-3">
+                            <label>Tel</label>
+                            <input name="Tel" class="form-control" placeholder="เบอร์ติดต่อกลับ">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label>Comname</label>
+                            <input name="Comname" class="form-control" placeholder="ไม่จำเป็นต้องใส่ก็ได้">
+                        </div>
                     </div>
 
                     <div class="form-group">

@@ -29,7 +29,12 @@ function DateThai2($strDate)
     $strHour = date("H", strtotime($strDate)) + 7;
     $strMinute = date("i", strtotime($strDate));
     $strSeconds = date("s", strtotime($strDate));
-    return "$strYear$strMonth$strDay$strHour$strMinute$strSeconds";
+    if($strHour < 10 && $strHour >= 0){
+        return "$strYear$strMonth$strDay 0$strHour$strMinute$strSeconds";
+    }else{
+        return "$strYear$strMonth$strDay$strHour$strMinute$strSeconds";
+    }
+    
 }
 
 
@@ -40,7 +45,7 @@ class ApiController extends Controller
     {
         $demodata = DB::table('issues_tracker')
             ->select('issues.Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-            'issues_status.ISSName', 'issues_priority.ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at',
+            'issues_status.ISSName', 'issues_priority.ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject', 'issues.Tel', 'issues.Comname','issues.Description','issues.created_at','issues.updated_at',
             'department.DmName','issues.ClosedBy','issues_logs.create_at')
             ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
@@ -59,7 +64,7 @@ class ApiController extends Controller
     public function New(){
         $demodata = DB::table('issues_tracker')
         ->select('Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-        'ISSName', 'ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at',
+        'ISSName', 'ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject', 'issues.Tel', 'issues.Comname','issues.Description','issues.created_at','issues.updated_at',
         'DmName')
         ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
         ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
@@ -77,7 +82,7 @@ class ApiController extends Controller
     public function Defer(){
         $demodata = DB::table('issues_tracker')
             ->select('issues.Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-            'ISSName', 'ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject','issues.Description','issues.created_at','issues.updated_at',
+            'ISSName', 'ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject', 'issues.Tel', 'issues.Comname','issues.Description','issues.created_at','issues.updated_at',
             'DmName')
             ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
@@ -116,7 +121,7 @@ class ApiController extends Controller
         $_deviceid = $request->input('deviceid');
         $_ip = $request->input('ip');
         $_token = $request->input('token');
-        $_expired = DateThai2(now()->addMinutes(59));
+        $_expired = DateThai2(now()->addHours(8));
 
         $data = DB::table('users')
         ->select('id')
@@ -128,7 +133,7 @@ class ApiController extends Controller
         $Loginlog->Userid = $data[0]->id;
         $Loginlog->Token = $_token;
         $Loginlog->Ip = $_ip;
-        $Loginlog->expired = DateThai(now()->addMinutes(59));
+        $Loginlog->expired = DateThai(now()->addHours(8));
         $Loginlog->created_at = DateThai(now());
         $Loginlog->updated_at = DateThai(now());
         $Loginlog->save();

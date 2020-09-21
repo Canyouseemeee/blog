@@ -11,7 +11,7 @@
                 <div class="card-header">
                     <h4 class="card-title">Registered Roles</h4>
                     @if (session('status'))
-                        <div class="alert alert-success" role="alert">
+                        <div class="alert alert-danger" role="alert">
                             {{ session('status') }}
                         </div>
                     @endif

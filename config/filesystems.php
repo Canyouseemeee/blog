@@ -78,8 +78,11 @@ return [
     |
     */
 
-    'links' => [
-        public_path('storage') => storage_path('app/public'),
+    'public' => [
+        'driver' => 'local',
+        'root' => 'storage/',
+        'url' => env('APP_URL').'/storage',
+        'visibility' => 'public',
     ],
 
 ];
