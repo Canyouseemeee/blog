@@ -167,6 +167,7 @@ class IssuesController extends Controller
                 'Subject' => 'required',
                 'Description' => 'required',
                 'Assignment' => 'required',
+                'Tel' => 'required',
 
             ),
             [
@@ -174,6 +175,8 @@ class IssuesController extends Controller
                 'Subject.required' => 'You have enter Subject',
                 'Description.required' => 'You have enter Description',
                 'Assignment.required' => 'You have select Assignment',
+                'Tel.required' => 'You have enter Tel',
+
 
             ]
         );
@@ -187,6 +190,8 @@ class IssuesController extends Controller
         $issues->Updatedby = $issues->Createby;
         $issues->Assignment = $request->input('Assignment');
         $issues->Subject = $request->input('Subject');
+        $issues->Tel = $request->input('Tel');
+        $issues->Comname = $request->input('Comname');
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
         $issues->created_at = DateThai(now());
@@ -303,6 +308,8 @@ class IssuesController extends Controller
                 'Trackerid' => 'required',
                 'Subject' => 'required',
                 'Description' => 'required',
+                'Assignment' => 'required',
+                'Tel' => 'required',
                 // 'Image' => 'required|image',
 
             ),
@@ -310,6 +317,8 @@ class IssuesController extends Controller
                 'Trackerid.required' => 'You have select TrackName and SubTrackName and Name',
                 'Subject.required' => 'You have enter Subject',
                 'Description.required' => 'You have enter Description',
+                'Tel.required' => 'You have enter Tel',
+                'Assignment.required' => 'You have select Assignment',
             ]
         );
 
@@ -325,10 +334,11 @@ class IssuesController extends Controller
             }
         }
         $issues->Departmentid = $request->input('Departmentid');
-        // $issues->Createby = $request->input('Updatedby');
         $issues->Updatedby = $request->input('Updatedby');
         $issues->Assignment = $request->input('Assignment');
         $issues->Subject = $request->input('Subject');
+        $issues->Tel = $request->input('Tel');
+        $issues->Comname = $request->input('Comname');
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
         $issues->updated_at = DateThai(now());
