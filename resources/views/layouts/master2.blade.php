@@ -52,19 +52,6 @@
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
-      <li class="{{ 'role-register' == request()->path() ? 'active' : '' }} nav-item ">
-        <a class="nav-link" href="/role-register">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Role_User</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <!-- <div class="sidebar-heading">
-        Interface
-      </div> -->
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
@@ -82,6 +69,26 @@
         </div>
       </li>
 
+      <li class="{{ 'history' == request()->path() ? 'active' : '' }} nav-item ">
+        <a class="nav-link" href="/history">
+          <i class="fas fa-fw fa-cog"></i>
+          <span>History</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <!-- <div class="sidebar-heading">
+        Interface
+      </div> -->
+
+      <li class="{{ 'role-register' == request()->path() ? 'active' : '' }} nav-item ">
+        <a class="nav-link" href="/role-register">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>UserManagement</span></a>
+      </li>
+
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
@@ -97,12 +104,6 @@
             <a class="collapse-item" href="/department">Department</a>
           </div>
         </div>
-      </li>
-
-      <li class="{{ 'history' == request()->path() ? 'active' : '' }} nav-item ">
-        <a class="nav-link" href="/history">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>History</span></a>
       </li>
 
       <!-- Divider -->

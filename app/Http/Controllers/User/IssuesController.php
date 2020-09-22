@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Department;
@@ -38,7 +38,7 @@ class IssuesController extends Controller
             ->orderBy('Issuesid', 'DESC')
             ->get();
         $between = null;
-        return view('admin.issues.index', compact(['issues'], ['between']));
+        return view('user.issues.index', compact(['issues'], ['between']));
     }
 
     public function getReport(Request $request)
@@ -59,7 +59,7 @@ class IssuesController extends Controller
             $between = null;
         }
         $issues = null;
-        return view('admin.issues.index', compact(['issues'], ['between']));
+        return view('user.issues.index', compact(['issues'], ['between']));
     }
 
     public function defer()
@@ -73,7 +73,7 @@ class IssuesController extends Controller
             ->orderBy('Issuesid', 'DESC')
             ->get();
         $between = null;
-        return view('admin.issues.defer', compact(['issues'], ['between']));
+        return view('user.issues.defer', compact(['issues'], ['between']));
     }
 
     public function getReportdefers(Request $request)
@@ -94,7 +94,7 @@ class IssuesController extends Controller
             $between = null;
         }
         $issues = null;
-        return view('admin.issues.defer', compact(['issues'], ['between']));
+        return view('user.issues.defer', compact(['issues'], ['between']));
     }
 
     public function closed()
@@ -109,7 +109,7 @@ class IssuesController extends Controller
             ->orderBy('issues.Issuesid', 'DESC')
             ->get();
         $between = null;
-        return view('admin.issues.closed', compact(['issues'], ['between']));
+        return view('user.issues.closed', compact(['issues'], ['between']));
     }
 
     public function getReportclosed(Request $request)
@@ -131,7 +131,7 @@ class IssuesController extends Controller
             $between = null;
         }
         $issues = null;
-        return view('admin.issues.closed', compact(['issues'], ['between']));
+        return view('user.issues.closed', compact(['issues'], ['between']));
     }
 
     public function create()
@@ -148,7 +148,7 @@ class IssuesController extends Controller
             ->where('DmStatus', 1)
             ->get();
         $user = User::all();
-        return view('admin.issues.create', compact(
+        return view('user.issues.create', compact(
             ['issues'],
             ['issuespriority'],
             ['issuesstatus'],
@@ -220,7 +220,7 @@ class IssuesController extends Controller
 
         $issues->save();
 
-        return redirect('/issues')->with('status', 'Data Added for Issues Successfully');
+        return redirect('/issues-user')->with('status', 'Data Added for Issues Successfully');
     }
 
     public function show($Issuesid)
@@ -251,7 +251,7 @@ class IssuesController extends Controller
             ->limit(1)
             ->get();
     
-        return view('admin.issues.show', compact(
+        return view('user.issues.show', compact(
             ['issues'],
             ['issueslog'],
             ['issueslogupdate'],
@@ -287,7 +287,7 @@ class IssuesController extends Controller
             ->where('DmStatus', 1)
             ->get();
         $user = User::all();
-        return view('admin.issues.edit', compact(
+        return view('user.issues.edit', compact(
             ['issues'],
             ['data'],
             ['find'],
@@ -354,7 +354,7 @@ class IssuesController extends Controller
 
         $issues->update();
 
-        return redirect('/issues')->with('status', 'Data Update for Issues Successfully');
+        return redirect('/issues-user')->with('status', 'Data Update for Issues Successfully');
     }
 
     public function fetch(Request $request)

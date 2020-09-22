@@ -27,11 +27,27 @@ Register Edit
                                     <label>Give Role</label>
                                     <select name="usertype" class="form-control">
                                         <option value="admin">Admin</option>
-                                        <option value="vendor">Vendor</option>
+                                        <option value="user">User</option>
                                         <option value="">None</option>
                                     </select>
                                 </div>
+
+                                <div class="form-group">
+                                    <label>LoginType</label>     
+                                        <select name="logintype" class="form-control">
+                                            <option value="1">AD</option>
+                                            <option value="0">DB</option>
+                                            <option value="">None</option>
+                                        </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Username</label>
+                                    <input type="text" class="form-control" value="{{$users->username}}" name="username">
+                                </div>
+
                                 <button type="submit" class="btn btn-success">Update</button>
+                                <a href="/role-reset/{{$users->id}}" class="btn btn-warning">Reset Password</a>
                                 <a href="/role-register" class="btn btn-danger">Cancel</a>
                             </form>
                         </div>

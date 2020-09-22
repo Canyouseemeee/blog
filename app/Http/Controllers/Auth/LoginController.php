@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Console\Input\Input;
 
 class LoginController extends Controller
@@ -61,6 +62,7 @@ class LoginController extends Controller
     {
         $uname = $request->input('username');
         $password = $request->input('password');
+        // $hasmake_password = Hash::make($password);
         $credentials = [
             'username' => $request->input('username'),
             'password' => $request->input('password')
@@ -83,9 +85,10 @@ class LoginController extends Controller
 
         $logintype = 0;
         foreach ($userinfo as $uinfo) {
-            echo $uinfo->name;
+            // echo $uinfo->name;
             $isuser = 1;
             $logintype = $uinfo->logintype;
+            $makepassword = $uinfo->password;
             $userprofile = array("id" => $uinfo->id, "logintype" => $logintype);
         }
 
@@ -95,24 +98,32 @@ class LoginController extends Controller
             if ($logintype == 1) {
                 // check ad
                 // Auth::loginUsingId($uinfo->id, TRUE); //AD 
-                // $credentials = $request->only('username');
-                if(Auth::loginUsingId($uinfo->id, TRUE)){
-                    return redirect()->intended('dashboard');
-                }else{
-                    return redirect()->back();
+                if (Auth::loginUsingId($uinfo->id, TRUE)) {
+                    if (Auth::user()->usertype == 'admin') {
+                        return redirect()->intended('dashboard');
+                    } else if (Auth::user()->usertype == 'user') {
+                        return redirect()->intended('dashboarduser');
+                    }
                 }
-            } else {
+            } else if ($logintype == 0) {
                 // $credentials = $request->only('username', 'password');
+                // print_r($credentials);
                 if (Auth::attempt($credentials)) {
+                    if (Auth::user()->usertype == 'admin') {
+                        return redirect()->intended('dashboard');
+                    } else if (Auth::user()->usertype == 'user') {
+                        return redirect()->intended('dashboarduser');
+                    }
+                } else {
                     // Authentication passed...
-                    return redirect()->intended('dashboard');
-                }else{
-                    return redirect()->back();
+                    print_r($credentials);
                 }
+                // else{
+                //     return redirect()->back();
+                // }
             }
         } else {
             return view('errors.404');
         }
-
     }
 }

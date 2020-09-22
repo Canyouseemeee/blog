@@ -5,7 +5,7 @@ function DateThai($strDate)
     $strYear = date("Y", strtotime($strDate)) + 543;
     $strMonth = date("n", strtotime($strDate));
     $strDay = date("j", strtotime($strDate));
-    $strHour = date("H", strtotime($strDate)) + 7;
+    $strHour = date("H", strtotime($strDate));
     $strMinute = date("i", strtotime($strDate));
     $strSeconds = date("s", strtotime($strDate));
     $strMonthCut = array("", "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค.");
