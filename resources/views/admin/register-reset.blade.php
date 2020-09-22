@@ -8,10 +8,9 @@
                 <div class="card-header">{{ __('Reset Password') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('password.update') }}">
-                        @csrf
-
-                        
+                    <form method="POST" action="/role-reset-password/{{ $users->id }}">
+                        {{ csrf_field() }}
+                        {{ method_field('PUT') }}
 
                         <div class="form-group row">
                             <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
@@ -51,9 +50,10 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-success">
                                     {{ __('Reset Password') }}
                                 </button>
+                                <a href="/role-edit/{{$users->id}}" class="btn btn-danger">Cancel</a>
                             </div>
                         </div>
                     </form>

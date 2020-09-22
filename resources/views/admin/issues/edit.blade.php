@@ -108,7 +108,7 @@ Web Test
 
                         <div class="col-md-3">
                             <label>Department</label>
-                            <select name="Departmentid" class="form-control create" require>
+                            <select id="Departmentid" name="Departmentid" class="form-control create" require>
                                 @foreach($department as $row4)
                                 <option value="{{$row4->Departmentid}}" @if ($row4->Departmentid === $data->Departmentid)
                                     selected
@@ -177,6 +177,8 @@ Web Test
 @endsection
 
 @section('scripts')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
 
@@ -318,6 +320,31 @@ Web Test
 
         });
 
+    });
+</script>
+
+<script>
+    $('#Departmentid').select2({
+        placeholder: " Enter Department",
+        minimumInputLength: 1,
+        delay: 250,
+        allowClear: true,
+        // ajax: {
+        //     url: '/issues-select2',
+        //     dataType: 'json',
+        //     delay: 200,
+        //     data: function(params) {
+        //         return {
+        //             q: $.trim(params.term)
+        //         };
+        //     },
+        //     processResults: function(data) {
+        //         return {
+        //             results: data
+        //         };
+        //     },
+        //     cache: true
+        // }
     });
 </script>
 @endsection

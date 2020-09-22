@@ -47,8 +47,8 @@ Route::post('/register-create', 'Admin\RoleController@registerstore');
 Route::get('/changActive', 'Admin\RoleController@changActive')->name('change_active');
 Route::get('/role-edit/{id}', 'Admin\RoleController@registeredit');
 Route::get('/role-reset/{id}', 'Admin\RoleController@registerreset');
+Route::put('/role-reset-password/{id}', 'Admin\RoleController@registerresetpassword');
 Route::put('/role-register-update/{id}', 'Admin\RoleController@registerupdate');
-Route::delete('/role-delete/{id}', 'Admin\RoleController@registerdelete');
 
 //History Logs
 Route::get('/history', 'Admin\LogsController@index');
@@ -76,6 +76,7 @@ Route::get('/dynamic/fetch', 'Admin\IssuesController@fetch')->name('dynamiccontr
 Route::get('/findid', 'Admin\IssuesController@findid');
 Route::get('/findidother', 'Admin\IssuesController@findidother');
 Route::get('/issues-create', 'Admin\IssuesController@create');
+Route::get('/issues-select2', 'Admin\IssuesController@select2')->name('select2');
 Route::post('/issues-store', 'Admin\IssuesController@store')->name('issues-store');
 
 //issuesuser//

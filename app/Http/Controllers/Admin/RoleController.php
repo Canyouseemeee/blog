@@ -49,11 +49,13 @@ class RoleController extends Controller
 
     public function registerupdate(Request $request, $id){
         $users = User::find($id);
-        $users->name = $request->input('username');
+        $users->name = $request->input('name');
         $users->usertype = $request->input('usertype');
+        $users->logintype = $request->input('logintype');
+        $users->username = $request->input('username');
         $users->update();
 
-        return redirect('/role-register')->with('status','Your Data is Updated');
+        return redirect('/role-register')->with('status','Your User is Updated');
     }
 
     public function registerreset(Request $request, $id){
@@ -61,10 +63,12 @@ class RoleController extends Controller
         return view('admin.register-reset',compact('users'));
     }
 
-    public function registerdelete($id){
+    public function registerresetpassword(Request $request, $id){
         $users = User::findOrFail($id);
-        $users->delete();
-        return redirect('/role-register')->with('status','Your Data is Deleted');
+        $users->password = Hash::make($request->input('password'));
+        $users->update();
+        return redirect('/role-register')->with('status','Your Password is Reset');
     }
+
 
 }
