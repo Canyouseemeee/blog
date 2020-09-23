@@ -26,6 +26,7 @@ class CreateIssuesTable extends Migration
             $table->string('Subject');
             $table->string('Tel');
             $table->string('Comname');
+            $table->string('Informer');
             $table->longText('Description');
             $table->date('Date_In');
             $table->mediumText('Image')->nullable();

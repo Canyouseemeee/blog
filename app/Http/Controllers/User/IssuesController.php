@@ -10,6 +10,7 @@ use App\Models\Issuespriority;
 use App\Models\Issuesstatus;
 use App\Models\Issuestracker;
 use App\User;
+use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -105,7 +106,7 @@ class IssuesController extends Controller
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
             ->join('issues_logs', 'issues_logs.Issuesid', '=', 'issues.Issuesid')
-            ->where([['issues.Statusid', 2],['issues_logs.Action','Closed']])
+            ->where([['issues.Statusid', 2], ['issues_logs.Action', 'Closed']])
             ->orderBy('issues.Issuesid', 'DESC')
             ->get();
         $between = null;
@@ -118,12 +119,12 @@ class IssuesController extends Controller
         $todate = $request->input('todate');
         if ($request->isMethod('post')) {
             $between = DB::table('issues_tracker')
-            ->select('issues.Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'issues.Createby', 'Subject', 'issues_logs.create_at')
-            ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
-            ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
-            ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
-            ->join('issues_logs', 'issues_logs.Issuesid', '=', 'issues.Issuesid')
-            ->where([['issues.Statusid', 2],['issues_logs.Action','Closed']])
+                ->select('issues.Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'issues.Createby', 'Subject', 'issues_logs.create_at')
+                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+                ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
+                ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+                ->join('issues_logs', 'issues_logs.Issuesid', '=', 'issues.Issuesid')
+                ->where([['issues.Statusid', 2], ['issues_logs.Action', 'Closed']])
                 ->whereBetween('issues.Date_In', [$fromdate, $todate])
                 ->orderBy('Issuesid', 'DESC')
                 ->get();
@@ -168,6 +169,7 @@ class IssuesController extends Controller
                 'Description' => 'required',
                 'Assignment' => 'required',
                 'Tel' => 'required',
+                'Informer' => 'required|min:6',
 
             ),
             [
@@ -176,8 +178,6 @@ class IssuesController extends Controller
                 'Description.required' => 'You have enter Description',
                 'Assignment.required' => 'You have select Assignment',
                 'Tel.required' => 'You have enter Tel',
-
-
             ]
         );
 
@@ -192,6 +192,7 @@ class IssuesController extends Controller
         $issues->Subject = $request->input('Subject');
         $issues->Tel = $request->input('Tel');
         $issues->Comname = $request->input('Comname');
+        $issues->Informer = $request->input('Informer');
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
         $issues->created_at = DateThai(now());
@@ -202,7 +203,7 @@ class IssuesController extends Controller
             $file = time() . '.' . $filename;
             $issues->Image = $request->Image->storeAs('images', $file, 'public');
             // dd($file);
-        } else{
+        } else {
             $issues->Image = null;
         }
 
@@ -238,31 +239,43 @@ class IssuesController extends Controller
             ->join('issues', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
             ->where([['Action', 'Closed'], ['issues_logs.Issuesid', $data->Issuesid]])
             ->get();
-        $issueslogclosed = DB::table('issues_logs')
-            ->select('issues_logs.Createby')
-            ->join('issues', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
-            ->where([['Action', 'Closed'], ['issues_logs.Issuesid', $data->Issuesid]])
-            ->get();
-        $issueslogupdate = DB::table('issues_logs')
-            ->select('issues_logs.Createby')
-            ->join('issues', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
-            ->where([['Action', 'Updated'], ['issues_logs.Issuesid', $data->Issuesid]])
-            ->orderBy('logs_id','DESC')
-            ->limit(1)
-            ->get();
-    
+
+        $strStart = $data->created_at;
+        if($issueslog != '[]'){
+            if($issueslog != null){
+                foreach ($issueslog as $logs) {
+                    $strEnd   = $logs->create_at;
+                }
+                if($strEnd != null){
+                    $dateinterval = $strStart->diff($strEnd);
+                    return view('user.issues.show', compact(
+                        ['issues'],
+                        ['issueslog'],
+                        ['data'],
+                        ['trackname'],
+                        ['issuespriority'],
+                        ['issuesstatus'],
+                        ['department'],
+                        ['tracker'],
+                        ['user'],
+                        ['dateinterval']
+                    ));
+                }
+            }
+        }
+        
+        // $dateinterval->format('%D day %H:%I:%S');
+
         return view('user.issues.show', compact(
             ['issues'],
             ['issueslog'],
-            ['issueslogupdate'],
-            ['issueslogclosed'],
             ['data'],
             ['trackname'],
             ['issuespriority'],
             ['issuesstatus'],
             ['department'],
             ['tracker'],
-            ['user']
+            ['user'],
         ));
     }
 
@@ -310,6 +323,7 @@ class IssuesController extends Controller
                 'Description' => 'required',
                 'Assignment' => 'required',
                 'Tel' => 'required',
+                'Informer' => 'required|min:6',
                 // 'Image' => 'required|image',
 
             ),
@@ -329,7 +343,7 @@ class IssuesController extends Controller
             $issues->Statusid = $issues->Statusid;
         } else {
             $issues->Statusid = $request->input('Statusid');
-            if($issues->Statusid == 2){
+            if ($issues->Statusid == 2) {
                 $issues->Closedby = $request->input('Updatedby');
             }
         }
@@ -339,6 +353,7 @@ class IssuesController extends Controller
         $issues->Subject = $request->input('Subject');
         $issues->Tel = $request->input('Tel');
         $issues->Comname = $request->input('Comname');
+        $issues->Informer = $request->input('Informer');
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
         $issues->updated_at = DateThai(now());
@@ -426,4 +441,17 @@ class IssuesController extends Controller
 
     }
 
+    public function select2(Request $request)
+    {
+        $data = [];
+
+        $search = $request->q;
+        $data = Department::select("Departmentid", "DmName")
+            ->where('DmName', 'LIKE', "%$search%")
+            ->get();
+        // echo ($data);
+
+
+        return response()->json($data);
+    }
 }

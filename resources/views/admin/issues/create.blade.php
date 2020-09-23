@@ -71,13 +71,14 @@ Web Test
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="form-group col-md-3">
                             <label>Department</label>
-                            <select id="Departmentid" name="Departmentid" class="form-control create" require>
-                                @foreach($department as $row4)
-                                <option value="{{$row4->Departmentid}}" @if (old("Departmentid")==$row4->Departmentid) selected @endif>{{$row4->DmCode}} - {{$row4->DmName}}</option>
-                                @endforeach
-                            </select>
+                            <p>
+                                <select id="Departmentid" name="Departmentid"  class="form-control-lg create col-md-12" require>
+                                    @foreach($department as $row4)
+                                    <option value="{{$row4->Departmentid}}" @if (old("Departmentid")==$row4->Departmentid) selected @endif>{{$row4->DmCode}} - {{$row4->DmName}}</option>
+                                    @endforeach
+                                </select></p>
                         </div>
 
                         <div class="form-group col-md-3">
@@ -108,6 +109,11 @@ Web Test
                         <div class="form-group col-md-3">
                             <label>Comname</label>
                             <input name="Comname" class="form-control" placeholder="ไม่จำเป็นต้องใส่" value="{{old('Comname')}}">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label>Informer</label>
+                            <input name="Informer" class="form-control" placeholder="รหัสเจ้าหน้าที่" value="{{old('Informer')}}">
                         </div>
                     </div>
 

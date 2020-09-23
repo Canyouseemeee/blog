@@ -19,10 +19,10 @@ class AdminMiddleware
         if (Auth::user()->usertype == 'admin') 
         {
             return $next($request);
-        } 
+        }
         else 
         {
-            return redirect('/home')->with('status','You are Not Allowed To Admin Dashboard');
+            return redirect('/login')->with('status','You are Not Allowed To Admin Dashboard');
         }
     }
 }

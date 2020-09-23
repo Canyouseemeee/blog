@@ -57,27 +57,28 @@ Web Test
                             <label>Priority</label>
                             <select name="Priorityid" class="form-control create" require>
                                 @foreach($issuespriority as $row2)
-                                <option value="{{$row2->Priorityid}}">{{$row2->ISPName}}</option>
+                                <option value="{{$row2->Priorityid}}" @if (old("Priorityid")==$row2->Priorityid) selected @endif>{{$row2->ISPName}}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="col-md-3">
                             <label>Status</label>
-                            <select name="Statusid" class="form-control create"  require>
+                            <select name="Statusid" class="form-control create" require>
                                 @foreach($issuesstatus as $row3)
-                                <option value="{{$row3->Statusid}}">{{$row3->ISSName}}</option>
+                                <option value="{{$row3->Statusid}}" @if (old("Statusid")==$row3->Statusid) selected @endif>{{$row3->ISSName}}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="form-group col-md-3">
                             <label>Department</label>
-                            <select name="Departmentid" class="form-control create" require>
-                                @foreach($department as $row4)
-                                <option value="{{$row4->Departmentid}}">{{$row4->DmCode}} - {{$row4->DmName}}</option>
-                                @endforeach
-                            </select>
+                            <p>
+                                <select id="Departmentid" name="Departmentid"  class="form-control-lg create col-md-12" require>
+                                    @foreach($department as $row4)
+                                    <option value="{{$row4->Departmentid}}" @if (old("Departmentid")==$row4->Departmentid) selected @endif>{{$row4->DmCode}} - {{$row4->DmName}}</option>
+                                    @endforeach
+                                </select></p>
                         </div>
 
                         <div class="form-group col-md-3">
@@ -93,32 +94,37 @@ Web Test
                         <div class="form-group col-md-3">
                             <label>Assignment</label>
                             <select name="Assignment" class="form-control create" require>
-                            <option value="">Select Assignment</option>
+                                <option value="">Select Assignment</option>
                                 @foreach($user as $row5)
-                                <option value="{{$row5->id}}">{{$row5->name}}</option>
+                                <option value="{{$row5->id}}" @if (old("Assignment")==$row5->id) selected @endif>{{$row5->name}}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="form-group col-md-3">
                             <label>Tel</label>
-                            <input name="Tel" class="form-control" placeholder="เบอร์ติดต่อกลับ">
+                            <input name="Tel" class="form-control" placeholder="เบอร์แผนก" value="{{old('Tel')}}">
                         </div>
 
                         <div class="form-group col-md-3">
                             <label>Comname</label>
-                            <input name="Comname" class="form-control" placeholder="ไม่จำเป็นต้องใส่ก็ได้">
+                            <input name="Comname" class="form-control" placeholder="ไม่จำเป็นต้องใส่" value="{{old('Comname')}}">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label>Informer</label>
+                            <input name="Informer" class="form-control" placeholder="รหัสเจ้าหน้าที่" value="{{old('Informer')}}">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Subject</label>
-                        <input type="text" name="Subject" class="form-control" placeholder="Enter Subject">
+                        <input type="text" name="Subject" class="form-control" placeholder="Enter Subject" value="{{old('Subject')}}">
                     </div>
 
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea type="text" name="Description" class="form-control" placeholder="Enter Description"></textarea>
+                        <input type="text" name="Description" class="form-control" placeholder="Enter Description" value="{{old('Description')}}"></input>
                     </div>
 
                     <div>
@@ -136,6 +142,8 @@ Web Test
 @endsection
 
 @section('scripts')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
 
@@ -235,7 +243,7 @@ Web Test
 
         });
 
-        $(document).on('change', '.findidother-user', function() {
+        $(document).on('change', '.findidother', function() {
 
             var tracker_id = $(this).val();
             var TrackName = $("#TrackName option:selected").val();
@@ -274,5 +282,31 @@ Web Test
         });
 
     });
+</script>
+
+<script>
+    $('#Departmentid').select2({
+        placeholder: " Enter Department",
+        minimumInputLength: 1,
+        delay: 250,
+        allowClear: true,
+        // ajax: {
+        //     url: '{{ route("select2") }}',
+        //     dataType: 'json',
+        //     delay: 200,
+        //     data: function(params) {
+        //         return {
+        //             q: $.trim(params.term)
+        //         };
+        //     },
+        //     processResults: function(data) {
+        //         return {
+        //             results: data
+        //         };
+        //     },
+        //     cache: true
+        // }
+    });
+
 </script>
 @endsection

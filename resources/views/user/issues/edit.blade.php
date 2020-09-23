@@ -108,14 +108,16 @@ Web Test
 
                         <div class="col-md-3">
                             <label>Department</label>
-                            <select name="Departmentid" class="form-control create" require>
-                                @foreach($department as $row4)
-                                <option value="{{$row4->Departmentid}}" @if ($row4->Departmentid === $data->Departmentid)
-                                    selected
-                                    @endif
-                                    >{{$row4->DmCode}} - {{$row4->DmName}}</option>
-                                @endforeach
-                            </select>
+                            <p>
+                                <select id="Departmentid" name="Departmentid" class="form-control create col-md-12" require>
+                                    @foreach($department as $row4)
+                                    <option value="{{$row4->Departmentid}}" @if ($row4->Departmentid === $data->Departmentid)
+                                        selected
+                                        @endif
+                                        >{{$row4->DmCode}} - {{$row4->DmName}}</option>
+                                    @endforeach
+                                </select>
+                            </p>
                         </div>
 
                         <div class="form-group col-md-3">
@@ -131,7 +133,7 @@ Web Test
                         <div class="form-group col-md-3">
                             <label>Assignment</label>
                             <select name="Assignment" class="form-control create" require>
-                            @foreach($user as $row5)
+                                @foreach($user as $row5)
                                 <option value="{{$row5->id}}" @if ($row5->id === $data->Assignment)
                                     selected
                                     @endif
@@ -148,6 +150,11 @@ Web Test
                         <div class="form-group col-md-3">
                             <label>Comname</label>
                             <input name="Comname" class="form-control" value="{{$data->Comname}}" placeholder="{{$data->Comname}}">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label>Informer</label>
+                            <input name="Informer" class="form-control" placeholder="{{$data->Informer}}" value="{{$data->Informer}}">
                         </div>
                     </div>
 
@@ -177,10 +184,12 @@ Web Test
 @endsection
 
 @section('scripts')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
 
-        $('.dynamic-user').change(function() {
+        $('.dynamic').change(function() {
             var TrackName = $("#TrackName option:selected").val();
             if (TrackName != '') {
                 var select = $(this).attr("id");
@@ -280,7 +289,7 @@ Web Test
 
         });
 
-        $(document).on('change', '.findidother-user', function() {
+        $(document).on('change', '.findidother', function() {
 
             var tracker_id = $(this).val();
             var TrackName = $("#TrackName option:selected").val();
@@ -318,6 +327,32 @@ Web Test
 
         });
 
+    });
+</script>
+
+<script>
+    $('#Departmentid').select2({
+        placeholder: " Enter Department",
+        minimumInputLength: 1,
+        delay: 250,
+        allowClear: true,
+        
+        // ajax: {
+        //     url: '/issues-select2',
+        //     dataType: 'json',
+        //     delay: 200,
+        //     data: function(params) {
+        //         return {
+        //             q: $.trim(params.term)
+        //         };
+        //     },
+        //     processResults: function(data) {
+        //         return {
+        //             results: data
+        //         };
+        //     },
+        //     cache: true
+        // }
     });
 </script>
 @endsection

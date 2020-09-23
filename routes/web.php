@@ -16,90 +16,99 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::check()) {
+        echo('login');
+        return redirect('dashboard');
+    }
+    else{
+        return view('welcome');
+    }
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/checklogin', 'HomeController@checklogin');
 
 Route::post('/login-issues', 'Auth\LoginController@login');
 
-// Route::group(['middleware' => ['auth', 'admin']], function () {
+Route::group(['middleware' => ['auth', 'admin']], function () {
+    // Dashboard
+    Route::get('/dashboard', 'Admin\DashboardController@index');
+    Route::post('/dashboard-between', 'Admin\DashboardController@getReport');
+
+    // Role
+    Route::get('/role-register', 'Admin\RoleController@registered');
+    Route::get('/create-user', 'Admin\RoleController@registeredcreate');
+    Route::post('/register-create', 'Admin\RoleController@registerstore');
+    Route::get('/changActive', 'Admin\RoleController@changActive')->name('change_active');
+    Route::get('/role-edit/{id}', 'Admin\RoleController@registeredit');
+    Route::get('/role-reset/{id}', 'Admin\RoleController@registerreset');
+    Route::put('/role-reset-password/{id}', 'Admin\RoleController@registerresetpassword');
+    Route::put('/role-register-update/{id}', 'Admin\RoleController@registerupdate');
+
+    //History Logs
+    Route::get('/history', 'Admin\LogsController@index');
+
+    //issues//
+    Route::get('/issues', 'Admin\IssuesController@index');
+    Route::get('/closed', 'Admin\IssuesController@closed');
+    Route::get('/defer', 'Admin\IssuesController@defer');
+    Route::post('/issues-filter-news', 'Admin\IssuesController@getReport');
+    Route::post('/issues-filter-defers', 'Admin\IssuesController@getReportdefers');
+    Route::post('/issues-filter-closed', 'Admin\IssuesController@getReportclosed');
+    Route::get('/issues-edit/{id}', 'Admin\IssuesController@edit', function () {
+        Artisan::call('storage:link');
+    });
+    Route::put('/issues-update/{id}', 'Admin\IssuesController@update', function () {
+        Artisan::call('storage:link');
+    });
+    Route::get('/issues-show/{id}', 'Admin\IssuesController@show', function () {
+        Artisan::call('storage:link');
+    });
+    Route::get('/dynamic/fetch', 'Admin\IssuesController@fetch')->name('dynamiccontroller.fetch');
+    Route::get('/findid', 'Admin\IssuesController@findid');
+    Route::get('/findidother', 'Admin\IssuesController@findidother');
+    Route::get('/issues-create', 'Admin\IssuesController@create');
+    Route::get('/issues-select2', 'Admin\IssuesController@select2')->name('select2');
+    Route::post('/issues-store', 'Admin\IssuesController@store')->name('issues-store');
+});
+
+Route::group(['middleware' => ['auth']], function () {
+    // DashboardUser
+    Route::get('/dashboarduser', 'User\DashboardController@index');
+    Route::post('/dashboarduser-between', 'User\DashboardController@getReport');
+
+    //Historyuser Logs
+    Route::get('/historyuser', 'User\LogsController@index');
+
+    //issuesuser//
+    Route::get('/issues-user', 'User\IssuesController@index');
+    Route::get('/closed-user', 'User\IssuesController@closed');
+    Route::get('/defer-user', 'User\IssuesController@defer');
+    Route::post('/issues-filter-news-user', 'User\IssuesController@getReport');
+    Route::post('/issues-filter-defers-user', 'User\IssuesController@getReportdefers');
+    Route::post('/issues-filter-closed-user', 'User\IssuesController@getReportclosed');
+    Route::get('/issues-edit-user/{id}', 'User\IssuesController@edit', function () {
+        Artisan::call('storage:link');
+    });
+    Route::put('/issues-update-user/{id}', 'User\IssuesController@update', function () {
+        Artisan::call('storage:link');
+    });
+    Route::get('/issues-show-user/{id}', 'User\IssuesController@show', function () {
+        Artisan::call('storage:link');
+    });
+    Route::get('/dynamic-user/fetch', 'User\IssuesController@fetch')->name('dynamiccontroller.fetch');
+    Route::get('/findid-user', 'User\IssuesController@findid');
+    Route::get('/findidother-user', 'User\IssuesController@findidother');
+    Route::get('/issues-create-user', 'User\IssuesController@create');
+    Route::post('/issues-store-user', 'User\IssuesController@store')->name('issues-store');
+});
 
 
 //PDF
-Route::get('pdf/{id}','Admin\PDFController@pdf');
+Route::get('pdf/{id}', 'Admin\PDFController@pdf');
 
-
-// Dashboard
-Route::get('/dashboard', 'Admin\DashboardController@index');
-Route::post('/dashboard-between', 'Admin\DashboardController@getReport');
-
-// DashboardUser
-Route::get('/dashboarduser', 'User\DashboardController@index');
-Route::post('/dashboarduser-between', 'User\DashboardController@getReport');
-
-// Role
-Route::get('/role-register', 'Admin\RoleController@registered');
-Route::get('/create-user', 'Admin\RoleController@registeredcreate');
-Route::post('/register-create', 'Admin\RoleController@registerstore');
-Route::get('/changActive', 'Admin\RoleController@changActive')->name('change_active');
-Route::get('/role-edit/{id}', 'Admin\RoleController@registeredit');
-Route::get('/role-reset/{id}', 'Admin\RoleController@registerreset');
-Route::put('/role-reset-password/{id}', 'Admin\RoleController@registerresetpassword');
-Route::put('/role-register-update/{id}', 'Admin\RoleController@registerupdate');
-
-//History Logs
-Route::get('/history', 'Admin\LogsController@index');
-
-//Historyuser Logs
-Route::get('/historyuser', 'User\LogsController@index');
-
-//issues//
-Route::get('/issues', 'Admin\IssuesController@index');
-Route::get('/closed', 'Admin\IssuesController@closed');
-Route::get('/defer', 'Admin\IssuesController@defer');
-Route::post('/issues-filter-news', 'Admin\IssuesController@getReport');
-Route::post('/issues-filter-defers', 'Admin\IssuesController@getReportdefers');
-Route::post('/issues-filter-closed', 'Admin\IssuesController@getReportclosed');
-Route::get('/issues-edit/{id}', 'Admin\IssuesController@edit',function(){
-    Artisan::call('storage:link');
-});
-Route::put('/issues-update/{id}', 'Admin\IssuesController@update',function(){
-    Artisan::call('storage:link');
-});
-Route::get('/issues-show/{id}', 'Admin\IssuesController@show',function(){
-    Artisan::call('storage:link');
-});
-Route::get('/dynamic/fetch', 'Admin\IssuesController@fetch')->name('dynamiccontroller.fetch');
-Route::get('/findid', 'Admin\IssuesController@findid');
-Route::get('/findidother', 'Admin\IssuesController@findidother');
-Route::get('/issues-create', 'Admin\IssuesController@create');
-Route::get('/issues-select2', 'Admin\IssuesController@select2')->name('select2');
-Route::post('/issues-store', 'Admin\IssuesController@store')->name('issues-store');
-
-//issuesuser//
-Route::get('/issues-user', 'User\IssuesController@index');
-Route::get('/closed-user', 'User\IssuesController@closed');
-Route::get('/defer-user', 'User\IssuesController@defer');
-Route::post('/issues-filter-news-user', 'User\IssuesController@getReport');
-Route::post('/issues-filter-defers-user', 'User\IssuesController@getReportdefers');
-Route::post('/issues-filter-closed-user', 'User\IssuesController@getReportclosed');
-Route::get('/issues-edit-user/{id}', 'User\IssuesController@edit',function(){
-    Artisan::call('storage:link');
-});
-Route::put('/issues-update-user/{id}', 'User\IssuesController@update',function(){
-    Artisan::call('storage:link');
-});
-Route::get('/issues-show-user/{id}', 'User\IssuesController@show',function(){
-    Artisan::call('storage:link');
-});
-Route::get('/dynamic-user/fetch', 'User\IssuesController@fetch')->name('dynamiccontroller.fetch');
-Route::get('/findid-user', 'User\IssuesController@findid');
-Route::get('/findidother-user', 'User\IssuesController@findidother');
-Route::get('/issues-create-user', 'User\IssuesController@create');
-Route::post('/issues-store-user', 'User\IssuesController@store')->name('issues-store');
 
 //tracker//
 Route::get('/tracker', 'Admin\TrackerController@index');
@@ -154,4 +163,3 @@ Route::get('/changStatus', 'Admin\DepartmentController@changStatus')->name('chan
 // Route::get('/category-list-edit/{id}', 'Admin\CategorylistController@edit');
 // Route::post('/category-list-add', 'Admin\CategorylistController@store');
 // Route::put('/category-list-update/{id}', 'Admin\CategorylistController@update');
-// });

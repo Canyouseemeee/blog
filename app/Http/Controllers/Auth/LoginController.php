@@ -103,6 +103,8 @@ class LoginController extends Controller
                         return redirect()->intended('dashboard');
                     } else if (Auth::user()->usertype == 'user') {
                         return redirect()->intended('dashboarduser');
+                    } else{
+                        return redirect()->back();
                     }
                 }
             } else if ($logintype == 0) {
@@ -113,10 +115,11 @@ class LoginController extends Controller
                         return redirect()->intended('dashboard');
                     } else if (Auth::user()->usertype == 'user') {
                         return redirect()->intended('dashboarduser');
+                    }else{
+                        return redirect()->back();
                     }
-                } else {
-                    // Authentication passed...
-                    print_r($credentials);
+                } else{
+                    return redirect()->back();
                 }
                 // else{
                 //     return redirect()->back();

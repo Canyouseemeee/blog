@@ -32,6 +32,13 @@ function DateThai2($strDate)
     $strMonthThai = $strMonthCut[$strMonth];
     return "$strDay $strMonthThai $strYear $strHour:$strMinute น.";
 }
+
+function formatdate($strDate)
+{
+    $dateinterval = $strDate;
+    return $dateinterval->format('%D day %H:%I:%S');
+}
+
 ?>
 <form action="{{ url('issues-show/'.$data->Issuesid) }}" method="PUT">
     {{ csrf_field() }}
@@ -123,6 +130,11 @@ function DateThai2($strDate)
                                     @endif
                                     @endforeach
                                 </div>
+
+                                <div class="form-group col-md-3">
+                                    <b> <label>Informer : </label></b>
+                                    <label>{{$data->Informer}}</label>
+                                </div>
                             </div>
 
                             <b><label>Subject : </label></b>
@@ -175,13 +187,22 @@ function DateThai2($strDate)
                                     <label>{{DateThai2($log->create_at)}}</label>
                                     @endforeach
                                     @endif
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <b> <label>Spend Time : </label></b>
+                                    @if($data->Statusid === 1 || $data->Statusid === 3)
+                                    <label>ยังไม่ปิดงาน</label>
+                                    @else
+                                    <label>{{($dateinterval)->format('%d วัน %H:%I:%S น.')}}</label>
+                                    @endif
 
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <b><label>Image : </label></b>
-                                <img src="{{ url('storage/'.$data->Image) }}" alt="Image" width="500" />
+                                <img src="{{ url('storage/'.$data->Image) }}" alt="Image" width="300" height="300"/>
                             </div>
 
                         </div>

@@ -108,14 +108,16 @@ Web Test
 
                         <div class="col-md-3">
                             <label>Department</label>
-                            <select id="Departmentid" name="Departmentid" class="form-control create" require>
-                                @foreach($department as $row4)
-                                <option value="{{$row4->Departmentid}}" @if ($row4->Departmentid === $data->Departmentid)
-                                    selected
-                                    @endif
-                                    >{{$row4->DmCode}} - {{$row4->DmName}}</option>
-                                @endforeach
-                            </select>
+                            <p>
+                                <select id="Departmentid" name="Departmentid" class="form-control create col-md-12" require>
+                                    @foreach($department as $row4)
+                                    <option value="{{$row4->Departmentid}}" @if ($row4->Departmentid === $data->Departmentid)
+                                        selected
+                                        @endif
+                                        >{{$row4->DmCode}} - {{$row4->DmName}}</option>
+                                    @endforeach
+                                </select>
+                            </p>
                         </div>
 
                         <div class="form-group col-md-3">
@@ -131,7 +133,7 @@ Web Test
                         <div class="form-group col-md-3">
                             <label>Assignment</label>
                             <select name="Assignment" class="form-control create" require>
-                            @foreach($user as $row5)
+                                @foreach($user as $row5)
                                 <option value="{{$row5->id}}" @if ($row5->id === $data->Assignment)
                                     selected
                                     @endif
@@ -148,6 +150,11 @@ Web Test
                         <div class="form-group col-md-3">
                             <label>Comname</label>
                             <input name="Comname" class="form-control" value="{{$data->Comname}}" placeholder="{{$data->Comname}}">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label>Informer</label>
+                            <input name="Informer" class="form-control" placeholder="{{$data->Informer}}" value="{{$data->Informer}}">
                         </div>
                     </div>
 
@@ -329,6 +336,7 @@ Web Test
         minimumInputLength: 1,
         delay: 250,
         allowClear: true,
+        
         // ajax: {
         //     url: '/issues-select2',
         //     dataType: 'json',
