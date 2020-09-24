@@ -94,6 +94,7 @@ function DateThai($strDate)
         }
 
         @media print {
+
             html,
             body {
                 width: 210mm;
@@ -120,8 +121,18 @@ function DateThai($strDate)
         <div class="form-row ">
             <b> <label>วันที่แจ้ง : </label></b>
             <label>{{DateThai($Issues->created_at)}}</label>
+
             <b> <label>วันที่แก้ไขล่าสุด : </label></b>
             <label>{{DateThai($Issues->updated_at)}}</label>
+
+            <b> <label>วันที่ปิดงาน : </label></b>
+            @foreach($issueslog as $row6)
+            @if($Issues->Statusid === 1 || $Issues->Statusid === 3)
+            <label>ยังไม่ปิดงาน</label>
+            @else
+            <label>{{DateThai($row6->create_at)}}</label>
+            @endif
+            @endforeach
 
         </div>
         <br />
@@ -169,8 +180,6 @@ function DateThai($strDate)
                         @endif
                         @endforeach
                     </div>
-                </td>
-                <td>
                     <div class="row">
                         <b><label class="left">Status : </label></b>
                         <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -183,6 +192,8 @@ function DateThai($strDate)
                         @endif
                         @endforeach
                     </div>
+                </td>
+                <td>
                     <div class="row">
                         <b><label class="left">Department : </label></b>
                         <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -195,19 +206,65 @@ function DateThai($strDate)
                         @endforeach
                     </div>
                     <div class="row">
-                        <b> <label class="left">Users : </label></b>
+                        <b> <label class="left">Createby : </label></b>
                         <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-                        <label class="center">{{$Issues->Users}}</label>
+                        <label class="center">{{$Issues->Createby}}</label>
+                    </div>
+                    <div class="row">
+                        <b> <label class="left">Updatedby : </label></b>
+                        <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+                        <label class="center">{{$Issues->Updatedby}}</label>
+                    </div>
+                    <div class="row">
+                        <b> <label class="left">Closedby : </label></b>
+                        <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+                        @if($Issues->Statusid === 1 || $Issues->Statusid === 3)
+                        <label class="center">ยังไม่ปิดงาน</label>
+                        @else
+                        <label class="center">{{$Issues->Closedby}}</label>
+                        @endif
+                    </div>
+                    <div class="row">
+                        <b><label class="left">Assignment : </label></b>
+                        <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+                        @foreach($user as $row5)
+                        @if ($row5->id === $Issues->Assignment)
+                        <label class="center">{{$row5->name}}</label>
+                        @endif
+                        @endforeach
                     </div>
                 </td>
             </tr>
             <tr valign="top">
                 <td colspan="2">
-                    <b><label>Description : </label></b>
-                    <label class="w-11p">{{$Issues->Description}}</label>
+                    <div class="row">
+                        <b><label>Tel : </label></b>
+                        <label class="w-11p">{{$Issues->Tel}}</label>
+                    </div>
+                    <div class="row">
+                        <b><label>Comname : </label></b>
+                        <label class="w-11p">{{$Issues->Comname}}</label>
+                    </div>
+                    <div class="row">
+                        <b><label>Informer : </label></b>
+                        <label class="w-11p">{{$Issues->Informer}}</label>
+                    </div>
+                    <div class="row">
+                        <b><label>Description : </label></b>
+                        <label class="w-11p">{{$Issues->Description}}</label>
+                    </div>
                 </td>
             </tr>
         </table>

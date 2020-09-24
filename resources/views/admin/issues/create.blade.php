@@ -124,7 +124,7 @@ Web Test
 
                     <div class="form-group">
                         <label>Description</label>
-                        <input type="text" name="Description" class="form-control" placeholder="Enter Description" value="{{old('Description')}}"></input>
+                        <textarea type="text" name="Description" class="form-control" placeholder="Enter Description">{{old('Description')}}</textarea>
                     </div>
 
                     <div>

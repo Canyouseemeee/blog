@@ -2,23 +2,27 @@
 
 namespace App\Exports;
 
-use App\Models\Issues;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class UsersExport implements FromCollection, WithHeadings, ShouldAutoSize
+class FilterExport implements FromCollection,WithHeadings, ShouldAutoSize
 {
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    // public function collection()
-    // {
-    //     return Issues::all();
-    // }
+    public $fromdate;
+    public $todate;
 
+
+    public function __construct($fromdate,$todate)
+    {
+        $this->fromdate = $fromdate;
+        $this->todate = $todate;
+        
+    }
+    /**
+    * @return \Illuminate\Support\Collection
+    */
     public function collection()
     {
         return DB::table('issues')->select(
@@ -39,14 +43,15 @@ class UsersExport implements FromCollection, WithHeadings, ShouldAutoSize
             'issues.Closedby',
             'issues_logs.create_at',
         )
-        ->join('issues_tracker', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
-        ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
-        ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
-        ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
-        ->join('issues_logs', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
-        ->join('users', 'issues.Assignment', '=', 'users.id')
-        ->where('Action', 'Closed')
-        ->get();
+            ->join('issues_tracker', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+            ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
+            ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+            ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
+            ->join('issues_logs', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
+            ->join('users', 'issues.Assignment', '=', 'users.id')
+            ->where('Action', 'Closed')
+            ->whereBetween('issues.Date_In', [$this->fromdate, $this->todate])
+            ->get();
     }
 
     public function headings(): array

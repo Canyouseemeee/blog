@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Exports\FilterExport;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\Issues;
@@ -14,6 +15,7 @@ use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManagerStatic as Image;
+use Maatwebsite\Excel\Facades\Excel;
 
 function DateThai($strDate)
 {
@@ -115,23 +117,34 @@ class IssuesController extends Controller
 
     public function getReportclosed(Request $request)
     {
-        $fromdate = $request->input('fromdate');
-        $todate = $request->input('todate');
-        if ($request->isMethod('post')) {
-            $between = DB::table('issues_tracker')
-                ->select('issues.Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'issues.Createby', 'Subject', 'issues_logs.create_at')
-                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
-                ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
-                ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
-                ->join('issues_logs', 'issues_logs.Issuesid', '=', 'issues.Issuesid')
-                ->where([['issues.Statusid', 2], ['issues_logs.Action', 'Closed']])
-                ->whereBetween('issues.Date_In', [$fromdate, $todate])
-                ->orderBy('Issuesid', 'DESC')
-                ->get();
-        } else {
-            $between = null;
+        switch ($request->input('action')) {
+            case 'search':
+                $fromdate = $request->input('fromdate');
+                $todate = $request->input('todate');
+                if ($request->isMethod('post')) {
+                    $between = DB::table('issues_tracker')
+                        ->select('issues.Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'issues.Createby', 'Subject', 'issues_logs.create_at')
+                        ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+                        ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
+                        ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+                        ->join('issues_logs', 'issues_logs.Issuesid', '=', 'issues.Issuesid')
+                        ->where([['issues.Statusid', 2], ['issues_logs.Action', 'Closed']])
+                        ->whereBetween('issues.Date_In', [$fromdate, $todate])
+                        ->orderBy('Issuesid', 'DESC')
+                        ->get();
+                } else {
+                    $between = null;
+                }
+                $issues = null;
+                break;
+            case 'export':
+                $fromdate = $request->input('fromdate');
+                $todate = $request->input('todate');
+                $between = null;
+                $issues = null;
+                return Excel::download(new FilterExport($fromdate, $todate), 'issues.xlsx');
+                break;
         }
-        $issues = null;
         return view('user.issues.closed', compact(['issues'], ['between']));
     }
 
@@ -241,12 +254,12 @@ class IssuesController extends Controller
             ->get();
 
         $strStart = $data->created_at;
-        if($issueslog != '[]'){
-            if($issueslog != null){
+        if ($issueslog != '[]') {
+            if ($issueslog != null) {
                 foreach ($issueslog as $logs) {
                     $strEnd   = $logs->create_at;
                 }
-                if($strEnd != null){
+                if ($strEnd != null) {
                     $dateinterval = $strStart->diff($strEnd);
                     return view('user.issues.show', compact(
                         ['issues'],
@@ -263,7 +276,7 @@ class IssuesController extends Controller
                 }
             }
         }
-        
+
         // $dateinterval->format('%D day %H:%I:%S');
 
         return view('user.issues.show', compact(

@@ -1,4 +1,4 @@
-@extends('layouts.masteruser')
+@extends('layouts.masteruser2')
 
 @section('title')
 Web Test

@@ -45,8 +45,9 @@ function DateThai($strDate)
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary float-right">Search</button>
+                                <button type="submit" name="action" value="search" class="btn btn-primary float-right">Search</button>
                                 <a href="#" class="btn btn-danger float-right">Reset</a>
+                                <button type="submit" name="action" value="export" class="btn btn-warning float-right">Export Excel</button>
                             </div>
                         </div>
                     </div>
@@ -61,6 +62,7 @@ function DateThai($strDate)
             <div class="card-header py-3 ">
                 <h4 class="card-title"> Closed Issues
                     <a href="{{ url('issues-create') }}" class="btn btn-primary float-right">Add Issues</a>
+                    <a class="btn btn-warning float-right" href="{{ route('export') }}">Export All Excel Issues</a>
                 </h4>
             </div>
             <style>
@@ -120,7 +122,7 @@ function DateThai($strDate)
                                         <a href="{{ url('issues-show/'.$betweens->Issuesid) }}">{{$betweens->Subject}}</a>
                                     </div>
                                 </td>
-                                <td style="text-align:center">{{DateThai($betweens->closed_at)}}</td>
+                                <td style="text-align:center">{{DateThai($betweens->create_at)}}</td>
                                 <td>
                                     <a href="{{ url('issues-show/'.$betweens->Issuesid) }}" class="btn btn-success">View</a>
                                 </td>
