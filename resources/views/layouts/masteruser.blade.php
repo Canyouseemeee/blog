@@ -24,6 +24,7 @@
 
   <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.0/css/bootstrap4-toggle.min.css" rel="stylesheet">
 
+
 </head>
 
 <body id="page-top">
@@ -189,6 +190,7 @@
     <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.min.js"></script>
 
+
     <!-- DataTabel PDF  -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -223,6 +225,7 @@
       });
       @endif
     </script>
+
     @yield('scripts')
 
 </body>

@@ -33,13 +33,13 @@ function DateThai($strDate)
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label text-md-right"> Fromdate : </label>
                                 <div class="col-md-8">
-                                    <input type="date" name="fromdate" class="form-control">
+                                    <input type="date" id="fromdate" name="fromdate" value="{{now()->toDateString()}}" class="form-control" readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label text-md-right"> Todate : </label>
                                 <div class="col-md-8">
-                                    <input type="date" name="todate" class="form-control">
+                                    <input type="date" id="todate" name="todate" value="{{now()->toDateString()}}" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -161,5 +161,35 @@ function DateThai($strDate)
 
         $('#deletemodalpop').modal('show');
     });
+</script>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $(function() {
+    var from = $('#fromdate').datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth: true
+      }).on("change", function() {
+        to.datepicker("option", "minDate", getDate(this));
+      }),
+      to = $('#todate').datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth: true
+      }).on("change", function() {
+        from.datepicker("option", "maxDate", getDate(this));
+      });
+
+    function getDate(element) {
+      var date;
+      var dateFormat = "yy-mm-dd";
+      try {
+        date = $.datepicker.parseDate(dateFormat, element.value);
+      } catch (error) {
+        date = null;
+      }
+      return date;
+    }
+  });
 </script>
 @endsection
