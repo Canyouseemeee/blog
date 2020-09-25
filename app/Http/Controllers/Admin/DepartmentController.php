@@ -27,7 +27,6 @@ class DepartmentController extends Controller
             array(
                 'DmName' => 'required',
                 'DmCode' => 'required',
-                'DmTel' => 'required|max:5'
 
             ),
             [
@@ -39,7 +38,7 @@ class DepartmentController extends Controller
 
         $department = new Department();
         $department->DmName = $request->input('DmName');
-        $department->DmTel = $request->input('DmTel');
+        $department->DmCode = $request->input('DmCode');
         $department->save();
 
         Session::flash('statuscode', 'success');
@@ -59,19 +58,17 @@ class DepartmentController extends Controller
             array(
                 'DmName' => 'required',
                 'DmCode' => 'required',
-                'DmTel' => 'required|max:5'
 
             ),
             [
                 'DmName.required' => 'You have enter Department Name',
                 'DmCode.required' => 'You have enter Department CodeName',
-                'DmTel.required' => 'You have enter Department Tel'
             ]
         );
 
         $department = Department::find($Departmentid);
         $department->DmName = $request->input('DmName');
-        $department->DmTel = $request->input('DmTel');
+        $department->DmCode = $request->input('DmCode');
         $department->update();
 
         Session::flash('statuscode', 'success');

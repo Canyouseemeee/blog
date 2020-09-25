@@ -50,10 +50,9 @@ Web Test
                         <th>ID</th>
                         <th>Name</th>
                         <th>Code</th>
-                        <th>Tel</th>
                         <th>Active</th>
                         <th>EDIT</th>
-                        <th>DELETE</th>
+                        <!-- <th>DELETE</th> -->
                     </thead>
                     <tbody>
                         @foreach($department as $row)
@@ -62,19 +61,14 @@ Web Test
                             <td>{{$row->Departmentid}}</td>
                             <td>{{$row->DmName}}</td>
                             <td>{{$row->DmCode}}</td>
-                            <td>
-                                <div style="height: 30px; overflow: hidden;">
-                                    {{$row->DmTel}}
-                                </div>
-                            </td>
                             <td><input type="checkbox" class="toggle-class" data-id="{{$row->Departmentid}}" 
                             data-toggle="toggle" data-on="Enabled" data-off="Disabled" {{$row->DmStatus==true ? 'checked':''}}></td>
                             <td>
                                 <a href="{{ url('department-edit/'.$row->Departmentid) }}" class="btn btn-success">EDIT</a>
                             </td>
-                            <td>
+                            <!-- <td>
                                 <a href="javascript:void(0)" class="btn btn-danger btn-circle deletebtn" data-toggle="modal" data-target="#deletemodalpop"><i class="fas fa-trash"></i></a>
-                            </td>
+                            </td> -->
                         </tr>
                         @endforeach
                     </tbody>

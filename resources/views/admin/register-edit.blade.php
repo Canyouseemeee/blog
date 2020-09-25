@@ -16,7 +16,7 @@ Register Edit
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <form action="/role-register-update/{{ $users->id }}" method="POST">
+                            <form action="/role-register-update/{{ $users->id }}" method="POST" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 {{ method_field('PUT') }}
                                 <div class="form-group">
@@ -32,7 +32,6 @@ Register Edit
                                         <option value="user" @if ($users->usertype === 'user')
                                             selected
                                             @endif>User</option>
-                                        <option value="">None</option>
                                     </select>
                                 </div>
 
@@ -45,13 +44,34 @@ Register Edit
                                         <option value="0" @if ($users->logintype === 0)
                                             selected
                                             @endif>DB</option>
-                                        <option value="">None</option>
                                     </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Team</label>
+                                        <select name="teamid" class="form-control">
+                                            <option value="1" @if ($users->teamid === 1)
+                                                selected
+                                                @endif>HW</option>
+                                            <option value="2" @if ($users->teamid === 2)
+                                                selected
+                                                @endif>SW</option>
+                                            <option value="3" @if ($users->teamid === 3)
+                                                selected
+                                                @endif>ADMIN</option>
+                                        </select>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Username</label>
                                     <input type="text" class="form-control" value="{{$users->username}}" name="username">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>{{ __('Image Profile (ถ้ามีรูปภาพอยู่แล้วไม่ต้องเพิ่มรูป)') }}</label>
+                                    <div class="col-md-6">
+                                        <input type="file" id="image" name="image">
+                                    </div>
                                 </div>
 
                                 <button type="submit" class="btn btn-success">Update</button>

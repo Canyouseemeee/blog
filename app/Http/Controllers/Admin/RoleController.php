@@ -24,10 +24,20 @@ class RoleController extends Controller
     {
         $user = new User;
         $user->name = $request->input('name');
+        $user->teamid = $request->input('teamid');
         $user->usertype = $request->input('usertype');
         $user->logintype = $request->input('logintype');
         $user->username = $request->input('username');
         $user->password = Hash::make($request->input('password'));
+        if ($request->hasFile('Image')) {
+            $filename = $request->Image->getClientOriginalName();
+            $file = time() . '.' . $filename;
+            $user->image = $request->Image->storeAs('imagesprofile', $file, 'public');
+            // dd($file);
+        } else {
+            $user->image = null;
+        }
+        // echo($user);
         $user->save();
 
         return redirect('/role-register')->with('status','Your add user Success');
@@ -50,9 +60,18 @@ class RoleController extends Controller
     public function registerupdate(Request $request, $id){
         $users = User::find($id);
         $users->name = $request->input('name');
+        $users->teamid = $request->input('teamid');
         $users->usertype = $request->input('usertype');
         $users->logintype = $request->input('logintype');
         $users->username = $request->input('username');
+        if ($request->hasFile('image')) {
+            $filename = $request->image->getClientOriginalName();
+            $file = time() . '.' . $filename;
+            $users->image = $request->image->storeAs('imagesprofile', $file, 'public');
+            // dd($file);
+        } else {
+            $users->image = null;
+        }
         $users->update();
 
         return redirect('/role-register')->with('status','Your User is Updated');

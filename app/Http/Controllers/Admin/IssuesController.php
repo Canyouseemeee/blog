@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\FilterExport;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
+use App\Models\Appointments;
 use App\Models\Department;
 use App\Models\Issues;
 use App\Models\IssuesLogs;
@@ -15,7 +16,7 @@ use App\User;
 use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 function DateThai($strDate)
@@ -164,13 +165,20 @@ class IssuesController extends Controller
             ->where('DmStatus', 1)
             ->get();
         $user = User::all();
+        $issuesLogs = IssuesLogs::all();
+        $uuid = Str::uuid()->toString();
+        echo($uuid);
+        $appointment = Appointments::all();
         return view('admin.issues.create', compact(
             ['issues'],
             ['issuespriority'],
             ['issuesstatus'],
             ['department'],
             ['tracker'],
-            ['user']
+            ['user'],
+            ['issuesLogs'],
+            ['uuid'],
+            ['appointment']
         ));
     }
 
@@ -238,8 +246,13 @@ class IssuesController extends Controller
         // }
 
         $issues->save();
+        echo($issues->Issuesid);
+        // $app = new Appointments();
+        // $app->Issuesid = $issues->Issuesid;
+        // $app->save();
 
-        return redirect('/issues')->with('status', 'Data Added for Issues Successfully');
+
+        // return redirect('/issues')->with('status', 'Data Added for Issues Successfully');
     }
 
     public function show($Issuesid)

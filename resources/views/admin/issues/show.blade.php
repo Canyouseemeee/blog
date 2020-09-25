@@ -202,7 +202,11 @@ function formatdate($strDate)
 
                             <div class="form-group">
                                 <b><label>Image : </label></b>
+                                @if($row->image === null)
+                                <td>ไม่มีรูปภาพ</td>
+                                @else
                                 <img src="{{ url('storage/'.$data->Image) }}" alt="Image" width="300" height="300"/>
+                                @endif
                             </div>
 
                         </div>

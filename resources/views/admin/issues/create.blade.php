@@ -5,6 +5,61 @@ Web Test
 @endsection
 
 @section('content')
+
+<!-- Modal -->
+<div class="modal fade" id="issueslistModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="issuesModalLabel">Appointment Add</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ url('/appointment-add') }}" method="post">
+                {{ csrf_field() }}
+
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="">AppointDate</label>
+                        <input type="dateTime-local" id="AppointDate" name="AppointDate" value="{{now()->toDateString()}}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Comment</label>
+                        <textarea name="Comment" class="form-control" rows="3" placeholder="Enter Comment"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Status</label>
+                        <select name="Status" class="form-control" require>
+                            <option value="1">Active</option>
+                            <option value="2">Change</option>
+                            <option value="3">Disable</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Createby</label>
+                        <input type="text" name="Createby" class="form-control" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <!-- <label for="">Uuid</label> -->
+                        <input type="text" name="uuid" class="form-control" value="{{$uuid}}" hidden>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -74,7 +129,7 @@ Web Test
                         <div class="form-group col-md-3">
                             <label>Department</label>
                             <p>
-                                <select id="Departmentid" name="Departmentid"  class="form-control-lg create col-md-12" require>
+                                <select id="Departmentid" name="Departmentid" class="form-control-lg create col-md-12" require>
                                     @foreach($department as $row4)
                                     <option value="{{$row4->Departmentid}}" @if (old("Departmentid")==$row4->Departmentid) selected @endif>{{$row4->DmCode}} - {{$row4->DmName}}</option>
                                     @endforeach
@@ -130,11 +185,44 @@ Web Test
                     <div>
                         <input type="file" id="Image" name="Image">
                     </div>
+                    <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issueslistModal">Appointment Add</a>
                     <br>
                     <input type="submit" value="Save" class="btn btn-primary ">
                     <a href="/issues" class="btn btn-danger">Back</a>
 
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+&nbsp;
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">History</h4>
+            </div>
+            <div class="card-body">
+                <table id="datatable" class="table">
+                    <thead class="text-primary">
+                        <th>ID</th>
+                        <th>Issuesid</th>
+                        <th>Users</th>
+                        <th>Actions</th>
+                        <th>Create_at</th>
+                    </thead>
+                    <tbody>
+                        @foreach($issuesLogs as $row)
+                        <tr>
+                            <td>{{$row->logs_id}}</td>
+                            <td>{{$row->Issuesid}}</td>
+                            <td>{{$row->Users}}</td>
+                            <td>{{$row->Action}}</td>
+                            <td>{{$row->create_at}}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -307,6 +395,5 @@ Web Test
         //     cache: true
         // }
     });
-
 </script>
 @endsection

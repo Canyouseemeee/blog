@@ -72,6 +72,10 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/issues-create', 'Admin\IssuesController@create');
     Route::get('/issues-select2', 'Admin\IssuesController@select2')->name('select2');
     Route::post('/issues-store', 'Admin\IssuesController@store')->name('issues-store');
+
+    //Appointment// 
+    Route::post('/appointment-add', 'Admin\AppointmentController@store');
+
 });
 
 Route::group(['middleware' => ['auth']], function () {

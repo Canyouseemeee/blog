@@ -8,8 +8,8 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ url('register-create') }}">
-                    {{ csrf_field() }}
+                    <form method="POST" action="{{ url('register-create') }}" enctype="multipart/form-data">
+                        {{ csrf_field() }}
 
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Fullname') }}</label>
@@ -45,7 +45,6 @@
                                 <select name="usertype" class="form-control">
                                     <option value="admin">Admin</option>
                                     <option value="user">User</option>
-                                    <option value="">None</option>
                                 </select>
                             </div>
                         </div>
@@ -56,7 +55,17 @@
                                 <select name="logintype" class="form-control">
                                     <option value="1">AD</option>
                                     <option value="0">DB</option>
-                                    <option value="">None</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="teamid" class="col-md-4 col-form-label text-md-right">Team</label>
+                            <div class="col-md-6">
+                                <select name="teamid" class="form-control">
+                                    <option value="1">HW</option>
+                                    <option value="2">SW</option>
+                                    <option value="3">ADMIN</option>
                                 </select>
                             </div>
                         </div>
@@ -80,6 +89,13 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                        <label for="Image" class="col-md-4 col-form-label text-md-right">{{ __('Image Profile') }}</label>
+                            <div class="col-md-6">
+                                <input type="file" id="Image" name="Image">
                             </div>
                         </div>
 

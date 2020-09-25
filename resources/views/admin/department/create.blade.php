@@ -39,17 +39,6 @@ Web Test
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label> Department Tel</label>
-                                <input type="text" name="DmTel" class="form-control" placeholder="Enter Department Tel">
-                                @if($errors->has('DmTel'))
-                                <div class="alert alert-danger">
-                                    <li>{{$errors->first('DmTel')}}</li>
-                                </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-md-12">
                             <button type="submit" class="btn btn-primary">SAVE</button>
                             <a href="/department" class="btn btn-danger">Back</a>
                         </div>
