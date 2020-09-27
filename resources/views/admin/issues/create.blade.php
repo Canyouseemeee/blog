@@ -189,36 +189,46 @@ Web Test
                     <br>
                     <input type="submit" value="Save" class="btn btn-primary ">
                     <a href="/issues" class="btn btn-danger">Back</a>
-
                 </form>
             </div>
         </div>
     </div>
 </div>
 &nbsp;
+@if(!is_null($appointment))
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">History</h4>
+                <h4 class="card-title">Appointment Issues</h4>
             </div>
             <div class="card-body">
                 <table id="datatable" class="table">
                     <thead class="text-primary">
-                        <th>ID</th>
-                        <th>Issuesid</th>
-                        <th>Users</th>
-                        <th>Actions</th>
-                        <th>Create_at</th>
+                        <th>Date</th>
+                        <th>Comment</th>
+                        <th>Status</th>
+                        <th>Createby</th>
+                        <th>Updateby</th>
+                        <th>created_at</th>
+                        <th>updated_at</th>
                     </thead>
                     <tbody>
-                        @foreach($issuesLogs as $row)
+                        @foreach($appointment as $row)
                         <tr>
-                            <td>{{$row->logs_id}}</td>
-                            <td>{{$row->Issuesid}}</td>
-                            <td>{{$row->Users}}</td>
-                            <td>{{$row->Action}}</td>
-                            <td>{{$row->create_at}}</td>
+                            <td>{{$row->Date}}</td>
+                            <td>{{$row->Comment}}</td>
+                            @if($row->Status === 1)
+                            <td>Active</td>
+                            @elseif($row->Status === 2)
+                            <td>Change</td>
+                            @elseif($row->Status === 3)
+                            <td>Disable</td>
+                            @endif
+                            <td>{{$row->Createby}}</td>
+                            <td>{{$row->Updateby}}</td>
+                            <td>{{$row->created_at}}</td>
+                            <td>{{$row->updated_at}}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -227,6 +237,7 @@ Web Test
         </div>
     </div>
 </div>
+@endif
 @endsection
 
 @section('scripts')

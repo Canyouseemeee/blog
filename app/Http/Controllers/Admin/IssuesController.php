@@ -30,6 +30,21 @@ function DateThai($strDate)
     return "$strDay-$strMonth-$strYear $strHour:$strMinute:$strSeconds";
 }
 
+function DateThai2($strDate)
+{
+    $strYear = date("Y", strtotime($strDate));
+    $strMonth = date("n", strtotime($strDate));
+    $strDay = date("j", strtotime($strDate));
+    $strHour = date("H", strtotime($strDate)) + 7;
+    $strMinute = date("i", strtotime($strDate)) - 1;
+    $strSeconds = date("s", strtotime($strDate));
+    if ($strMonth < 10 && $strMinute < 10) {
+        return "$strYear-0$strMonth-$strDay $strHour:0$strMinute:$strSeconds";
+    } else {
+        return "$strYear-$strMonth-$strDay $strHour:$strMinute:$strSeconds";
+    }
+}
+
 class IssuesController extends Controller
 {
     public function index()
@@ -144,7 +159,7 @@ class IssuesController extends Controller
                 $todate = $request->input('todate');
                 $between = null;
                 $issues = null;
-                return Excel::download(new FilterExport($fromdate,$todate ), 'issues.xlsx');
+                return Excel::download(new FilterExport($fromdate, $todate), 'issues.xlsx');
                 break;
         }
 
@@ -167,8 +182,13 @@ class IssuesController extends Controller
         $user = User::all();
         $issuesLogs = IssuesLogs::all();
         $uuid = Str::uuid()->toString();
-        echo($uuid);
-        $appointment = Appointments::all();
+        // echo($uuid);
+        $appointment = DB::table('appointments')
+            ->select('*')
+            ->where('created_at', '>', DateThai2(now()))
+            ->get();
+        // $appointment = null;
+        // echo (DateThai2(now()));
         return view('admin.issues.create', compact(
             ['issues'],
             ['issuespriority'],
@@ -246,13 +266,13 @@ class IssuesController extends Controller
         // }
 
         $issues->save();
-        echo($issues->Issuesid);
-        // $app = new Appointments();
-        // $app->Issuesid = $issues->Issuesid;
-        // $app->save();
+        // echo($issues->Issuesid);
+        $app = new Appointments();
+        $app->Issuesid = $issues->Issuesid;
+        $app->update();
 
 
-        // return redirect('/issues')->with('status', 'Data Added for Issues Successfully');
+        return redirect('/issues')->with('status', 'Data Added for Issues Successfully');
     }
 
     public function show($Issuesid)
