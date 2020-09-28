@@ -47,7 +47,7 @@ Web Test
 
                     <div class="form-group">
                         <!-- <label for="">Uuid</label> -->
-                        <input type="text" name="uuid" class="form-control" value="{{$uuid}}" hidden>
+                        <input type="text" name="uuid" class="form-control" value="{{$Uuidapp}}" >
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -182,7 +182,19 @@ Web Test
                         <textarea type="text" name="Description" class="form-control" placeholder="Enter Description">{{old('Description')}}</textarea>
                     </div>
 
+                    @if(is_null($Uuidapp))
+                        <div class="form-group col-md-3">
+                            <label>Uuid</label>
+                            <input name="Informer" class="form-control" placeholder="{{$Uuidapp}}" value="{{$Uuidapp}}" readonly>
+                        </div>
                     <div>
+                    @else
+                    <div class="form-group col-md-3">
+                            <!-- <label>Uuid</label> -->
+                            <input name="Informer" class="form-control" placeholder="{{$Uuidapp}}" value="{{$Uuidapp}}" hidden>
+                        </div>
+                    <div>
+                    @endif
                         <input type="file" id="Image" name="Image">
                     </div>
                     <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issueslistModal">Appointment Add</a>

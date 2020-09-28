@@ -43,7 +43,15 @@ class AuthController extends Controller
             $isuser = 1;
             $logintype = $uinfo->logintype;
             $name = $uinfo->name;
+            $teamid = $uinfo->teamid;
             $userprofile = array("id" => $uinfo->id, "logintype" => $logintype);
+        }
+        if($teamid == 1){
+            $team = "HW";
+        }elseif($teamid == 2){
+            $team = "SW";
+        }elseif($teamid == 3){
+            $team = "ADMIN";
         }
         $token = openssl_random_pseudo_bytes(20);
         $token2 = bin2hex($token);
@@ -54,7 +62,7 @@ class AuthController extends Controller
                 return response()->json([
                     'status' => 'Success',
                     'token' => $token2,
-                    // 'token' => $jwt_token,
+                    'team' => $team,
                     'logintype' => 'AD',
                     'input' => $username,
                     'name' => $name,
@@ -66,9 +74,10 @@ class AuthController extends Controller
                 return response()->json([
                     'status' => 'Success',
                     'token' => $token2,
-                    // 'token' => $jwt_token,
+                    'team' => $team,
                     'logintype' => 'DB',
                     'input' => $username,
+                    'name' => $name,
                     'expires_at' => $expires_at
                 ]);
             }

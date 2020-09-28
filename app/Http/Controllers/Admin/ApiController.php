@@ -45,7 +45,8 @@ class ApiController extends Controller
     {
         $demodata = DB::table('issues_tracker')
             ->select('issues.Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-            'issues_status.ISSName', 'issues_priority.ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject', 'issues.Tel', 'issues.Comname','issues.Description','issues.created_at','issues.updated_at',
+            'issues_status.ISSName', 'issues_priority.ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy',
+             'issues.Subject', 'issues.Tel', 'issues.Comname','issues.Informer','issues.Description','issues.created_at','issues.updated_at',
             'department.DmName','issues.ClosedBy','issues_logs.create_at')
             ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
@@ -64,8 +65,8 @@ class ApiController extends Controller
     public function New(){
         $demodata = DB::table('issues_tracker')
         ->select('Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-        'ISSName', 'ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject', 'issues.Tel', 'issues.Comname','issues.Description','issues.created_at','issues.updated_at',
-        'DmName')
+        'ISSName', 'ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject', 
+        'issues.Tel', 'issues.Comname','issues.Informer','issues.Description','issues.created_at','issues.updated_at','DmName')
         ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
         ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
         ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
@@ -82,8 +83,8 @@ class ApiController extends Controller
     public function Defer(){
         $demodata = DB::table('issues_tracker')
             ->select('issues.Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-            'ISSName', 'ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject', 'issues.Tel', 'issues.Comname','issues.Description','issues.created_at','issues.updated_at',
-            'DmName')
+            'ISSName', 'ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject', 
+            'issues.Tel', 'issues.Comname','issues.Informer','issues.Description','issues.created_at','issues.updated_at','DmName')
             ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
@@ -128,6 +129,11 @@ class ApiController extends Controller
         ->where('username',$_username)
         ->get();
 
+        $image = DB::table('users')
+        ->select('image')
+        ->where('username',$_username)
+        ->get();
+
         $Loginlog = new Loginlog();
         $Loginlog->Deviceid = $_deviceid;
         $Loginlog->Userid = $data[0]->id;
@@ -144,7 +150,8 @@ class ApiController extends Controller
             'deviceid' => $_deviceid,
             'ip' => $_ip,
             'token' => $_token,
-            'expired' => $_expired
+            'expired' => $_expired,
+            'image' => $image
         ]);
     }
 

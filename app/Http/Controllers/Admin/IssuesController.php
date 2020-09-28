@@ -181,11 +181,11 @@ class IssuesController extends Controller
             ->get();
         $user = User::all();
         $issuesLogs = IssuesLogs::all();
-        $uuid = Str::uuid()->toString();
-        // echo($uuid);
+        $Uuidapp = null;
+        $temp = 'asdasdsad';
         $appointment = DB::table('appointments')
             ->select('*')
-            ->where('created_at', '>', DateThai2(now()))
+            ->where('Uuid', $temp)
             ->get();
         // $appointment = null;
         // echo (DateThai2(now()));
@@ -197,8 +197,8 @@ class IssuesController extends Controller
             ['tracker'],
             ['user'],
             ['issuesLogs'],
-            ['uuid'],
-            ['appointment']
+            ['Uuidapp'],
+            ['appointment'],
         ));
     }
 

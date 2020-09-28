@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if (Auth::check()) {
-        echo('login');
+        // echo('login');
         return redirect('dashboard');
     }
     else{
@@ -75,6 +75,8 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
     //Appointment// 
     Route::post('/appointment-add', 'Admin\AppointmentController@store');
+    // Route::get('/genissues', 'Admin\AppointmentController@genissues');
+
 
 });
 

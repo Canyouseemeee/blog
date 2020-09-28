@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Appointments;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
+
 
 class AppointmentController extends Controller
 {
@@ -16,10 +20,14 @@ class AppointmentController extends Controller
         $appointment->Status = $request->input('Status');
         $appointment->Createby = $request->input('Createby');
         $appointment->Updateby = $request->input('Createby');
-        $appointment->Uuid = $request->input('uuid');
-        $Uuidapp = $appointment->Uuid;
+        $Uuidapp = Str::uuid()->toString();
+        $appointment->Uuid = $Uuidapp;
         $appointment->save();
 
-        return back()->with([['status','Appointment Added'],['Uuidapp']]);
+        return back()->with([$Uuidapp,'Uuidapp']);
+    }
+
+    public function genissues(){
+        return Route::get(['IssuesController@create' => 'Uuidapp']);
     }
 }
