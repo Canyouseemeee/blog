@@ -15,7 +15,9 @@ use App\Models\Issuestracker;
 use App\User;
 use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -58,7 +60,8 @@ class IssuesController extends Controller
             ->orderBy('Issuesid', 'DESC')
             ->get();
         $between = null;
-        return view('admin.issues.index', compact(['issues'], ['between']));
+        $Uuidapp = Str::uuid()->toString();
+        return view('admin.issues.index', compact(['issues'], ['between'], ['Uuidapp']));
     }
 
     public function getReport(Request $request)
@@ -79,7 +82,8 @@ class IssuesController extends Controller
             $between = null;
         }
         $issues = null;
-        return view('admin.issues.index', compact(['issues'], ['between']));
+        $Uuidapp = Str::uuid()->toString();
+        return view('admin.issues.index', compact(['issues'], ['between'], ['Uuidapp']));
     }
 
     public function defer()
@@ -93,7 +97,8 @@ class IssuesController extends Controller
             ->orderBy('Issuesid', 'DESC')
             ->get();
         $between = null;
-        return view('admin.issues.defer', compact(['issues'], ['between']));
+        $Uuidapp = Str::uuid()->toString();
+        return view('admin.issues.defer', compact(['issues'], ['between'], ['Uuidapp']));
     }
 
     public function getReportdefers(Request $request)
@@ -114,7 +119,8 @@ class IssuesController extends Controller
             $between = null;
         }
         $issues = null;
-        return view('admin.issues.defer', compact(['issues'], ['between']));
+        $Uuidapp = Str::uuid()->toString();
+        return view('admin.issues.defer', compact(['issues'], ['between'], ['Uuidapp']));
     }
 
     public function closed()
@@ -129,7 +135,8 @@ class IssuesController extends Controller
             ->orderBy('issues.Issuesid', 'DESC')
             ->get();
         $between = null;
-        return view('admin.issues.closed', compact(['issues'], ['between']));
+        $Uuidapp = Str::uuid()->toString();
+        return view('admin.issues.closed', compact(['issues'], ['between'], ['Uuidapp']));
     }
 
     public function getReportclosed(Request $request)
@@ -153,6 +160,7 @@ class IssuesController extends Controller
                     $between = null;
                 }
                 $issues = null;
+                $Uuidapp = Str::uuid()->toString();
                 break;
             case 'export':
                 $fromdate = $request->input('fromdate');
@@ -163,11 +171,13 @@ class IssuesController extends Controller
                 break;
         }
 
-        return view('admin.issues.closed', compact(['issues'], ['between']));
+        return view('admin.issues.closed', compact(['issues'], ['between'], ['Uuidapp']));
     }
 
-    public function create()
+
+    public function create($Uuidapp)
     {
+        //    echo($Uuidapp);
         $tracker = DB::table('issues_tracker')
             ->groupBy('TrackName')
             ->get();
@@ -181,14 +191,22 @@ class IssuesController extends Controller
             ->get();
         $user = User::all();
         $issuesLogs = IssuesLogs::all();
-        $Uuidapp = null;
-        $temp = 'asdasdsad';
+
+        // $Uuidapp = null;
+        if ($Uuidapp == null) {
+            $Uuidapp = Str::uuid()->toString();
+            $temp = $Uuidapp;
+        } else {
+            $temp = $Uuidapp;
+        }
         $appointment = DB::table('appointments')
             ->select('*')
             ->where('Uuid', $temp)
             ->get();
-        // $appointment = null;
-        // echo (DateThai2(now()));
+        if ($appointment == '[]') {
+            $appointment = null;
+        }
+
         return view('admin.issues.create', compact(
             ['issues'],
             ['issuespriority'],
@@ -197,7 +215,7 @@ class IssuesController extends Controller
             ['tracker'],
             ['user'],
             ['issuesLogs'],
-            ['Uuidapp'],
+            ['temp'],
             ['appointment'],
         ));
     }
@@ -212,7 +230,7 @@ class IssuesController extends Controller
                 'Description' => 'required',
                 'Assignment' => 'required',
                 'Tel' => 'required',
-                'Informer' => 'required|min:6',
+                'Informer' => 'required|min:6|max:8',
 
 
             ),
@@ -241,6 +259,7 @@ class IssuesController extends Controller
         $issues->Informer = $request->input('Informer');
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
+        $issues->Uuid = $request->input('temp');
         $issues->created_at = DateThai(now());
         $issues->updated_at = DateThai(now());
 
@@ -267,10 +286,21 @@ class IssuesController extends Controller
 
         $issues->save();
         // echo($issues->Issuesid);
-        $app = new Appointments();
-        $app->Issuesid = $issues->Issuesid;
-        $app->update();
-
+        $temp = $request->input('temp');
+        $Appoint = DB::table('appointments')
+            ->select('*')
+            ->where('Uuid', $temp)
+            ->get();
+        if ($Appoint == '[]') {
+            $appointment = null;
+        } else {
+            foreach ($Appoint as $row) {
+                $Appointmentsid = $row->Appointmentsid;
+            }
+            $appointment = Appointments::find($Appointmentsid);
+            $appointment->Issuesid = $issues->Issuesid;
+            $appointment->update();
+        }
 
         return redirect('/issues')->with('status', 'Data Added for Issues Successfully');
     }
@@ -290,7 +320,13 @@ class IssuesController extends Controller
             ->join('issues', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
             ->where([['Action', 'Closed'], ['issues_logs.Issuesid', $data->Issuesid]])
             ->get();
-
+        $appointment = DB::table('appointments')
+            ->select('*')
+            ->where('Issuesid', $Issuesid)
+            ->get();
+        if ($appointment == '[]') {
+            $appointment = null;
+        }
         $strStart = $data->created_at;
         if ($issueslog != '[]') {
             if ($issueslog != null) {
@@ -309,7 +345,8 @@ class IssuesController extends Controller
                         ['department'],
                         ['tracker'],
                         ['user'],
-                        ['dateinterval']
+                        ['dateinterval'],
+                        ['appointment'],
                     ));
                 }
             }
@@ -327,10 +364,11 @@ class IssuesController extends Controller
             ['department'],
             ['tracker'],
             ['user'],
+            ['appointment'],
         ));
     }
 
-    public function edit($Issuesid)
+    public function edit($Issuesid,$Uuid)
     {
         $data = Issues::find($Issuesid);
         $issues = Issues::all();
@@ -351,6 +389,19 @@ class IssuesController extends Controller
             ->where('DmStatus', 1)
             ->get();
         $user = User::all();
+        if ($Uuid == null) {
+            $Uuid = Str::uuid()->toString();
+            $temp = $Uuid;
+        } else {
+            $temp = $Uuid;
+        }
+        $appointment = DB::table('appointments')
+            ->select('*')
+            ->where('Issuesid', $Issuesid)
+            ->get();
+        if ($appointment == '[]') {
+            $appointment = null;
+        }
         return view('admin.issues.edit', compact(
             ['issues'],
             ['data'],
@@ -360,7 +411,10 @@ class IssuesController extends Controller
             ['issuespriority'],
             ['issuesstatus'],
             ['department'],
-            ['user']
+            ['user'],
+            ['appointment'],
+            ['temp']
+
         ));
     }
 

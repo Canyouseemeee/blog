@@ -10,7 +10,7 @@ class Issues extends Model
     protected $primaryKey = 'Issuesid';
     protected $fillable = [
         'Trackerid','Priorityid','Statusid','Departmentid','Createby','Updatedby','Closedby','Assignment','Subject','Tel','Comname','Informer','Description'
-        ,'Date_In','Image','created_at','updated_at'
+        ,'Date_In','Uuid','Image','created_at','updated_at'
     ];
 
     public function tracker(){

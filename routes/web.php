@@ -57,9 +57,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/issues-filter-news', 'Admin\IssuesController@getReport');
     Route::post('/issues-filter-defers', 'Admin\IssuesController@getReportdefers');
     Route::post('/issues-filter-closed', 'Admin\IssuesController@getReportclosed');
-    Route::get('/issues-edit/{id}', 'Admin\IssuesController@edit', function () {
-        Artisan::call('storage:link');
-    });
+    Route::get('/issues-edit/{id}/{Uuidapp?}', 'Admin\IssuesController@edit');
     Route::put('/issues-update/{id}', 'Admin\IssuesController@update', function () {
         Artisan::call('storage:link');
     });
@@ -69,14 +67,16 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/dynamic/fetch', 'Admin\IssuesController@fetch')->name('dynamiccontroller.fetch');
     Route::get('/findid', 'Admin\IssuesController@findid');
     Route::get('/findidother', 'Admin\IssuesController@findidother');
-    Route::get('/issues-create', 'Admin\IssuesController@create');
+    Route::get('/issues-create/{Uuidapp?}', 'Admin\IssuesController@create');
+    //Route::get('/issues-create', 'Admin\IssuesController@create');
     Route::get('/issues-select2', 'Admin\IssuesController@select2')->name('select2');
     Route::post('/issues-store', 'Admin\IssuesController@store')->name('issues-store');
 
     //Appointment// 
     Route::post('/appointment-add', 'Admin\AppointmentController@store');
-    // Route::get('/genissues', 'Admin\AppointmentController@genissues');
-
+    Route::put('/appointment-edit', 'Admin\AppointmentController@update');
+    Route::post('/issues-appointment-add', 'Admin\AppointmentController@storeedit');
+    Route::put('/issues-appointment-edit', 'Admin\AppointmentController@updateedit');
 
 });
 
@@ -95,9 +95,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/issues-filter-news-user', 'User\IssuesController@getReport');
     Route::post('/issues-filter-defers-user', 'User\IssuesController@getReportdefers');
     Route::post('/issues-filter-closed-user', 'User\IssuesController@getReportclosed');
-    Route::get('/issues-edit-user/{id}', 'User\IssuesController@edit', function () {
-        Artisan::call('storage:link');
-    });
+    Route::get('/issues-edit-user/{id}/{Uuidapp?}', 'User\IssuesController@edit');
     Route::put('/issues-update-user/{id}', 'User\IssuesController@update', function () {
         Artisan::call('storage:link');
     });
@@ -107,8 +105,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/dynamic-user/fetch', 'User\IssuesController@fetch')->name('dynamiccontroller.fetch');
     Route::get('/findid-user', 'User\IssuesController@findid');
     Route::get('/findidother-user', 'User\IssuesController@findidother');
-    Route::get('/issues-create-user', 'User\IssuesController@create');
+    Route::get('/issues-create-user/{Uuidapp?}', 'User\IssuesController@create');
     Route::post('/issues-store-user', 'User\IssuesController@store')->name('issues-store');
+
+    //Appointment// 
+    Route::post('/appointment-add', 'Admin\AppointmentController@store');
+    Route::put('/appointment-edit', 'Admin\AppointmentController@update');
+    Route::post('/issues-appointment-add', 'Admin\AppointmentController@storeedit');
+    Route::put('/issues-appointment-edit', 'Admin\AppointmentController@updateedit');
 });
 
 

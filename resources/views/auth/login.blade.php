@@ -9,7 +9,12 @@
 
                 <div class="card-body">
                     <form method="POST" action="{{ url('login-issues') }}">
-                    {{ csrf_field() }}
+                        {{ csrf_field() }}
+                        @if (session('status'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('status') }}
+                        </div>
+                        @endif
 
                         <div class="form-group row">
                             <label for="username" class="col-md-4 col-form-label text-md-right">Username</label>
@@ -18,9 +23,9 @@
                                 <input id="username" type="username" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
 
                                 @error('username')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>Username ไม่ถูกต้อง</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>Username ไม่ถูกต้อง</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -32,9 +37,9 @@
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
 
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>Password ไม่ถูกต้อง</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>Password ไม่ถูกต้อง</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>

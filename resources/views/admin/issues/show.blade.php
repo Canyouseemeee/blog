@@ -39,7 +39,16 @@ function formatdate($strDate)
     return $dateinterval->format('%D day %H:%I:%S');
 }
 
+function DateTime($strDate)
+{
+
+    $newDate = date('Y-m-d\TH:i', strtotime($strDate));
+    return "$newDate";
+}
+
 ?>
+
+
 <form action="{{ url('issues-show/'.$data->Issuesid) }}" method="PUT">
     {{ csrf_field() }}
     <div class="row">
@@ -205,12 +214,12 @@ function formatdate($strDate)
                                 @if($row->image === null)
                                 <td>ไม่มีรูปภาพ</td>
                                 @else
-                                <img src="{{ url('storage/'.$data->Image) }}" alt="Image" width="300" height="300"/>
+                                <img src="{{ url('storage/'.$data->Image) }}" alt="Image" width="300" height="300" />
                                 @endif
                             </div>
 
                         </div>
-                        <a href="{{ url('issues-edit/'.$data->Issuesid) }}" class="btn btn-primary">Edit</a>
+                        <a href="{{ url('issues-edit/'.$data->Issuesid.'/'.$data->Uuid) }}" class="btn btn-primary">Edit</a>
                         &nbsp;&nbsp;
                         <a href="/issues" class="btn btn-danger">Back</a>
                         &nbsp;&nbsp;
@@ -221,4 +230,64 @@ function formatdate($strDate)
         </div>
     </div>
 </form>
+&nbsp;
+@if(!is_null($appointment))
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Appointment Issues</h4>
+            </div>
+            <style>
+                .w-10p {
+                    width: 10% !important;
+                }
+
+                .w-11p {
+                    width: 300px;
+                    word-break: 'break-all';
+                }
+            </style>
+            <div class="card-body">
+                <table id="datatable" class="table">
+                    <thead class="text-primary">
+                        <th>Issuesid</th>
+                        <th>Date</th>
+                        <th>Comment</th>
+                        <th>Status</th>
+                        <th>Createby</th>
+                        <th>Updateby</th>
+                        <th>Created_at</th>
+                        <th>Updated_at</th>
+                    </thead>
+                    <tbody>
+                        @foreach($appointment as $row)
+                        <tr>
+                            <td>{{$row->Issuesid}}</td>
+                            <td>{{$row->Date}}</td>
+                            <td>
+                                    <div class="w-11p" style="height: 30px; overflow: hidden;">
+                                        {{$row->Comment}}
+                                    </div>
+                                </td>
+                            @if($row->Status === 1)
+                            <td>Active</td>
+                            @elseif($row->Status === 2)
+                            <td>Change</td>
+                            @elseif($row->Status === 3)
+                            <td>Disable</td>
+                            @endif
+                            <td>{{$row->Createby}}</td>
+                            <td>{{$row->Updateby}}</td>
+                            <td>{{$row->created_at}}</td>
+                            <td>{{$row->updated_at}}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 @endsection

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Exports\FilterExport;
+use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
+use App\Models\Appointments;
 use App\Models\Department;
 use App\Models\Issues;
 use App\Models\IssuesLogs;
@@ -13,8 +15,10 @@ use App\Models\Issuestracker;
 use App\User;
 use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 function DateThai($strDate)
@@ -26,6 +30,21 @@ function DateThai($strDate)
     $strMinute = date("i", strtotime($strDate));
     $strSeconds = date("s", strtotime($strDate));
     return "$strDay-$strMonth-$strYear $strHour:$strMinute:$strSeconds";
+}
+
+function DateThai2($strDate)
+{
+    $strYear = date("Y", strtotime($strDate));
+    $strMonth = date("n", strtotime($strDate));
+    $strDay = date("j", strtotime($strDate));
+    $strHour = date("H", strtotime($strDate)) + 7;
+    $strMinute = date("i", strtotime($strDate)) - 1;
+    $strSeconds = date("s", strtotime($strDate));
+    if ($strMonth < 10 && $strMinute < 10) {
+        return "$strYear-0$strMonth-$strDay $strHour:0$strMinute:$strSeconds";
+    } else {
+        return "$strYear-$strMonth-$strDay $strHour:$strMinute:$strSeconds";
+    }
 }
 
 class IssuesController extends Controller
@@ -41,7 +60,8 @@ class IssuesController extends Controller
             ->orderBy('Issuesid', 'DESC')
             ->get();
         $between = null;
-        return view('user.issues.index', compact(['issues'], ['between']));
+        $Uuidapp = Str::uuid()->toString();
+        return view('user.issues.index', compact(['issues'], ['between'], ['Uuidapp']));
     }
 
     public function getReport(Request $request)
@@ -62,7 +82,8 @@ class IssuesController extends Controller
             $between = null;
         }
         $issues = null;
-        return view('user.issues.index', compact(['issues'], ['between']));
+        $Uuidapp = Str::uuid()->toString();
+        return view('user.issues.index', compact(['issues'], ['between'], ['Uuidapp']));
     }
 
     public function defer()
@@ -76,7 +97,8 @@ class IssuesController extends Controller
             ->orderBy('Issuesid', 'DESC')
             ->get();
         $between = null;
-        return view('user.issues.defer', compact(['issues'], ['between']));
+        $Uuidapp = Str::uuid()->toString();
+        return view('user.issues.defer', compact(['issues'], ['between'], ['Uuidapp']));
     }
 
     public function getReportdefers(Request $request)
@@ -97,7 +119,8 @@ class IssuesController extends Controller
             $between = null;
         }
         $issues = null;
-        return view('user.issues.defer', compact(['issues'], ['between']));
+        $Uuidapp = Str::uuid()->toString();
+        return view('user.issues.defer', compact(['issues'], ['between'], ['Uuidapp']));
     }
 
     public function closed()
@@ -112,7 +135,8 @@ class IssuesController extends Controller
             ->orderBy('issues.Issuesid', 'DESC')
             ->get();
         $between = null;
-        return view('user.issues.closed', compact(['issues'], ['between']));
+        $Uuidapp = Str::uuid()->toString();
+        return view('user.issues.closed', compact(['issues'], ['between'], ['Uuidapp']));
     }
 
     public function getReportclosed(Request $request)
@@ -136,6 +160,7 @@ class IssuesController extends Controller
                     $between = null;
                 }
                 $issues = null;
+                $Uuidapp = Str::uuid()->toString();
                 break;
             case 'export':
                 $fromdate = $request->input('fromdate');
@@ -145,11 +170,14 @@ class IssuesController extends Controller
                 return Excel::download(new FilterExport($fromdate, $todate), 'issues.xlsx');
                 break;
         }
-        return view('user.issues.closed', compact(['issues'], ['between']));
+
+        return view('user.issues.closed', compact(['issues'], ['between'], ['Uuidapp']));
     }
 
-    public function create()
+
+    public function create($Uuidapp)
     {
+        //    echo($Uuidapp);
         $tracker = DB::table('issues_tracker')
             ->groupBy('TrackName')
             ->get();
@@ -162,13 +190,33 @@ class IssuesController extends Controller
             ->where('DmStatus', 1)
             ->get();
         $user = User::all();
+        $issuesLogs = IssuesLogs::all();
+
+        // $Uuidapp = null;
+        if ($Uuidapp == null) {
+            $Uuidapp = Str::uuid()->toString();
+            $temp = $Uuidapp;
+        } else {
+            $temp = $Uuidapp;
+        }
+        $appointment = DB::table('appointments')
+            ->select('*')
+            ->where('Uuid', $temp)
+            ->get();
+        if ($appointment == '[]') {
+            $appointment = null;
+        }
+
         return view('user.issues.create', compact(
             ['issues'],
             ['issuespriority'],
             ['issuesstatus'],
             ['department'],
             ['tracker'],
-            ['user']
+            ['user'],
+            ['issuesLogs'],
+            ['temp'],
+            ['appointment'],
         ));
     }
 
@@ -182,7 +230,8 @@ class IssuesController extends Controller
                 'Description' => 'required',
                 'Assignment' => 'required',
                 'Tel' => 'required',
-                'Informer' => 'required|min:6',
+                'Informer' => 'required|min:6|max:8',
+
 
             ),
             [
@@ -191,6 +240,8 @@ class IssuesController extends Controller
                 'Description.required' => 'You have enter Description',
                 'Assignment.required' => 'You have select Assignment',
                 'Tel.required' => 'You have enter Tel',
+                // 'Informer.required' => 'You have enter Informer',
+
             ]
         );
 
@@ -208,6 +259,7 @@ class IssuesController extends Controller
         $issues->Informer = $request->input('Informer');
         $issues->Description = $request->input('Description');
         $issues->Date_In = $request->input('Date_In');
+        $issues->Uuid = $request->input('temp');
         $issues->created_at = DateThai(now());
         $issues->updated_at = DateThai(now());
 
@@ -233,8 +285,24 @@ class IssuesController extends Controller
         // }
 
         $issues->save();
+        // echo($issues->Issuesid);
+        $temp = $request->input('temp');
+        $Appoint = DB::table('appointments')
+            ->select('*')
+            ->where('Uuid', $temp)
+            ->get();
+        if ($Appoint == '[]') {
+            $appointment = null;
+        } else {
+            foreach ($Appoint as $row) {
+                $Appointmentsid = $row->Appointmentsid;
+            }
+            $appointment = Appointments::find($Appointmentsid);
+            $appointment->Issuesid = $issues->Issuesid;
+            $appointment->update();
+        }
 
-        return redirect('/issues-user')->with('status', 'Data Added for Issues Successfully');
+        return redirect('/issues')->with('status', 'Data Added for Issues Successfully');
     }
 
     public function show($Issuesid)
@@ -252,7 +320,13 @@ class IssuesController extends Controller
             ->join('issues', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
             ->where([['Action', 'Closed'], ['issues_logs.Issuesid', $data->Issuesid]])
             ->get();
-
+        $appointment = DB::table('appointments')
+            ->select('*')
+            ->where('Issuesid', $Issuesid)
+            ->get();
+        if ($appointment == '[]') {
+            $appointment = null;
+        }
         $strStart = $data->created_at;
         if ($issueslog != '[]') {
             if ($issueslog != null) {
@@ -271,7 +345,8 @@ class IssuesController extends Controller
                         ['department'],
                         ['tracker'],
                         ['user'],
-                        ['dateinterval']
+                        ['dateinterval'],
+                        ['appointment'],
                     ));
                 }
             }
@@ -289,10 +364,11 @@ class IssuesController extends Controller
             ['department'],
             ['tracker'],
             ['user'],
+            ['appointment'],
         ));
     }
 
-    public function edit($Issuesid)
+    public function edit($Issuesid,$Uuid)
     {
         $data = Issues::find($Issuesid);
         $issues = Issues::all();
@@ -313,6 +389,19 @@ class IssuesController extends Controller
             ->where('DmStatus', 1)
             ->get();
         $user = User::all();
+        if ($Uuid == null) {
+            $Uuid = Str::uuid()->toString();
+            $temp = $Uuid;
+        } else {
+            $temp = $Uuid;
+        }
+        $appointment = DB::table('appointments')
+            ->select('*')
+            ->where('Issuesid', $Issuesid)
+            ->get();
+        if ($appointment == '[]') {
+            $appointment = null;
+        }
         return view('user.issues.edit', compact(
             ['issues'],
             ['data'],
@@ -322,7 +411,10 @@ class IssuesController extends Controller
             ['issuespriority'],
             ['issuesstatus'],
             ['department'],
-            ['user']
+            ['user'],
+            ['appointment'],
+            ['temp']
+
         ));
     }
 
@@ -346,6 +438,8 @@ class IssuesController extends Controller
                 'Description.required' => 'You have enter Description',
                 'Tel.required' => 'You have enter Tel',
                 'Assignment.required' => 'You have select Assignment',
+                // 'Informer.required' => 'You have enter Informer',
+
             ]
         );
 
@@ -382,7 +476,7 @@ class IssuesController extends Controller
 
         $issues->update();
 
-        return redirect('/issues-user')->with('status', 'Data Update for Issues Successfully');
+        return redirect('/issues')->with('status', 'Data Update for Issues Successfully');
     }
 
     public function fetch(Request $request)

@@ -6,6 +6,21 @@ Web Test
 
 @section('content')
 
+<?php
+function DateThai($strDate)
+{
+    $strYear = date("Y", strtotime($strDate));
+    $strMonth = date("n", strtotime($strDate));
+    $strDay = date("j", strtotime($strDate));
+    $strHour = date("H", strtotime($strDate));
+    $strMinute = date("i", strtotime($strDate));
+    $strSeconds = date("s", strtotime($strDate));
+    $newDate = date('Y-m-d\TH:i', strtotime($strDate));
+    return "$newDate";
+    // return "$strDay-$strMonth-$strYear\T$strHour:$strMinute";
+}
+?>
+
 <!-- Modal -->
 <div class="modal fade" id="issueslistModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -47,18 +62,86 @@ Web Test
 
                     <div class="form-group">
                         <!-- <label for="">Uuid</label> -->
-                        <input type="text" name="uuid" class="form-control" value="{{$Uuidapp}}" >
+                        <input name="temp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
+
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" name="action" value="save" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <!-- End Modal -->
+
+@if(!is_null($appointment))
+<!-- Edit Modal -->
+<div class="modal fade" id="issueseditModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="issuesModalLabel">Appointment Add</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ url('/appointment-edit') }}" method="post">
+                {{ csrf_field() }}
+                {{ method_field('PUT') }}
+                <div class="modal-body">
+
+                    @foreach($appointment as $app)
+                    <div class="form-group">
+                        <label for="">AppointDate</label>
+                        <input type="dateTime-local" id="AppointDate" name="AppointDate" value="{{DateThai($app->Date)}}" class="form-control">
+                        <!-- <input type="text" id="AppointDate" placeholder=""> -->
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Comment</label>
+                        <textarea name="Comment" class="form-control" rows="3">{{$app->Comment}}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Status</label>
+                        <select name="Status" class="form-control" require>
+                            <option value="1" @if ($app->Status === 1)
+                                selected
+                                @endif>Active</option>
+                            <option value="2" @if ($app->Status === 2)
+                                selected
+                                @endif>Change</option>
+                            <option value="3" @if ($app->Status === 3)
+                                selected
+                                @endif>Disable</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Updateby</label>
+                        <input type="text" name="Updateby" class="form-control" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <!-- <label for="">Uuid</label> -->
+                        <input name="temp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
+
+                    </div>
+                    @endforeach
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="action" value="save" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- End Edit Modal -->
+@endif
 
 <div class="row">
     <div class="col-md-12">
@@ -120,9 +203,7 @@ Web Test
                         <div class="col-md-3">
                             <label>Status</label>
                             <select name="Statusid" class="form-control create" require>
-                                @foreach($issuesstatus as $row3)
-                                <option value="{{$row3->Statusid}}" @if (old("Statusid")==$row3->Statusid) selected @endif>{{$row3->ISSName}}</option>
-                                @endforeach
+                                <option value="1" @if (old("Statusid")==1) selected @endif>New</option>
                             </select>
                         </div>
 
@@ -182,25 +263,18 @@ Web Test
                         <textarea type="text" name="Description" class="form-control" placeholder="Enter Description">{{old('Description')}}</textarea>
                     </div>
 
-                    @if(is_null($Uuidapp))
-                        <div class="form-group col-md-3">
-                            <label>Uuid</label>
-                            <input name="Informer" class="form-control" placeholder="{{$Uuidapp}}" value="{{$Uuidapp}}" readonly>
-                        </div>
-                    <div>
-                    @else
                     <div class="form-group col-md-3">
-                            <!-- <label>Uuid</label> -->
-                            <input name="Informer" class="form-control" placeholder="{{$Uuidapp}}" value="{{$Uuidapp}}" hidden>
-                        </div>
+                        <!-- <label>Uuid</label> -->
+                        <input name="temp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
+                    </div>
+
                     <div>
-                    @endif
                         <input type="file" id="Image" name="Image">
                     </div>
-                    <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issueslistModal">Appointment Add</a>
                     <br>
                     <input type="submit" value="Save" class="btn btn-primary ">
                     <a href="/issues" class="btn btn-danger">Back</a>
+                    <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issueslistModal">Appointment Add</a>
                 </form>
             </div>
         </div>
@@ -214,6 +288,16 @@ Web Test
             <div class="card-header">
                 <h4 class="card-title">Appointment Issues</h4>
             </div>
+            <style>
+                .w-10p {
+                    width: 10% !important;
+                }
+
+                .w-11p {
+                    width: 300px;
+                    word-break: 'break-all';
+                }
+            </style>
             <div class="card-body">
                 <table id="datatable" class="table">
                     <thead class="text-primary">
@@ -222,14 +306,19 @@ Web Test
                         <th>Status</th>
                         <th>Createby</th>
                         <th>Updateby</th>
-                        <th>created_at</th>
-                        <th>updated_at</th>
+                        <th>Created_at</th>
+                        <th>Updated_at</th>
+                        <th>Edit</th>
                     </thead>
                     <tbody>
                         @foreach($appointment as $row)
                         <tr>
                             <td>{{$row->Date}}</td>
-                            <td>{{$row->Comment}}</td>
+                            <td>
+                                <div class="w-11p" style="height: 30px; overflow: hidden;">
+                                    {{$row->Comment}}
+                                </div>
+                            </td>
                             @if($row->Status === 1)
                             <td>Active</td>
                             @elseif($row->Status === 2)
@@ -241,6 +330,9 @@ Web Test
                             <td>{{$row->Updateby}}</td>
                             <td>{{$row->created_at}}</td>
                             <td>{{$row->updated_at}}</td>
+                            <td>
+                                <a href="" data-toggle="modal" data-target="#issueseditModal" class="btn btn-success">Edit</a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -419,4 +511,5 @@ Web Test
         // }
     });
 </script>
+
 @endsection

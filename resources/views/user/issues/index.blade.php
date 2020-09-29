@@ -59,7 +59,7 @@ function DateThai($strDate)
         <div class="card">
             <div class="card-header py-3 ">
                 <h4 class="card-title"> New Issues
-                    <a href="{{ url('issues-create-user') }}" class="btn btn-primary float-right">Add Issues</a>
+                    <a href="{{ url('issues-create-user/'.$Uuidapp) }}" class="btn btn-primary float-right">Add Issues</a>
                 </h4>
             </div>
             <style>
