@@ -101,6 +101,7 @@
             <a class="collapse-item" href="/priority">Priority</a>
             <a class="collapse-item" href="/status">Status</a>
             <a class="collapse-item" href="/department">Department</a>
+            <a class="collapse-item" href="/device">Device</a>
           </div>
         </div>
       </li>

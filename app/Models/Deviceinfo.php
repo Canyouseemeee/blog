@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MacAddress extends Model
+class Deviceinfo extends Model
 {
     protected $table ='deviceinfo';
     protected $primaryKey = 'deviceinfoid';
     protected $fillable = [
-        'deviceid','created_at','updated_at'
+        'deviceid','active','created_at','updated_at'
     ];
 }

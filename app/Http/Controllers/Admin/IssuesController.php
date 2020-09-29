@@ -442,16 +442,25 @@ class IssuesController extends Controller
 
             ]
         );
-
+        $appoint = DB::table('appointments')
+        ->select('Appointmentsid')
+        ->where('Issuesid', $Issuesid)
+        ->get();
+        foreach($appoint as $row){
+            $data = $row->Appointmentsid;
+        }
         $issues = Issues::find($Issuesid);
+        $appointment = Appointments::find($data);
         $issues->Trackerid = $request->input('Trackerid');
         $issues->Priorityid = $request->input('Priorityid');
         if ($issues->Statusid == 2) {
             $issues->Statusid = $issues->Statusid;
+            $appointment->Status = 3;
         } else {
             $issues->Statusid = $request->input('Statusid');
             if ($issues->Statusid == 2) {
                 $issues->Closedby = $request->input('Updatedby');
+                $appointment->Status = 3;
             }
         }
         $issues->Departmentid = $request->input('Departmentid');
@@ -475,6 +484,7 @@ class IssuesController extends Controller
         }
 
         $issues->update();
+        $appointment->update();
 
         return redirect('/issues')->with('status', 'Data Update for Issues Successfully');
     }

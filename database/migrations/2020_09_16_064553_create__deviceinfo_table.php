@@ -16,6 +16,7 @@ class CreateDeviceinfoTable extends Migration
         Schema::create('deviceinfo', function (Blueprint $table) {
             $table->bigIncrements('deviceinfoid');
             $table->String('deviceid');
+            $table->integer('active');
             $table->timestamps();
         });
     }

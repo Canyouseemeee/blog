@@ -155,6 +155,15 @@ Route::put('/department-update/{id}', 'Admin\DepartmentController@update');
 Route::delete('/department-delete/{id}', 'Admin\DepartmentController@delete');
 Route::get('/changStatus', 'Admin\DepartmentController@changStatus')->name('change_Status');
 
+//device//
+Route::get('/device', 'Admin\DeviceController@index');
+Route::get('/device-create', 'Admin\DeviceController@create');
+Route::post('/device-store', 'Admin\DeviceController@store');
+Route::get('/device-edit/{id}', 'Admin\DeviceController@edit');
+Route::put('/device-update/{id}', 'Admin\DeviceController@update');
+Route::delete('/device-delete/{id}', 'Admin\DeviceController@delete');
+Route::get('/changStatus', 'Admin\DeviceController@changStatus')->name('change_Status');
+
 
 // Route::get('/abouts', 'Admin\AboutusController@index');
 // Route::post('/save-aboutus', 'Admin\AboutusController@store');
