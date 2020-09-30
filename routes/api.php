@@ -31,6 +31,7 @@ Route::post('/login-ad','AuthController@loginad');
 Route::get('/issues-closed','Admin\ApiController@Closed');
 Route::get('/issues-new','Admin\ApiController@New');
 Route::get('/issues-defer','Admin\ApiController@Defer');
+Route::get('/appointments','Admin\ApiController@Appointments');
 
 Route::post('/issues-updatestatus','Admin\ApiController@updatestatus');
 

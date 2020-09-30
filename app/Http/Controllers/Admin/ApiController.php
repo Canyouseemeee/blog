@@ -197,4 +197,14 @@ class ApiController extends Controller
             'url' => $url
         ]);
     }
+    
+    public function Appointments(){
+        $Appointments = DB::table('appointments')
+        ->select('*',)
+        ->where('Status','1')
+        ->whereBetween('Date', [DateThai(now()), DateThai(now()->addDay(7))])
+        ->get();
+
+        return response()->json($Appointments);
+    }
 }
