@@ -54,12 +54,12 @@ function DateThai($strDate)
 
                     <div class="form-group">
                         <!-- <label for="">Uuid</label> -->
-                        <input name="temp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}">
+                        <input name="temp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
                     </div>
 
                     <div class="form-group">
                         <!-- <label for="">Uuid</label> -->
-                        <input name="Issuesid" class="form-control" placeholder="{{$data->Issuesid}}" value="{{$data->Issuesid}}">
+                        <input name="Issuesid" class="form-control" placeholder="{{$data->Issuesid}}" value="{{$data->Issuesid}}" hidden>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -74,7 +74,8 @@ function DateThai($strDate)
 
 @if(!is_null($appointment))
 <!-- Edit Modal -->
-<div class="modal fade" id="issueseditModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalLabel" aria-hidden="true">
+@foreach($appointment as $row)
+<div class="modal fade" id="issueseditModal{{$row->Appointmentsid}}" tabindex="-1" role="dialog" aria-labelledby="issuesModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -88,28 +89,28 @@ function DateThai($strDate)
                 {{ method_field('PUT') }}
                 <div class="modal-body">
 
-                    @foreach($appointment as $app)
+
                     <div class="form-group">
                         <label for="">AppointDate</label>
-                        <input type="dateTime-local" id="AppointDate" name="AppointDate" value="{{DateThai($app->Date)}}" class="form-control">
+                        <input type="dateTime-local" id="AppointDate" name="AppointDate" value="{{DateThai($row->Date)}}" class="form-control">
                         <!-- <input type="text" id="AppointDate" placeholder=""> -->
                     </div>
 
                     <div class="form-group">
                         <label for="">Comment</label>
-                        <textarea name="Comment" class="form-control" rows="3">{{$app->Comment}}</textarea>
+                        <textarea name="Comment" class="form-control" rows="3">{{$row->Comment}}</textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="">Status</label>
                         <select name="Status" class="form-control" require>
-                            <option value="1" @if ($app->Status === 1)
+                            <option value="1" @if ($row->Status === 1)
                                 selected
                                 @endif>Active</option>
-                            <option value="2" @if ($app->Status === 2)
+                            <option value="2" @if ($row->Status === 2)
                                 selected
                                 @endif>Change</option>
-                            <option value="3" @if ($app->Status === 3)
+                            <option value="3" @if ($row->Status === 3)
                                 selected
                                 @endif>Disable</option>
                         </select>
@@ -122,14 +123,13 @@ function DateThai($strDate)
 
                     <div class="form-group">
                         <!-- <label for="">Uuid</label> -->
-                        <input name="Uuid" class="form-control" placeholder="{{$app->Uuid}}" value="{{$app->Uuid}}" hidden>
+                        <input name="Uuid" class="form-control" placeholder="{{$row->Uuid}}" value="{{$row->Uuid}}" hidden>
                     </div>
 
                     <div class="form-group">
                         <!-- <label for="">Uuid</label> -->
-                        <input name="Issuesid" class="form-control" placeholder="{{$app->Issuesid}}" value="{{$app->Issuesid}}" hidden>
+                        <input name="Issuesid" class="form-control" placeholder="{{$row->Issuesid}}" value="{{$row->Issuesid}}" hidden>
                     </div>
-                    @endforeach
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -140,6 +140,8 @@ function DateThai($strDate)
         </div>
     </div>
 </div>
+@endforeach
+
 <!-- End Edit Modal -->
 @endif
 
@@ -333,7 +335,7 @@ function DateThai($strDate)
                 }
 
                 .w-11p {
-                    width: 300px;
+                    width: 200px;
                     word-break: 'break-all';
                 }
             </style>
@@ -371,9 +373,12 @@ function DateThai($strDate)
                             <td>{{$row->Updateby}}</td>
                             <td>{{$row->created_at}}</td>
                             <td>{{$row->updated_at}}</td>
+                            @if($row->Status === 1)
                             <td>
-                                <a href="" data-toggle="modal" data-target="#issueseditModal" class="btn btn-success">Edit</a>
+                                <a href="" data-toggle="modal" data-target="#issueseditModal{{$row->Appointmentsid}}" class="btn btn-success">Edit</a>
                             </td>
+                            @endif
+                            
                         </tr>
                         @endforeach
                     </tbody>
@@ -555,6 +560,14 @@ function DateThai($strDate)
         //     },
         //     cache: true
         // }
+    });
+
+    $('#issueseditModal').on('show', function(e) {
+        var link = e.relatedTarget(),
+            modal = $(this),
+            Appointmentsid = link.data("Appointmentsid"),
+
+            modal.find("#Appointmentsid").val(Appointmentsid);
     });
 </script>
 @endsection

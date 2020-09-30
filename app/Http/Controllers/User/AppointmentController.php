@@ -24,7 +24,29 @@ function DateThai($strDate)
 
 class AppointmentController extends Controller
 {
-    public function store(Request $request){
+    public function store(Request $request)
+    {
+        $this->validate(
+            $request,
+            array(
+                'AppointDate' => 'required',
+                'Comment' => 'required',
+            ),
+        );
+        $count = DB::table('appointments')
+            ->select('Appointmentsid')
+            ->where('Uuid', $request->input('temp'))
+            ->count();
+        // echo($count);
+        if ($count >= 1) {
+            $data = DB::table('appointments')
+                ->select('Appointmentsid')
+                ->where('Uuid', $request->input('temp'))
+                ->max('Appointmentsid');
+            $appoint = Appointments::find($data);
+            $appoint->Status = 2;
+            $appoint->update();
+        }
         $appointment = new Appointments();
         $appointment->Issuesid = 0;
         $appointment->Date = $request->input('AppointDate');
@@ -41,13 +63,21 @@ class AppointmentController extends Controller
         return back();
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
+        $this->validate(
+            $request,
+            array(
+                'AppointDate' => 'required',
+                'Comment' => 'required',
+            ),
+        );
         $Uuid = $request->input('temp');
         $Appoint =  DB::table('appointments')
-        ->select('Appointmentsid')
-        ->where('Uuid', $Uuid)
-        ->get();
-        foreach($Appoint as $row){
+            ->select('Appointmentsid')
+            ->where('Uuid', $Uuid)
+            ->get();
+        foreach ($Appoint as $row) {
             $Appointmentsid = $row->Appointmentsid;
         }
         $appointment = Appointments::find($Appointmentsid);
@@ -64,7 +94,29 @@ class AppointmentController extends Controller
         return back();
     }
 
-    public function storeedit(Request $request){
+    public function storeedit(Request $request)
+    {
+        $this->validate(
+            $request,
+            array(
+                'AppointDate' => 'required',
+                'Comment' => 'required',
+            ),
+        );
+        $count = DB::table('appointments')
+            ->select('Appointmentsid')
+            ->where('Uuid', $request->input('temp'))
+            ->count();
+        // echo($count);
+        if ($count >= 1) {
+            $data = DB::table('appointments')
+                ->select('Appointmentsid')
+                ->where('Uuid', $request->input('temp'))
+                ->max('Appointmentsid');
+            $appoint = Appointments::find($data);
+            $appoint->Status = 2;
+            $appoint->update();
+        }
         $appointment = new Appointments();
         $appointment->Issuesid = $request->input('Issuesid');
         $appointment->Date = $request->input('AppointDate');
@@ -77,16 +129,25 @@ class AppointmentController extends Controller
         $appointment->updated_at = DateThai(now());
         $appointment->save();
 
+        
         return back();
     }
 
-    public function updateedit(Request $request){
+    public function updateedit(Request $request)
+    {
+        $this->validate(
+            $request,
+            array(
+                'AppointDate' => 'required',
+                'Comment' => 'required',
+            ),
+        );
         $Uuid = $request->input('Uuid');
         $Appoint =  DB::table('appointments')
-        ->select('Appointmentsid')
-        ->where('Uuid', $Uuid)
-        ->get();
-        foreach($Appoint as $row){
+            ->select('Appointmentsid')
+            ->where('Uuid', $Uuid)
+            ->get();
+        foreach ($Appoint as $row) {
             $Appointmentsid = $row->Appointmentsid;
         }
         $appointment = Appointments::find($Appointmentsid);
@@ -103,5 +164,4 @@ class AppointmentController extends Controller
 
         return back();
     }
-
 }

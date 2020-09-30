@@ -60,8 +60,11 @@ class IssuesController extends Controller
             ->orderBy('Issuesid', 'DESC')
             ->get();
         $between = null;
+        $fromdate = null;
+        $todate = null;
+        $data = null;
         $Uuidapp = Str::uuid()->toString();
-        return view('user.issues.index', compact(['issues'], ['between'], ['Uuidapp']));
+        return view('user.issues.index', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data']));
     }
 
     public function getReport(Request $request)
@@ -78,12 +81,22 @@ class IssuesController extends Controller
                 ->whereBetween('issues.Date_In', [$fromdate, $todate])
                 ->orderBy('Issuesid', 'DESC')
                 ->get();
+            $data = DB::table('issues_tracker')
+                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.updated_at')
+                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+                ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
+                ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+                ->where('issues.Statusid', 1)
+                ->whereBetween('issues.Date_In', [$fromdate, $todate])
+                ->orderBy('Issuesid', 'DESC')
+                ->count();
         } else {
             $between = null;
+            $data = null;
         }
         $issues = null;
         $Uuidapp = Str::uuid()->toString();
-        return view('user.issues.index', compact(['issues'], ['between'], ['Uuidapp']));
+        return view('user.issues.index', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data']));
     }
 
     public function defer()
@@ -97,8 +110,11 @@ class IssuesController extends Controller
             ->orderBy('Issuesid', 'DESC')
             ->get();
         $between = null;
+        $fromdate = null;
+        $todate = null;
+        $data = null;
         $Uuidapp = Str::uuid()->toString();
-        return view('user.issues.defer', compact(['issues'], ['between'], ['Uuidapp']));
+        return view('user.issues.defer', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data']));
     }
 
     public function getReportdefers(Request $request)
@@ -115,12 +131,22 @@ class IssuesController extends Controller
                 ->whereBetween('issues.Date_In', [$fromdate, $todate])
                 ->orderBy('Issuesid', 'DESC')
                 ->get();
+            $data = DB::table('issues_tracker')
+                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.updated_at')
+                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+                ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
+                ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+                ->where('issues.Statusid', 3)
+                ->whereBetween('issues.Date_In', [$fromdate, $todate])
+                ->orderBy('Issuesid', 'DESC')
+                ->count();
         } else {
             $between = null;
+            $data = null;
         }
         $issues = null;
         $Uuidapp = Str::uuid()->toString();
-        return view('user.issues.defer', compact(['issues'], ['between'], ['Uuidapp']));
+        return view('user.issues.defer', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data']));
     }
 
     public function closed()
@@ -135,8 +161,11 @@ class IssuesController extends Controller
             ->orderBy('issues.Issuesid', 'DESC')
             ->get();
         $between = null;
+        $fromdate = null;
+        $todate = null;
+        $data = null;
         $Uuidapp = Str::uuid()->toString();
-        return view('user.issues.closed', compact(['issues'], ['between'], ['Uuidapp']));
+        return view('user.issues.closed', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data']));
     }
 
     public function getReportclosed(Request $request)
@@ -156,8 +185,18 @@ class IssuesController extends Controller
                         ->whereBetween('issues.Date_In', [$fromdate, $todate])
                         ->orderBy('Issuesid', 'DESC')
                         ->get();
+                    $data = DB::table('issues_tracker')
+                        ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.updated_at')
+                        ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+                        ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
+                        ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+                        ->where('issues.Statusid', 2)
+                        ->whereBetween('issues.Date_In', [$fromdate, $todate])
+                        ->orderBy('Issuesid', 'DESC')
+                        ->count();
                 } else {
                     $between = null;
+                    $data = null;
                 }
                 $issues = null;
                 $Uuidapp = Str::uuid()->toString();
@@ -166,12 +205,13 @@ class IssuesController extends Controller
                 $fromdate = $request->input('fromdate');
                 $todate = $request->input('todate');
                 $between = null;
+                $data = null;
                 $issues = null;
                 return Excel::download(new FilterExport($fromdate, $todate), 'issues.xlsx');
                 break;
         }
 
-        return view('user.issues.closed', compact(['issues'], ['between'], ['Uuidapp']));
+        return view('user.issues.closed', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data']));
     }
 
 
@@ -202,6 +242,7 @@ class IssuesController extends Controller
         $appointment = DB::table('appointments')
             ->select('*')
             ->where('Uuid', $temp)
+            ->orderBy('Status', 'ASC')
             ->get();
         if ($appointment == '[]') {
             $appointment = null;
@@ -302,7 +343,7 @@ class IssuesController extends Controller
             $appointment->update();
         }
 
-        return redirect('/issues')->with('status', 'Data Added for Issues Successfully');
+        return redirect('/issues-user')->with('status', 'Data Added for Issues Successfully');
     }
 
     public function show($Issuesid)
@@ -368,7 +409,7 @@ class IssuesController extends Controller
         ));
     }
 
-    public function edit($Issuesid,$Uuid)
+    public function edit($Issuesid, $Uuid)
     {
         $data = Issues::find($Issuesid);
         $issues = Issues::all();
@@ -398,10 +439,17 @@ class IssuesController extends Controller
         $appointment = DB::table('appointments')
             ->select('*')
             ->where('Issuesid', $Issuesid)
+            // ->limit(1)
+            ->orderBy('Status', 'ASC')
             ->get();
         if ($appointment == '[]') {
             $appointment = null;
         }
+        // foreach($appointment as $row){
+        //     $app = $row->Appointmentsid;
+        // }
+        // $appoint = Appointments::find($app);
+        // echo($appointment);
         return view('user.issues.edit', compact(
             ['issues'],
             ['data'],
@@ -413,7 +461,8 @@ class IssuesController extends Controller
             ['department'],
             ['user'],
             ['appointment'],
-            ['temp']
+            ['temp'],
+            // ['appoint']
 
         ));
     }
@@ -444,6 +493,7 @@ class IssuesController extends Controller
         );
 
         $issues = Issues::find($Issuesid);
+
         $issues->Trackerid = $request->input('Trackerid');
         $issues->Priorityid = $request->input('Priorityid');
         if ($issues->Statusid == 2) {
@@ -476,7 +526,7 @@ class IssuesController extends Controller
 
         $issues->update();
 
-        return redirect('/issues')->with('status', 'Data Update for Issues Successfully');
+        return redirect('/issues-user')->with('status', 'Data Update for Issues Successfully');
     }
 
     public function fetch(Request $request)

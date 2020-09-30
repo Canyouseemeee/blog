@@ -11,7 +11,7 @@ Web Test
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
 
-    <form action="{{ url('dashboard-between') }}" method="post">
+    <form action="{{ url('dashboarduser-between') }}" method="post">
       {{ csrf_field() }}
       <div class="row">
         <label class="col-form-label text-md-right"> Fromdate : </label>
@@ -32,7 +32,11 @@ Web Test
 
   <!-- Content Row -->
   <div class="row">
-
+    @if($fromdate != null || $todate != null)
+    <div class="col-xl-12 col-md-12 mb-4">
+      <label class="col-form-label text-md-right"> Fromdate : {{$fromdate}} - Todate : {{$todate}} is quantity {{$data}} </label>
+    </div>
+    @endif
     <!-- Earnings (Monthly) Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
       <div class="card border-left-primary shadow h-100 py-2">

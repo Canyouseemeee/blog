@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-
     public function index()
     {
         //Data
@@ -125,6 +124,8 @@ class DashboardController extends Controller
         $issuesstatus = Issuesstatus::all();
         $issueschange = DB::table('issues')->where([['Statusid', 1], ['Date_In', '!=', now()->toDateString()]])->update(['Statusid' => 3]);
         // dd($issueschange);
+        $fromdate = null;
+        $todate = null;
         return view('user.dashboarduser', compact(
             ['issuesstatus'],
             ['issueschange'],
@@ -140,6 +141,8 @@ class DashboardController extends Controller
             ['datattbar3'],
             ['datattbarsw'],
             ['datattbarsw2'],
+            ['fromdate'],
+            ['todate']
 
         ));
     }
@@ -293,6 +296,8 @@ class DashboardController extends Controller
             ['datattbar3'],
             ['datattbarsw'],
             ['datattbarsw2'],
+            ['fromdate'],
+            ['todate']
         ));
     }
 }

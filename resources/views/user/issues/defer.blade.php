@@ -45,6 +45,9 @@ function DateThai($strDate)
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
+                                @if($fromdate != null)
+                                <label class="col-form-label text-md-right float-left"> Fromdate : {{$fromdate}} - Todate : {{$todate}} is quantity {{$data}} </label>
+                                @endif
                                 <button type="submit" class="btn btn-primary float-right">Search</button>
                                 <a href="#" class="btn btn-danger float-right">Reset</a>
                             </div>
@@ -166,30 +169,30 @@ function DateThai($strDate)
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
-  $(function() {
-    var from = $('#fromdate').datepicker({
-        dateFormat: "yy-mm-dd",
-        changeMonth: true
-      }).on("change", function() {
-        to.datepicker("option", "minDate", getDate(this));
-      }),
-      to = $('#todate').datepicker({
-        dateFormat: "yy-mm-dd",
-        changeMonth: true
-      }).on("change", function() {
-        from.datepicker("option", "maxDate", getDate(this));
-      });
+    $(function() {
+        var from = $('#fromdate').datepicker({
+                dateFormat: "yy-mm-dd",
+                changeMonth: true
+            }).on("change", function() {
+                to.datepicker("option", "minDate", getDate(this));
+            }),
+            to = $('#todate').datepicker({
+                dateFormat: "yy-mm-dd",
+                changeMonth: true
+            }).on("change", function() {
+                from.datepicker("option", "maxDate", getDate(this));
+            });
 
-    function getDate(element) {
-      var date;
-      var dateFormat = "yy-mm-dd";
-      try {
-        date = $.datepicker.parseDate(dateFormat, element.value);
-      } catch (error) {
-        date = null;
-      }
-      return date;
-    }
-  });
+        function getDate(element) {
+            var date;
+            var dateFormat = "yy-mm-dd";
+            try {
+                date = $.datepicker.parseDate(dateFormat, element.value);
+            } catch (error) {
+                date = null;
+            }
+            return date;
+        }
+    });
 </script>
 @endsection

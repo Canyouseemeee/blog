@@ -26,13 +26,18 @@ Web Test
           <button type="submit" class="btn btn-primary float-right">Search</button>
         </div>
       </div>
+
     </form>
 
   </div>
 
   <!-- Content Row -->
   <div class="row">
-
+    @if($fromdate != null || $todate != null)
+    <div class="col-xl-12 col-md-12 mb-4">
+      <label class="col-form-label text-md-right"> Fromdate : {{$fromdate}} - Todate : {{$todate}} is quantity {{$data}} </label>
+    </div>
+    @endif
     <!-- Earnings (Monthly) Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
       <div class="card border-left-primary shadow h-100 py-2">

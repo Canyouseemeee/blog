@@ -109,10 +109,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/issues-store-user', 'User\IssuesController@store')->name('issues-store');
 
     //Appointment// 
-    Route::post('/appointment-add', 'Admin\AppointmentController@store');
-    Route::put('/appointment-edit', 'Admin\AppointmentController@update');
-    Route::post('/issues-appointment-add', 'Admin\AppointmentController@storeedit');
-    Route::put('/issues-appointment-edit', 'Admin\AppointmentController@updateedit');
+    Route::post('/appointment-add-user', 'User\AppointmentController@store');
+    Route::put('/appointment-edit-user', 'User\AppointmentController@update');
+    Route::post('/issues-appointment-add-user', 'User\AppointmentController@storeedit');
+    Route::put('/issues-appointment-edit-user', 'User\AppointmentController@updateedit');
 });
 
 
