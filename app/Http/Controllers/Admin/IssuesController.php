@@ -523,6 +523,7 @@ class IssuesController extends Controller
         } else {
             $issues->Image = $request->input('Image2');
         }
+        // echo($issues->Image);
 
         $issues->update();
 

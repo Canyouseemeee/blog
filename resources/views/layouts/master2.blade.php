@@ -143,6 +143,19 @@
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
+ 
+            <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-expanded="false">
+                  <span class="glyphicon glyphicon-globe"></span>Notifications <span class="badge">22</span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                      <a href="">1</a>
+                      <a href="">2</a>
+                      <a href="">3</a>
+                    </li>
+                </ul>
+            </li>
 
             <div class="topbar-divider d-none d-sm-block"></div>
 

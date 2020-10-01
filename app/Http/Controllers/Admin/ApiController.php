@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Issues;
+use App\Models\IssuesCheckin;
 use App\Models\Loginlog;
 use App\Models\MacAddress;
 use App\Models\VersionApp;
@@ -100,19 +101,43 @@ class ApiController extends Controller
         return response()->json($demodata);
     }
 
-    public function updatestatus(Request $request){
+    public function poststatus(Request $request){
         $_issuesid = $request->input('issuesid');
         $_user = $request->input('user');
 
-        $issues = Issues::find($_issuesid);
-        $issues->Statusid = 2;
-        $issues->Closedby = $_user;
-        $issues->Updatedby = $_user;
-        $issues->updated_at = DateThai(now());
-        $issues->update();
+        $checkin = new IssuesCheckin();
+        $checkin->Issuesid = $_issuesid;
+        $checkin->Status = 1;
+        $checkin->Createby = $_user;
+        $checkin->created_at = DateThai(now());
+        $checkin->updated_at = DateThai(now());
+        $checkin->save();
 
         return response()->json([
             'status' => 'success'
+        ]);
+    }
+
+    public function getstatus(Request $request){
+        $_issuesid = $request->input('issuesid');
+
+        $checkin = DB::table('issues_checkin')
+        ->select('Status')
+        ->where('Issuesid',$_issuesid)
+        ->get();
+        // $status = $checkin->Status;
+        // $checkin->Issuesid = $_issuesid;
+        // $checkin->Status = 1;
+        // $checkin->Createby = $_user;
+        // $checkin->created_at = DateThai(now());
+        // $checkin->updated_at = DateThai(now());
+        // $checkin->save();
+        // echo($_issuesid);
+        // echo($checkin);
+        return response()->json([
+            'action' => 'success',
+            'status' => $checkin,
+        
         ]);
     }
 
@@ -201,10 +226,11 @@ class ApiController extends Controller
     public function Appointments(){
         $Appointments = DB::table('appointments')
         ->select('*',)
-        ->where('Status','1')
+        ->where([['Status','1'],['Issuesid','>',0]])
         ->whereBetween('Date', [DateThai(now()), DateThai(now()->addDay(7))])
         ->get();
 
         return response()->json($Appointments);
     }
+
 }

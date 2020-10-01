@@ -33,7 +33,8 @@ Route::get('/issues-new','Admin\ApiController@New');
 Route::get('/issues-defer','Admin\ApiController@Defer');
 Route::get('/appointments','Admin\ApiController@Appointments');
 
-Route::post('/issues-updatestatus','Admin\ApiController@updatestatus');
+Route::post('/issues-poststatus','Admin\ApiController@poststatus');
+Route::post('/issues-getstatus','Admin\ApiController@getstatus');
 
 //service ย่อยต่างๆ
 Route::post('/issues-deviceid','Admin\ApiController@Deviceid'); //รับค่า MacAddress

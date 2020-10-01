@@ -166,7 +166,10 @@ class AppointmentController extends Controller
     }
 
     public function calendar(){
-        $appointments = Appointments::all();
+        $appointments = DB::table('appointments')
+        ->select('*')
+        ->where('Issuesid','>', 0)
+        ->get();
         return view('admin.calendar.index', compact('appointments'));
     }
 }

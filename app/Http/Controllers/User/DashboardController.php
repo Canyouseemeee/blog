@@ -14,13 +14,16 @@ class DashboardController extends Controller
     public function index()
     {
         //Data
-        $data = DB::table('issues')->count();
+        $data = DB::table('issues')->where('issues.Date_In', now()->toDateString())->count();
         $data2 = DB::table('issues')->where([
             ['issues.Statusid', 1],
             ['issues.Date_In', now()->toDateString()]
         ])->count();
         $data3 = DB::table('issues')->where('issues.Statusid', 3)->count();
-        $data4 = DB::table('issues')->where('issues.Statusid', 2)->count();
+        $data4 = DB::table('issues')->where([
+            ['issues.Statusid', 2],
+            ['issues.Date_In', now()->toDateString()]
+        ])->count();
 
         //Donut
         $datalabel = "'News','Defer','Closed'";
