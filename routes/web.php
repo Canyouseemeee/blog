@@ -19,8 +19,7 @@ Route::get('/', function () {
     if (Auth::check()) {
         // echo('login');
         return redirect('dashboard');
-    }
-    else{
+    } else {
         return view('welcome');
     }
 });
@@ -78,6 +77,23 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/issues-appointment-add', 'Admin\AppointmentController@storeedit');
     Route::put('/issues-appointment-edit', 'Admin\AppointmentController@updateedit');
 
+    //department//
+    Route::get('/department', 'Admin\DepartmentController@index');
+    Route::get('/department-create', 'Admin\DepartmentController@create');
+    Route::post('/department-store', 'Admin\DepartmentController@store');
+    Route::get('/department-edit/{id}', 'Admin\DepartmentController@edit');
+    Route::put('/department-update/{id}', 'Admin\DepartmentController@update');
+    Route::delete('/department-delete/{id}', 'Admin\DepartmentController@delete');
+    Route::get('/changStatus', 'Admin\DepartmentController@changStatus')->name('change_Status');
+
+    //device//
+    Route::get('/device', 'Admin\DeviceController@index');
+    Route::get('/device-create', 'Admin\DeviceController@create');
+    Route::post('/device-store', 'Admin\DeviceController@store');
+    Route::get('/device-edit/{id}', 'Admin\DeviceController@edit');
+    Route::put('/device-update/{id}', 'Admin\DeviceController@update');
+    Route::delete('/device-delete/{id}', 'Admin\DeviceController@delete');
+    Route::get('/changDevice', 'Admin\DeviceController@changDevice')->name('change_Device');
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -116,6 +132,11 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 
+//Calendar
+Route::get('/calendar', 'Admin\AppointmentController@calendar');
+Route::get('/calendar-user', 'User\AppointmentController@calendar');
+
+
 //PDF
 Route::get('pdf/{id}', 'Admin\PDFController@pdf');
 
@@ -146,23 +167,7 @@ Route::get('/status-edit/{id}', 'Admin\StatusController@edit');
 Route::put('/status-update/{id}', 'Admin\StatusController@update');
 Route::delete('/status-delete/{id}', 'Admin\StatusController@delete');
 
-//department//
-Route::get('/department', 'Admin\DepartmentController@index');
-Route::get('/department-create', 'Admin\DepartmentController@create');
-Route::post('/department-store', 'Admin\DepartmentController@store');
-Route::get('/department-edit/{id}', 'Admin\DepartmentController@edit');
-Route::put('/department-update/{id}', 'Admin\DepartmentController@update');
-Route::delete('/department-delete/{id}', 'Admin\DepartmentController@delete');
-Route::get('/changStatus', 'Admin\DepartmentController@changStatus')->name('change_Status');
 
-//device//
-Route::get('/device', 'Admin\DeviceController@index');
-Route::get('/device-create', 'Admin\DeviceController@create');
-Route::post('/device-store', 'Admin\DeviceController@store');
-Route::get('/device-edit/{id}', 'Admin\DeviceController@edit');
-Route::put('/device-update/{id}', 'Admin\DeviceController@update');
-Route::delete('/device-delete/{id}', 'Admin\DeviceController@delete');
-Route::get('/changStatus', 'Admin\DeviceController@changStatus')->name('change_Status');
 
 
 // Route::get('/abouts', 'Admin\AboutusController@index');

@@ -74,6 +74,12 @@
           <span>History</span></a>
       </li>
 
+      <li class="{{ 'calendar' == request()->path() ? 'active' : '' }} nav-item ">
+        <a class="nav-link" href="/calendar">
+          <i class="fas fa-fw fa-calendar"></i>
+          <span>Calendar</span></a>
+      </li>
+
       <!-- Divider -->
       <hr class="sidebar-divider">
 

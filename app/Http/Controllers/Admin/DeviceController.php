@@ -71,7 +71,7 @@ class DeviceController extends Controller
         return redirect('/device')->with('status', 'Data Update for device Successfully');
     }
 
-    public function changStatus(Request $request)
+    public function changDevice(Request $request)
     {
         $deviceinfo = Deviceinfo::find($request->deviceinfoid);
         $deviceinfo->active = $request->active;

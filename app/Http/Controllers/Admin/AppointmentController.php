@@ -164,4 +164,9 @@ class AppointmentController extends Controller
 
         return back();
     }
+
+    public function calendar(){
+        $appointments = Appointments::all();
+        return view('admin.calendar.index', compact('appointments'));
+    }
 }

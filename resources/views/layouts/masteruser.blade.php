@@ -74,7 +74,13 @@
       <li class="{{ 'historyuser' == request()->path() ? 'active' : '' }} nav-item ">
         <a class="nav-link" href="/historyuser">
           <i class="fas fa-fw fa-cog"></i>
-          <span>History</span></a>
+          <span>History</span></a> 
+      </li>
+
+      <li class="{{ 'calendar-user' == request()->path() ? 'active' : '' }} nav-item ">
+        <a class="nav-link" href="/calendar-user">
+          <i class="fas fa-fw fa-calendar"></i>
+          <span>Calendar</span></a> 
       </li>
 
       <!-- Divider -->

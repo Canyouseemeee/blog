@@ -61,7 +61,7 @@ Web Test
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">News Issues Today</div>
+              <a href="/issues" class="text-xs font-weight-bold text-info text-uppercase mb-1">News Issues Today</a>
               <div class="h5 mb-0 font-weight-bold text-gray-800">{{$data2}}</div>
             </div>
             <div class="col-auto">
@@ -78,7 +78,7 @@ Web Test
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Defer Issues</div>
+              <a href="/defer" class="text-xs font-weight-bold text-danger text-uppercase mb-1">Defer Issues</a>
               <div class="row no-gutters align-items-center">
                 <div class="col-auto">
                   <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$data3}}</div>
@@ -104,7 +104,7 @@ Web Test
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Closed Issues</div>
+              <a href="/closed" class="text-xs font-weight-bold text-success text-uppercase mb-1">Closed Issues</a>
               <div class="h5 mb-0 font-weight-bold text-gray-800">{{$data4}}</div>
             </div>
             <div class="col-auto">
