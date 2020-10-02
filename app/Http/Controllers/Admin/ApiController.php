@@ -122,23 +122,11 @@ class ApiController extends Controller
         $_issuesid = $request->input('issuesid');
 
         $checkin = DB::table('issues_checkin')
-        ->select('Status')
+        ->select('*')
         ->where('Issuesid',$_issuesid)
         ->get();
-        // $status = $checkin->Status;
-        // $checkin->Issuesid = $_issuesid;
-        // $checkin->Status = 1;
-        // $checkin->Createby = $_user;
-        // $checkin->created_at = DateThai(now());
-        // $checkin->updated_at = DateThai(now());
-        // $checkin->save();
-        // echo($_issuesid);
-        // echo($checkin);
-        return response()->json([
-            'action' => 'success',
-            'status' => $checkin,
-        
-        ]);
+        // $checkin = IssuesCheckin::all();
+        return response()->json($checkin);
     }
 
     public function postlogin(Request $request)

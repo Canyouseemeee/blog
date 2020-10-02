@@ -5,32 +5,6 @@ Web Test
 @endsection
 
 @section('content')
-<!-- Delete Modal -->
-<!-- <div class="modal fade" id="deletemodalpop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">DELETE FORM</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="delete_modal_Form" method="POST">
-                {{ csrf_field() }}
-                {{ method_field('DELETE') }}
-                <div class="modal-body">
-                    <input type="hidden" id="delete_priority_id">
-                    <h5>Are you sure.? you want to delete this Data</h5>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-danger">Yes. Delete It.</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> -->
-<!-- End Delete Modal -->
 
 <div class="row">
     <div class="col-md-12">
@@ -52,7 +26,7 @@ Web Test
                         <tr>
                             <td>{{$row->logs_id}}</td>
                             <td>{{$row->Issuesid}}</td>
-                            <td>{{$row->Users}}</td>
+                            <td>{{$row->Createby}}</td>
                             <td>{{$row->Action}}</td>
                             <td>{{$row->create_at}}</td>
                         </tr>

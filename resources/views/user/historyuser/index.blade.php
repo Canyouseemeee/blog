@@ -26,7 +26,7 @@ Web Test
                         <tr>
                             <td>{{$row->logs_id}}</td>
                             <td>{{$row->Issuesid}}</td>
-                            <td>{{$row->Users}}</td>
+                            <td>{{$row->Createby}}</td>
                             <td>{{$row->Action}}</td>
                             <td>{{$row->create_at}}</td>
                         </tr>
