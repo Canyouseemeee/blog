@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Issues;
 use App\Models\IssuesCheckin;
+use App\Models\IssuesComment;
 use App\Models\Loginlog;
 use App\Models\MacAddress;
 use App\Models\VersionApp;
@@ -118,6 +119,48 @@ class ApiController extends Controller
         ]);
     }
 
+    public function updateclosedstatus(Request $request){
+        $_issuesid = $request->input('issuesid');
+        $_user = $request->input('user');
+
+        $checkinid = DB::table('issues_checkin')
+        ->select('*')
+        ->where('Issuesid',$_issuesid)
+        ->get();
+        foreach ($checkinid as $row) {
+            $id = $row->Checkinid;
+        }
+        $checkin = IssuesCheckin::find($id);
+        $checkin->Status = 2;
+        $checkin->Updateby = $_user;
+        $checkin->update();
+
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+
+    public function updatekeepstatus(Request $request){
+        $_issuesid = $request->input('issuesid');
+        $_user = $request->input('user');
+
+        $checkinid = DB::table('issues_checkin')
+        ->select('*')
+        ->where('Issuesid',$_issuesid)
+        ->get();
+        foreach ($checkinid as $row) {
+            $id = $row->Checkinid;
+        }
+        $checkin = IssuesCheckin::find($id);
+        $checkin->Status = 3;
+        $checkin->Updateby = $_user;
+        $checkin->update();
+
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+
     public function getstatus(Request $request){
         $_issuesid = $request->input('issuesid');
 
@@ -127,6 +170,57 @@ class ApiController extends Controller
         ->get();
         // $checkin = IssuesCheckin::all();
         return response()->json($checkin);
+    }
+
+    public function getcountComment(Request $request){
+        $_issuesid = $request->input('issuesid');
+        $comment = DB::table('issues_comment')
+        ->select('*')
+        ->where('Issuesid',$_issuesid)
+        ->count();
+        return response()->json(['count' => $comment]);
+    }
+
+    public function getComment(Request $request){
+        $_issuesid = $request->input('issuesid');
+        $comment = DB::table('issues_comment')
+        ->select('*')
+        ->where('Issuesid',$_issuesid)
+        ->get();
+        return response()->json($comment);
+    }
+
+    public function postComment(Request $request){
+        $_issuesid = $request->input('issuesid');
+        $_comment = $request->input('comment');
+        $_user = $request->input('user');
+        $_image = $request->input('image');
+        $_filename = $request->input('filename');
+
+        $comment = new IssuesComment();
+        $comment->Issuesid = $_issuesid;
+        $comment->Type = 1;
+        $comment->Comment = $_comment;
+        $comment->Createby = $_user;
+        $comment->created_at = DateThai(now());
+        $comment->updated_at = DateThai(now());
+
+        // if ($_filename != null) {
+        //     $filename = $_filename;
+        //     $file = time() . '.' . $filename;
+        //     $comment->Image = $request->Image->storeAs('images', $file, 'public');
+            
+        // } else {
+        //     $comment->Image = null;
+        // }
+        $comment->Image = $_filename;
+        $realImage = base64_decode($_image);
+        file_put_contents('storage/images/'.$_filename,$realImage);
+        $comment->save();
+
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
 
     public function postlogin(Request $request)

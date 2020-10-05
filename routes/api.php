@@ -34,7 +34,13 @@ Route::get('/issues-defer','Admin\ApiController@Defer');
 Route::get('/appointments','Admin\ApiController@Appointments');
 
 Route::post('/issues-poststatus','Admin\ApiController@poststatus');
+Route::post('/issues-checkclosedstatus','Admin\ApiController@updateclosedstatus');
+Route::post('/issues-checkkeepstatus','Admin\ApiController@updatekeepstatus');
 Route::post('/issues-getstatus','Admin\ApiController@getstatus');
+
+Route::post('/issues-getcountComment','Admin\ApiController@getcountComment');
+Route::post('/issues-getComment','Admin\ApiController@getComment');
+Route::post('/issues-postComment','Admin\ApiController@postComment');
 
 //service ย่อยต่างๆ
 Route::post('/issues-deviceid','Admin\ApiController@Deviceid'); //รับค่า MacAddress

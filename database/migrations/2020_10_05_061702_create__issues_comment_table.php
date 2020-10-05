@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIssuesCheckinTable extends Migration
+class CreateIssuesCommentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateIssuesCheckinTable extends Migration
      */
     public function up()
     {
-        Schema::create('issues_checkin', function (Blueprint $table) {
-            $table->bigIncrements('Checkinid');
+        Schema::create('issues_comment', function (Blueprint $table) {
+            $table->bigIncrements('Commentid');
             $table->integer('Issuesid');
             $table->integer('Status');
+            $table->integer('Type');
+            $table->string('Comment');
             $table->string('Createby');
-            $table->string('Updateby');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateIssuesCheckinTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('issues_checkin');
+        Schema::dropIfExists('issues_comment');
     }
 }
