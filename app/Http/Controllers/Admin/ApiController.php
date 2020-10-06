@@ -109,6 +109,7 @@ class ApiController extends Controller
         $checkin = new IssuesCheckin();
         $checkin->Issuesid = $_issuesid;
         $checkin->Status = 1;
+        $checkin->Detail = '';
         $checkin->Createby = $_user;
         $checkin->created_at = DateThai(now());
         $checkin->updated_at = DateThai(now());
@@ -122,16 +123,17 @@ class ApiController extends Controller
     public function updateclosedstatus(Request $request){
         $_issuesid = $request->input('issuesid');
         $_user = $request->input('user');
+        $_detail = $request->input('detail');
+        $_checkid = $request->input('checkin');
 
         $checkinid = DB::table('issues_checkin')
         ->select('*')
         ->where('Issuesid',$_issuesid)
         ->get();
-        foreach ($checkinid as $row) {
-            $id = $row->Checkinid;
-        }
-        $checkin = IssuesCheckin::find($id);
+        
+        $checkin = IssuesCheckin::find($_checkid);
         $checkin->Status = 2;
+        $checkin->Detail = $_detail;
         $checkin->Updateby = $_user;
         $checkin->update();
 
@@ -143,16 +145,17 @@ class ApiController extends Controller
     public function updatekeepstatus(Request $request){
         $_issuesid = $request->input('issuesid');
         $_user = $request->input('user');
+        $_detail = $request->input('detail');
+        $_checkid = $request->input('checkin');
 
         $checkinid = DB::table('issues_checkin')
         ->select('*')
         ->where('Issuesid',$_issuesid)
         ->get();
-        foreach ($checkinid as $row) {
-            $id = $row->Checkinid;
-        }
-        $checkin = IssuesCheckin::find($id);
+        
+        $checkin = IssuesCheckin::find($_checkid);
         $checkin->Status = 3;
+        $checkin->Detail = $_detail;
         $checkin->Updateby = $_user;
         $checkin->update();
 
@@ -194,8 +197,7 @@ class ApiController extends Controller
         $_issuesid = $request->input('issuesid');
         $_comment = $request->input('comment');
         $_user = $request->input('user');
-        $_image = $request->input('image');
-        $_filename = $request->input('filename');
+    
 
         $comment = new IssuesComment();
         $comment->Issuesid = $_issuesid;
@@ -205,18 +207,28 @@ class ApiController extends Controller
         $comment->created_at = DateThai(now());
         $comment->updated_at = DateThai(now());
 
-        // if ($_filename != null) {
-        //     $filename = $_filename;
-        //     $file = time() . '.' . $filename;
-        //     $comment->Image = $request->Image->storeAs('images', $file, 'public');
-            
-        // } else {
-        //     $comment->Image = null;
-        // }
-        $comment->Image = $_filename;
-        $realImage = base64_decode($_image);
-        file_put_contents('storage/images/'.$_filename,$realImage);
+        if ($request->hasFile('image')) {
+            $filename = $request->image->getClientOriginalName();
+            $file = time() . '.' . $filename;
+            $comment->Image = $request->image->storeAs('images', $file, 'public');
+            // dd($file);
+        } else {
+            $comment->Image = null;
+        }
+        
         $comment->save();
+
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+
+    public function postStatusComment(Request $request){
+        $_commentid = $request->input('commentid');
+
+        $comment = IssuesComment::find($_commentid);
+        $comment->Status = 0;
+        $comment->update();
 
         return response()->json([
             'status' => 'success'

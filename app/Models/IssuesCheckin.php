@@ -9,6 +9,6 @@ class IssuesCheckin extends Model
     protected $table ='issues_checkin';
     protected $primaryKey = 'Checkinid';
     protected $fillable = [
-        'Issuesid','Status','Createby','Updateby','created_at','updated_at'
+        'Issuesid','Status','Detail','Createby','Updateby','created_at','updated_at'
     ];
 }

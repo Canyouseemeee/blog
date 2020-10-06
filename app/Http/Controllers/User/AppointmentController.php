@@ -165,7 +165,7 @@ class AppointmentController extends Controller
         return back();
     }
 
-    public function calendar(){
+    public function calendar2(){
         $appointments = DB::table('appointments')
         ->select('*')
         ->where('Issuesid','>', 0)

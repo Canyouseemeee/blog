@@ -3,7 +3,6 @@
 
 @section('content')
 
-
 <!-- <h3>Calendar</h3> -->
 
 <div class="row">
@@ -36,8 +35,8 @@
             events: [
                 @foreach($appointments as $appointment) {
                     title: 'Issuesid : {{$appointment->Issuesid}}',
-                    start: '{{$appointment->Date}}'
-                    url : "{{ url('issues-show/'. $appointment->Issuesid) }}"
+                    start: '{{$appointment->Date}}',
+                    url : "{{ url('issues-show-user/'. $appointment->Issuesid) }}"
                 },
                 @endforeach
             ],

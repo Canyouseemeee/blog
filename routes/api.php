@@ -41,6 +41,8 @@ Route::post('/issues-getstatus','Admin\ApiController@getstatus');
 Route::post('/issues-getcountComment','Admin\ApiController@getcountComment');
 Route::post('/issues-getComment','Admin\ApiController@getComment');
 Route::post('/issues-postComment','Admin\ApiController@postComment');
+Route::post('/issues-postStatusComment','Admin\ApiController@postStatusComment');
+
 
 //service ย่อยต่างๆ
 Route::post('/issues-deviceid','Admin\ApiController@Deviceid'); //รับค่า MacAddress

@@ -17,10 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if (Auth::check()) {
-        // echo('login');
         return redirect('dashboard');
-    } else {
-        return view('welcome');
+    }else {
+        return view('auth.login');
     }
 });
 
@@ -134,7 +133,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 //Calendar
 Route::get('/calendar', 'Admin\AppointmentController@calendar');
-Route::get('/calendar-user', 'User\AppointmentController@calendar');
+Route::get('/calendar-user', 'User\AppointmentController@calendar2');
 
 
 //PDF
