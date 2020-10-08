@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Appointments;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,9 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
     //History Logs
     Route::get('/history', 'Admin\LogsController@index');
+
+    Route::get('/checkin-checkout', 'Admin\CheckinCheckoutController@index');
+
 
     //issues//
     Route::get('/issues', 'Admin\IssuesController@index');
@@ -128,6 +132,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/appointment-edit-user', 'User\AppointmentController@update');
     Route::post('/issues-appointment-add-user', 'User\AppointmentController@storeedit');
     Route::put('/issues-appointment-edit-user', 'User\AppointmentController@updateedit');
+
+    Route::get('/checkin-checkout-user', 'User\CheckinCheckoutController@index');
+
 });
 
 

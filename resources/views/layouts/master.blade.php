@@ -74,6 +74,12 @@
           <span>History</span></a>
       </li>
 
+      <li class="{{ 'checkin-checkout' == request()->path() ? 'active' : '' }} nav-item ">
+        <a class="nav-link" href="/checkin-checkout">
+        <i class="fas fa-fw fa-clipboard-check"></i>
+          <span>Checkin-Checkout</span></a>
+      </li>
+
       <li class="{{ 'calendar' == request()->path() ? 'active' : '' }} nav-item ">
         <a class="nav-link" href="/calendar">
           <i class="fas fa-fw fa-calendar"></i>

@@ -19,7 +19,10 @@ class CreateIssuesCommentTable extends Migration
             $table->integer('Status');
             $table->integer('Type');
             $table->string('Comment');
+            $table->string('Image');
+            $table->string('Uuid');
             $table->string('Createby');
+            $table->string('Updateby');
             $table->timestamps();
         });
     }

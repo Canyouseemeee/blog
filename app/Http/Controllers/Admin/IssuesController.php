@@ -247,6 +247,14 @@ class IssuesController extends Controller
         if ($appointment == '[]') {
             $appointment = null;
         }
+        $comment = DB::table('issues_comment')
+        ->select('*')
+        ->where('Uuid', $temp)
+        ->orderBy('Commentid', 'ASC')
+        ->get();
+        if ($comment == '[]') {
+            $comment = null;
+        }
 
         return view('admin.issues.create', compact(
             ['issues'],
@@ -258,6 +266,7 @@ class IssuesController extends Controller
             ['issuesLogs'],
             ['temp'],
             ['appointment'],
+            ['comment'],
         ));
     }
 

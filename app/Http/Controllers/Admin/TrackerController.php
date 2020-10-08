@@ -31,8 +31,8 @@ class TrackerController extends Controller
         $this->validate($request, 
         array(
             'TrackName' => 'required|max:2' ,
-            'SubTrackName' => 'required|max:10',
-            'Name' => 'required|max:10'
+            'SubTrackName' => 'required|max:20',
+            'Name' => 'required|max:20'
 
         ),[
             'TrackName.required' => 'You have select TrackName',

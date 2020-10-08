@@ -9,6 +9,6 @@ class IssuesComment extends Model
     protected $table ='issues_comment';
     protected $primaryKey = 'Commentid';
     protected $fillable = [
-        'Issuesid','Status','Type','Comment','Createby','created_at','updated_at'
+        'Issuesid','Status','Type','Comment','Image','Uuid','Createby','created_at','updated_at'
     ];
 }

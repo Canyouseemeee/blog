@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointments;
+use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,7 @@ function DateThai($strDate)
 
 class AppointmentController extends Controller
 {
+
     public function store(Request $request)
     {
         $this->validate(
@@ -60,7 +62,7 @@ class AppointmentController extends Controller
         $appointment->updated_at = DateThai(now());
         $appointment->save();
 
-        return back();
+        // return response();
     }
 
     public function update(Request $request)
@@ -72,7 +74,7 @@ class AppointmentController extends Controller
                 'Comment' => 'required',
             ),
         );
-        $Uuid = $request->input('temp');
+        $Uuid = $request->input('Uuid');
         $Appoint =  DB::table('appointments')
             ->select('Appointmentsid')
             ->where('Uuid', $Uuid)
@@ -80,14 +82,14 @@ class AppointmentController extends Controller
         foreach ($Appoint as $row) {
             $Appointmentsid = $row->Appointmentsid;
         }
+        // echo($Uuid);
         $appointment = Appointments::find($Appointmentsid);
         $appointment->Issuesid = 0;
         $appointment->Date = $request->input('AppointDate');
         $appointment->Comment = $request->input('Comment');
         $appointment->Status = $request->input('Status');
         $appointment->Updateby = $request->input('Updateby');
-        $appointment->Uuid = $request->input('temp');
-        $appointment->created_at = DateThai(now());
+        $appointment->Uuid = $request->input('Uuid');
         $appointment->updated_at = DateThai(now());
         $appointment->update();
 
@@ -130,7 +132,7 @@ class AppointmentController extends Controller
         $appointment->save();
 
         
-        return back();
+        return response()->json();
     }
 
     public function updateedit(Request $request)
@@ -158,7 +160,6 @@ class AppointmentController extends Controller
         $appointment->Updateby = $request->input('Updateby');
         // $Uuidapp = Str::uuid()->toString();
         $appointment->Uuid = $request->input('Uuid');
-        $appointment->created_at = DateThai(now());
         $appointment->updated_at = DateThai(now());
         $appointment->update();
 

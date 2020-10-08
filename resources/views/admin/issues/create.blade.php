@@ -21,7 +21,7 @@ function DateThai($strDate)
 }
 ?>
 
-<!-- Modal -->
+<!-- Modal Appointments -->
 <div class="modal fade" id="issueslistModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -31,9 +31,9 @@ function DateThai($strDate)
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ url('/appointment-add') }}" method="post">
+            <!-- <form action="{{ url('/appointment-add') }}" method="post"> -->
+            <form id="addform">
                 {{ csrf_field() }}
-
                 <div class="modal-body">
 
                     <div class="form-group">
@@ -43,12 +43,12 @@ function DateThai($strDate)
 
                     <div class="form-group">
                         <label for="">Comment</label>
-                        <textarea name="Comment" class="form-control" rows="3" placeholder="Enter Comment"></textarea>
+                        <textarea id="Comment" name="Comment" class="form-control" rows="3" placeholder="Enter Comment"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="">Status</label>
-                        <select name="Status" class="form-control" require>
+                        <select id="Status" name="Status" class="form-control" require>
                             <option value="1">Active</option>
                             <option value="2">Change</option>
                             <option value="3">Disable</option>
@@ -62,13 +62,13 @@ function DateThai($strDate)
 
                     <div class="form-group">
                         <!-- <label for="">Uuid</label> -->
-                        <input name="temp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
+                        <input id="tempappoint" name="temp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
 
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="action" value="save" class="btn btn-primary">Save changes</button>
+                    <button type="button" id="appointmentclosed" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="savemodal" name="action" value="save" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
         </div>
@@ -77,7 +77,7 @@ function DateThai($strDate)
 <!-- End Modal -->
 
 @if(!is_null($appointment))
-<!-- Edit Modal -->
+<!-- Edit Modal Appointments -->
 @foreach($appointment as $row)
 <div class="modal fade" id="issueseditModal{{$row->Appointmentsid}}" tabindex="-1" role="dialog" aria-labelledby="issuesModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -145,17 +145,66 @@ function DateThai($strDate)
     </div>
 </div>
 @endforeach
-
 <!-- End Edit Modal -->
 @endif
 
-<div class="row">
+<!-- Modal Comments -->
+<div class="modal fade" id="issuescommentsModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalComments" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="issuesModalComments">Appointment Add</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- <form action="{{ url('/appointment-add') }}" method="post"> -->
+            <form id="addformcomment">
+                {{ csrf_field() }}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="">Comment</label>
+                        <textarea name="Comment" class="form-control" rows="3" placeholder="Enter Comment"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Image</label><br>
+                        <input type="file" id="Imagecomment" name="Imagecomment">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Createby</label>
+                        <input type="text" name="Createby" class="form-control" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <!-- <label for="">Uuid</label> -->
+                        <input id="tempappoint" name="temp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="savemodal" name="action" value="save" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
+<button type="button" class="btn btn-warning btn_showIssues">Issues Create</button>
+<button type="button" class="btn btn-primary btn_showComments">Comments</button>
+<button type="button" class="btn btn-danger btn_showAppointments">Appointments</button>
+
+<div class="row subissues">
     <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
+        <div class="card card-nav-tabs card-plain">
+            <div class="card-header ">
                 <h4 class="card-title"> Issues-Create</h4>
             </div>
-            <div class="card-body">
+            <div class="card-body ">
                 @if($errors)
                 @foreach($errors->all() as $error)
                 <div class="alert alert-danger">
@@ -280,19 +329,19 @@ function DateThai($strDate)
                     <br>
                     <input type="submit" value="Save" class="btn btn-primary ">
                     <a href="/issues" class="btn btn-danger">Back</a>
-                    <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issueslistModal">Appointment Add</a>
                 </form>
             </div>
         </div>
     </div>
 </div>
 &nbsp;
-@if(!is_null($appointment))
-<div class="row">
+<div class="row panelsub_all subappoint">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Appointment Issues</h4>
+                <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issueslistModal">Appointment Add</a>
+                <h4 class="card-title">Appointment Issues </h4>
+
             </div>
             <style>
                 .w-10p {
@@ -304,8 +353,10 @@ function DateThai($strDate)
                     word-break: 'break-all';
                 }
             </style>
-            <div class="card-body">
-                <table id="datatable" class="table">
+            <div class="card-body" id="refresh">
+                @if(!is_null($appointment))
+
+                <table id="datatableappoint" class="table">
                     <thead class="text-primary">
                         <th>Date</th>
                         <th>Comment</th>
@@ -316,7 +367,7 @@ function DateThai($strDate)
                         <th>Updated_at</th>
                         <th>Edit</th>
                     </thead>
-                    <tbody>
+                    <tbody id="datatableappointbody">
                         @foreach($appointment as $row)
                         <tr>
                             <td>{{$row->Date}}</td>
@@ -345,16 +396,93 @@ function DateThai($strDate)
                         @endforeach
                     </tbody>
                 </table>
+                @else
+                <h3>ไม่มีข้อมูล</h3>
+                @endif
+
             </div>
         </div>
     </div>
 </div>
-@endif
+
+<div class="row panelsub_all subcomment">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issuescommentsModal">Comments Add</a>
+                <h4 class="card-title">Comments</h4>
+
+            </div>
+            <style>
+                .w-10p {
+                    width: 10% !important;
+                }
+
+                .w-11p {
+                    width: 300px;
+                    word-break: 'break-all';
+                }
+            </style>
+            @if(!is_null($comment))
+
+            <div class="card-body">
+                <table id="datatable" class="table">
+                    <thead class="text-primary">
+                        <th>Date</th>
+                        <th>Comment</th>
+                        <th>Status</th>
+                        <th>Createby</th>
+                        <th>Updateby</th>
+                        <th>Created_at</th>
+                        <th>Updated_at</th>
+                        <th>Edit</th>
+                    </thead>
+                    <tbody>
+                        @foreach($comment as $row)
+                        <tr>
+                            <td><img src="{{ url('storage/'.$row->Image) }}" alt="image" width="80" height="80"></td>
+                            @if($row->Type === 1)
+                            <td>App</td>
+                            @elseif($row->Type === 0)
+                            <td>Web</td>
+                            @endif
+                            <td>
+                                <div class="w-11p" style="height: 30px; overflow: hidden;">
+                                    {{$row->Comment}}
+                                </div>
+                            </td>
+                            @if($row->Status === 1)
+                            <td>Active</td>
+                            @elseif($row->Status === 0)
+                            <td>UnActive</td>
+                            @endif
+                            <td>{{$row->Createby}}</td>
+                            <td>{{$row->Updateby}}</td>
+                            <td>{{$row->created_at}}</td>
+                            <td>{{$row->updated_at}}</td>
+                            <!-- @if($row->Status === 1)
+                            <td>
+                                <a href="" data-toggle="modal" data-target="#issueseditModal{{$row->Appointmentsid}}" class="btn btn-success">Edit</a>
+                            </td>
+                            @endif -->
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            @endif
+
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
 <script>
     $(document).ready(function() {
 
@@ -501,23 +629,105 @@ function DateThai($strDate)
         minimumInputLength: 1,
         delay: 250,
         allowClear: true,
-        // ajax: {
-        //     url: '{{ route("select2") }}',
-        //     dataType: 'json',
-        //     delay: 200,
-        //     data: function(params) {
-        //         return {
-        //             q: $.trim(params.term)
-        //         };
-        //     },
-        //     processResults: function(data) {
-        //         return {
-        //             results: data
-        //         };
-        //     },
-        //     cache: true
-        // }
     });
+</script>
+
+<script>
+    var auto_refresh;
+
+    $('.panelsub_all').hide();
+
+    $('.btn_showAppointments').click(function(e) {
+        e.preventDefault();
+        $('.subappoint').show();
+        $('.subissues').hide();
+        $('.subcomment').hide();
+    });
+
+    $('.btn_showIssues').click(function(e) {
+        e.preventDefault();
+        $('.subappoint').hide();
+        $('.subissues').show();
+        $('.subcomment').hide();
+    });
+
+    $('.btn_showComments').click(function(e) {
+        e.preventDefault();
+        $('.subappoint').hide();
+        $('.subissues').hide();
+        $('.subcomment').show();
+    });
+
+    $(document).ready(function() {
+        $('#addform').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/appointment-add",
+                data: $('#addform').serialize(),
+                success: function(response) {
+                    console.log(response);
+                    alert("Data Saved");
+                    $('#savemodal').attr('disabled', 'disabled');
+                    $('#AppointDate').attr('readonly', 'readonly');
+                    $('#Comment').attr('readonly', 'readonly');
+                    $('#Status').attr('disabled', 'disabled');
+
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
+       
+        $('#appointmentclosed').click(function() {
+
+            $('#datatableappointbody').empty();
+            var temp = $('#tempappoint').val();
+            $.ajax({
+                type: "POST",
+                data: {
+                    temp: temp
+                },
+                url: "/api/appointmentlist",
+                success: function(response) {
+                    var len = response.length;
+                    if (len > 0) {
+                        var irow = response.length;
+                        var i = 0;
+                        var rown = 1;
+                        for (i = 0; i < irow; i++) {
+                            var html = "<tr>";
+                            html += '<td>' + response[i].Date + '</td>';
+                            html += '<td><div class="w-11p" style="height: 30px; overflow: hidden;">' + response[i].Comment + '</div></td>';
+                            if (response[i].Status == 1) {
+                                html += '<td>Active</td>';
+                            }
+                            if (response[i].Status == 2) {
+                                html += '<td>Change</td>';
+                            }
+                            if (response[i].Status == 3) {
+                                html += '<td>Disable</td>';
+                            }
+                            html += '<td>' + response[i].Createby + '</td>';
+                            html += '<td>' + response[i].Updateby + '</td>';
+                            html += '<td>' + response[i].created_at + '</td>';
+                            html += '<td>' + response[i].updated_at + '</td>';
+                            if (response[i].Status == 1) {
+                                html += '<td><a href="" data-toggle="modal" data-target="#issueseditModal' + response[i].Appointmentsid + '" class="btn btn-success">Edit</a></td>';
+                            }
+                            html += '</tr>';
+                            $('#datatableappointbody').append(html);
+                        }
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+
 </script>
 
 @endsection

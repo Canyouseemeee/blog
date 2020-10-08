@@ -33,6 +33,8 @@ Route::get('/issues-new','Admin\ApiController@New');
 Route::get('/issues-defer','Admin\ApiController@Defer');
 Route::get('/appointments','Admin\ApiController@Appointments');
 
+Route::post('/appointmentlist','Admin\ApiController@Appointmentlist');
+
 Route::post('/issues-poststatus','Admin\ApiController@poststatus');
 Route::post('/issues-checkclosedstatus','Admin\ApiController@updateclosedstatus');
 Route::post('/issues-checkkeepstatus','Admin\ApiController@updatekeepstatus');

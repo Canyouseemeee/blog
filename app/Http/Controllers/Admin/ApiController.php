@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Appointments;
 use App\Models\Issues;
 use App\Models\IssuesCheckin;
 use App\Models\IssuesComment;
@@ -135,6 +136,7 @@ class ApiController extends Controller
         $checkin->Status = 2;
         $checkin->Detail = $_detail;
         $checkin->Updateby = $_user;
+        $checkin->updated_at = DateThai(now());
         $checkin->update();
 
         return response()->json([
@@ -157,6 +159,7 @@ class ApiController extends Controller
         $checkin->Status = 3;
         $checkin->Detail = $_detail;
         $checkin->Updateby = $_user;
+        $checkin->updated_at = DateThai(now());
         $checkin->update();
 
         return response()->json([
@@ -326,5 +329,19 @@ class ApiController extends Controller
 
         return response()->json($Appointments);
     }
+
+    public function Appointmentlist(Request $request){
+        $data2 = Appointments::all();
+        $temp = $request->input('temp');
+
+        $data = DB::table('appointments')
+            ->select('*')
+            ->where('Uuid', $temp)
+            ->orderBy('Appointmentsid', 'DESC')
+            ->get();
+
+        return response()->json($data);
+    }
+
 
 }
