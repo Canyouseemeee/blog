@@ -80,6 +80,13 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/issues-appointment-add', 'Admin\AppointmentController@storeedit');
     Route::put('/issues-appointment-edit', 'Admin\AppointmentController@updateedit');
 
+    //Comments//
+    Route::post('/comments-add', 'Admin\CommentsController@store');
+    Route::put('/comments-edit', 'Admin\CommentsController@update');
+    Route::post('/issues-comments-add', 'Admin\CommentsController@storeedit');
+    Route::put('/issues-comments-edit', 'Admin\CommentsController@updateedit');
+
+
     //department//
     Route::get('/department', 'Admin\DepartmentController@index');
     Route::get('/department-create', 'Admin\DepartmentController@create');

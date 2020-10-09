@@ -34,6 +34,8 @@ Route::get('/issues-defer','Admin\ApiController@Defer');
 Route::get('/appointments','Admin\ApiController@Appointments');
 
 Route::post('/appointmentlist','Admin\ApiController@Appointmentlist');
+Route::post('/commentlist','Admin\ApiController@Commentlist');
+
 
 Route::post('/issues-poststatus','Admin\ApiController@poststatus');
 Route::post('/issues-checkclosedstatus','Admin\ApiController@updateclosedstatus');

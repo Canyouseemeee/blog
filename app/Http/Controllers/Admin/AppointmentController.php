@@ -93,7 +93,7 @@ class AppointmentController extends Controller
         $appointment->updated_at = DateThai(now());
         $appointment->update();
 
-        return back();
+        // return back();
     }
 
     public function storeedit(Request $request)

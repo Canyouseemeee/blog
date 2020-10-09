@@ -242,16 +242,16 @@ class IssuesController extends Controller
         $appointment = DB::table('appointments')
             ->select('*')
             ->where('Uuid', $temp)
-            ->orderBy('Status', 'ASC')
+            ->orderBy('Appointmentsid', 'DESC')
             ->get();
         if ($appointment == '[]') {
             $appointment = null;
         }
         $comment = DB::table('issues_comment')
-        ->select('*')
-        ->where('Uuid', $temp)
-        ->orderBy('Commentid', 'ASC')
-        ->get();
+            ->select('*')
+            ->where('Uuid', $temp)
+            ->orderBy('Commentid', 'DESC')
+            ->get();
         if ($comment == '[]') {
             $comment = null;
         }

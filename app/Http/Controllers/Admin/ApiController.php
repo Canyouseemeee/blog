@@ -331,13 +331,24 @@ class ApiController extends Controller
     }
 
     public function Appointmentlist(Request $request){
-        $data2 = Appointments::all();
         $temp = $request->input('temp');
 
         $data = DB::table('appointments')
             ->select('*')
             ->where('Uuid', $temp)
             ->orderBy('Appointmentsid', 'DESC')
+            ->get();
+
+        return response()->json($data);
+    }
+
+    public function Commentlist(Request $request){
+        $temp = $request->input('temp');
+
+        $data = DB::table('issues_comment')
+            ->select('*')
+            ->where('Uuid', $temp)
+            ->orderBy('Commentid', 'DESC')
             ->get();
 
         return response()->json($data);
