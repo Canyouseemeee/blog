@@ -21,7 +21,7 @@ function DateThai($strDate)
 }
 ?>
 
-<!-- Modal -->
+<!-- Modal Appointments -->
 <div class="modal fade" id="issueslistModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -31,9 +31,9 @@ function DateThai($strDate)
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ url('/appointment-add-user') }}" method="post">
+            <!-- <form action="{{ url('/appointment-add') }}" method="post"> -->
+            <form id="addform">
                 {{ csrf_field() }}
-
                 <div class="modal-body">
 
                     <div class="form-group">
@@ -43,12 +43,12 @@ function DateThai($strDate)
 
                     <div class="form-group">
                         <label for="">Comment</label>
-                        <textarea name="Comment" class="form-control" rows="3" placeholder="Enter Comment"></textarea>
+                        <textarea id="Comment" name="Comment" class="form-control" rows="3" placeholder="Enter Comment"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="">Status</label>
-                        <select name="Status" class="form-control" require>
+                        <select id="Status" name="Status" class="form-control" require>
                             <option value="1">Active</option>
                             <option value="2">Change</option>
                             <option value="3">Disable</option>
@@ -62,13 +62,15 @@ function DateThai($strDate)
 
                     <div class="form-group">
                         <!-- <label for="">Uuid</label> -->
-                        <input name="temp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
+                        <input id="tempappoint" name="temp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
+                    </div>
 
+                    <div id="result">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="action" value="save" class="btn btn-primary">Save changes</button>
+                    <button type="button" id="appointmentclosed" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="savemodal" name="action" value="save" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
         </div>
@@ -77,18 +79,19 @@ function DateThai($strDate)
 <!-- End Modal -->
 
 @if(!is_null($appointment))
-<!-- Edit Modal -->
+<!-- Edit Modal Appointments -->
 @foreach($appointment as $row)
-<div class="modal fade" id="issueseditModal{{$row->Appointmentsid}}" tabindex="-1" role="dialog" aria-labelledby="issuesModalLabel" aria-hidden="true">
+<div class="modal fade" id="issueseditModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="issuesModalLabel">Appointment Add</h5>
+                <h5 class="modal-title" id="issuesModalLabel">Appointment Edit</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ url('/appointment-edit-user') }}" method="post">
+            <!-- <form action="{{ url('/appointment-edit') }}" method="post"> -->
+            <form id="editform">
                 {{ csrf_field() }}
                 {{ method_field('PUT') }}
                 <div class="modal-body">
@@ -96,18 +99,18 @@ function DateThai($strDate)
 
                     <div class="form-group">
                         <label for="">AppointDate</label>
-                        <input type="dateTime-local" id="AppointDate" name="AppointDate" value="{{DateThai($row->Date)}}" class="form-control">
+                        <input type="dateTime-local" id="AppointDateedit" name="AppointDate" value="{{DateThai($row->Date)}}" class="form-control">
                         <!-- <input type="text" id="AppointDate" placeholder=""> -->
                     </div>
 
                     <div class="form-group">
                         <label for="">Comment</label>
-                        <textarea name="Comment" class="form-control" rows="3">{{$row->Comment}}</textarea>
+                        <textarea id="Commentedit" name="Comment" class="form-control" rows="3">{{$row->Comment}}</textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="">Status</label>
-                        <select name="Status" class="form-control" require>
+                        <select id="Statusedit" name="Status" class="form-control" require>
                             <option value="1" @if ($row->Status === 1)
                                 selected
                                 @endif>Active</option>
@@ -122,7 +125,7 @@ function DateThai($strDate)
 
                     <div class="form-group">
                         <label for="">Updateby</label>
-                        <input type="text" name="Updateby" class="form-control" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}" readonly>
+                        <input type="text" id="Updateby" name="Updateby" class="form-control" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}" readonly>
                     </div>
 
                     <div class="form-group">
@@ -134,10 +137,13 @@ function DateThai($strDate)
                         <!-- <label for="">Uuid</label> -->
                         <input name="Issuesid" class="form-control" placeholder="{{$row->Issuesid}}" value="{{$row->Issuesid}}" hidden>
                     </div>
+
+                    <div id="resultedit">
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="action" value="save" class="btn btn-primary">Save changes</button>
+                    <button type="button" id="editclosed" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="editmodal" name="action" value="save" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
 
@@ -145,17 +151,71 @@ function DateThai($strDate)
     </div>
 </div>
 @endforeach
-
-<!-- End Edit Modal -->
+<!-- End Edit Appointments Modal -->
 @endif
 
-<div class="row">
+<!-- Modal Comments -->
+<div class="modal fade" id="issuescommentsModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalComments" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="issuesModalComments">Comments Add</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- <form action="{{ url('/appointment-add') }}" method="post"> -->
+            <form id="addformcomment" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="">Comment</label>
+                        <textarea id="CComment" name="CComment" class="form-control" rows="3" placeholder="Enter Comment"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Image</label><br>
+                        <input type="file" id="image" name="image">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Createby</label>
+                        <input type="text" id="CCreateby" name="CCreateby" class="form-control" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <!-- <label for="">Uuid</label> -->
+                        <input id="Ctemp" name="Ctemp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
+
+                    </div>
+
+                    <div id="resultcomment">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="closedcomment" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="savecomment" name="action" value="save" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal Comments -->
+
+<div class="btn-group btn-group-toggle" data-toggle="buttons">
+    <button type="button" class="btn btn-outline-warning btn_showIssues active">Issues Create</button>
+    <button type="button" class="btn btn-outline-primary btn_showComments">Comments</button>
+    <button type="button" class="btn btn-outline-danger btn_showAppointments">Appointments</button>
+</div>
+
+<div class="row subissues">
     <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
+        <div class="card card-nav-tabs card-plain">
+            <div class="card-header ">
                 <h4 class="card-title"> Issues-Create</h4>
             </div>
-            <div class="card-body">
+            <div class="card-body ">
                 @if($errors)
                 @foreach($errors->all() as $error)
                 <div class="alert alert-danger">
@@ -280,19 +340,19 @@ function DateThai($strDate)
                     <br>
                     <input type="submit" value="Save" class="btn btn-primary ">
                     <a href="/issues-user" class="btn btn-danger">Back</a>
-                    <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issueslistModal">Appointment Add</a>
                 </form>
             </div>
         </div>
     </div>
 </div>
 &nbsp;
-@if(!is_null($appointment))
-<div class="row">
+<div class="row panelsub_all subappoint">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Appointment Issues</h4>
+                <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issueslistModal">Appointment Add</a>
+                <h4 class="card-title">Appointment Issues </h4>
+
             </div>
             <style>
                 .w-10p {
@@ -304,8 +364,9 @@ function DateThai($strDate)
                     word-break: 'break-all';
                 }
             </style>
-            <div class="card-body">
-                <table id="datatable" class="table">
+            <div class="card-body" id="refresh">
+                @if(!is_null($appointment))
+                <table id="datatableappoint" class="table">
                     <thead class="text-primary">
                         <th>Date</th>
                         <th>Comment</th>
@@ -316,7 +377,7 @@ function DateThai($strDate)
                         <th>Updated_at</th>
                         <th>Edit</th>
                     </thead>
-                    <tbody>
+                    <tbody id="datatableappointbody">
                         @foreach($appointment as $row)
                         <tr>
                             <td>{{$row->Date}}</td>
@@ -338,23 +399,183 @@ function DateThai($strDate)
                             <td>{{$row->updated_at}}</td>
                             @if($row->Status === 1)
                             <td>
-                                <a href="" data-toggle="modal" data-target="#issueseditModal{{$row->Appointmentsid}}" class="btn btn-success">Edit</a>
+                                <a href="" data-toggle="modal" data-target="#issueseditModal" class="btn btn-success">Edit</a>
                             </td>
                             @endif
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
+                @else
+                <table id="datatableappoint" class="table">
+                    <thead class="text-primary">
+                        <th>Date</th>
+                        <th>Comment</th>
+                        <th>Status</th>
+                        <th>Createby</th>
+                        <th>Updateby</th>
+                        <th>Created_at</th>
+                        <th>Updated_at</th>
+                        <th>Edit</th>
+                    </thead>
+                    <tbody id="datatableappointbody">
+                        <tr>
+                            <td>ไม่มีข้อมูลที่จะแสดง</td>
+                            <td>ไม่มีข้อมูลที่จะแสดง</td>
+                            <td>ไม่มีข้อมูลที่จะแสดง</td>
+                            <td>ไม่มีข้อมูลที่จะแสดง</td>
+                            <td>ไม่มีข้อมูลที่จะแสดง</td>
+                            <td>ไม่มีข้อมูลที่จะแสดง</td>
+                            <td>ไม่มีข้อมูลที่จะแสดง</td>
+                            <td>ไม่มีข้อมูลที่จะแสดง</td>
+                        </tr>
+                    </tbody>
+                </table>
+                @endif
             </div>
         </div>
     </div>
 </div>
-@endif
+<div class="row panelsub_all subcomment">
+    <style>
+        .elevation-2 {
+            box-shadow: 0 3px 6px rgba(0, 0, 0, .16), 0 3px 6px rgba(0, 0, 0, .23) !important;
+        }
+
+        .img-circle {
+            border-radius: 50%;
+        }
+
+        .username {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: -1px;
+        }
+
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            border-radius: 0.25rem;
+        }
+
+        .card-header {
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 0;
+            background-color: #fff;
+
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        }
+
+        .user-block .description {
+            color: #6c757d;
+            font-size: 13px;
+            margin-top: -3px;
+        }
+
+        .card-body {
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            padding: 1.25rem;
+            background-color: #fff;
+        }
+
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+        }
+
+        img {
+            vertical-align: middle;
+            border-style: none;
+        }
+
+        .card-widget {
+            border: 0;
+            position: relative;
+            border-top: 0;
+        }
+
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+    </style>
+    <div class="col-md-12">
+        <!-- Box Comment -->
+        <div class="card-header">
+            <h4 class="card-title"> Comments <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issuescommentsModal">Comments Add</a></h4>
+        </div>
+        <div class="card card-widget" id="cardcomment">
+            @if(!is_null($comment))
+            @foreach($comment as $row)
+            <div class="card-header">
+                <div class="user-block">
+                    @foreach($usercomment as $userc)
+                    <img class="img-circle" src="{{ url('storage/'.$userc->image) }}" alt="Image" width="50" height="50">
+                    @endforeach
+                    <span class="username">{{$row->Createby}} : </span>
+                    <span class="description">{{$row->created_at}}</span>
+                    @if($row->Type === 1)
+                    <span class="description">: App</span>
+                    @elseif($row->Type === 0)
+                    <span class="description">: Web</span>
+                    @endif
+                    @if($row->Status === 1)
+                    <span class="description">Active</span>
+                    @elseif($row->Status === 0)
+                    <span class="description">UnActive</span>
+                    @endif
+                </div>
+
+                <!-- /.user-block -->
+                <!-- <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-toggle="tooltip" title="Mark as read">
+                        <i class="far fa-circle"></i></button>
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                    </button>
+                </div> -->
+                <!-- /.card-tools -->
+            </div>
+            <div class="card-body">
+                <button type="button" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>
+                @if($row->Image != null)
+                <img class="img-fluid pad center" src="{{ url('storage/'.$row->Image) }}" style="align-items: center;" width="555" height="550" alt="Photo">
+                @else
+                <p style="padding-top: 20px;">ไม่มีรูปภาพ</p>
+                @endif
+                <p style="padding-top: 20px;">{{$row->Comment}}</p>
+                <span class="float-right text-muted">updated {{$row->updated_at}} By {{$row->Updateby}}</span>
+            </div>
+            <div class="card-footer">
+                <br>
+            </div>
+            @endforeach
+            @else
+            <div class="card card-widget" id="cardcomment">
+                <h4>ไม่มีข้อมูลที่จะแสดง</h4>
+            </div>
+            @endif
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
 <script>
     $(document).ready(function() {
 
@@ -501,22 +722,287 @@ function DateThai($strDate)
         minimumInputLength: 1,
         delay: 250,
         allowClear: true,
-        // ajax: {
-        //     url: '{{ route("select2") }}',
-        //     dataType: 'json',
-        //     delay: 200,
-        //     data: function(params) {
-        //         return {
-        //             q: $.trim(params.term)
-        //         };
-        //     },
-        //     processResults: function(data) {
-        //         return {
-        //             results: data
-        //         };
-        //     },
-        //     cache: true
-        // }
+    });
+</script>
+
+<script>
+    $('.panelsub_all').hide();
+
+    $('.btn_showAppointments').click(function(e) {
+        e.preventDefault();
+        $('.subappoint').show();
+        $('.subissues').hide();
+        $('.subcomment').hide();
+        $(this).addClass('active');
+        $('.btn_showIssues').removeClass('active')
+        $('.btn_showComments').removeClass('active')
+    });
+
+    $('.btn_showIssues').click(function(e) {
+        e.preventDefault();
+        $('.subappoint').hide();
+        $('.subissues').show();
+        $('.subcomment').hide();
+        $(this).addClass('active');
+        $('.btn_showComments').removeClass('active')
+        $('.btn_showAppointments').removeClass('active')
+    });
+
+    $('.btn_showComments').click(function(e) {
+        e.preventDefault();
+        $('.subappoint').hide();
+        $('.subissues').hide();
+        $('.subcomment').show();
+        $(this).addClass('active');
+        $('.btn_showAppointments').removeClass('active')
+        $('.btn_showIssues').removeClass('active')
+    });
+
+    $(document).ready(function() {
+
+        $('#editform').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "PUT",
+                url: "/appointment-edit",
+                data: $('#editform').serialize(),
+                success: function(response) {
+                    console.log(response);
+                    $('#editmodal').attr('disabled', 'disabled');
+                    $('#AppointDateedit').attr('readonly', 'readonly');
+                    $('#Commentedit').attr('readonly', 'readonly');
+                    $('#Statusedit').attr('disabled', 'disabled');
+                    $("#resultedit").html('<div class="alert alert-success" role="alert" id="result">Appointment Update Success</div>');
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        $('#editclosed').click(function() {
+
+            $('#datatableappointbody').empty();
+            var temp = $('#tempappoint').val();
+            $.ajax({
+                type: "POST",
+                data: {
+                    temp: temp
+                },
+                url: "/api/appointmentlist",
+                success: function(response) {
+                    $('#editmodal').removeAttr('disabled');
+                    $('#AppointDateedit').removeAttr('readonly');
+                    $('#Commentedit').removeAttr('readonly');
+                    $('#Statusedit').removeAttr('disabled');
+                    $("#resultedit").empty();
+                    var len = response.length;
+                    if (len > 0) {
+                        var irow = response.length;
+                        var i = 0;
+                        var rown = 1;
+                        for (i = 0; i < irow; i++) {
+                            var html = "<tr>";
+                            html += '<td>' + response[i].Date + '</td>';
+                            html += '<td><div class="w-11p" style="height: 30px; overflow: hidden;">' + response[i].Comment + '</div></td>';
+                            if (response[i].Status == 1) {
+                                html += '<td>Active</td>';
+                            }
+                            if (response[i].Status == 2) {
+                                html += '<td>Change</td>';
+                            }
+                            if (response[i].Status == 3) {
+                                html += '<td>Disable</td>';
+                            }
+                            html += '<td>' + response[i].Createby + '</td>';
+                            html += '<td>' + response[i].Updateby + '</td>';
+                            html += '<td>' + response[i].created_at + '</td>';
+                            html += '<td>' + response[i].updated_at + '</td>';
+                            if (response[i].Status == 1) {
+                                html += '<td><a href="" data-toggle="modal" data-target="#issueseditModal" class="btn btn-success">Edit</a></td>';
+                            }
+                            html += '</tr>';
+                            $('#datatableappointbody').append(html);
+                        }
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        $('#addform').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/appointment-add",
+                data: $('#addform').serialize(),
+                success: function(response) {
+                    console.log(response);
+                    // alert("Data Saved");
+                    $('#savemodal').attr('disabled', 'disabled');
+                    $('#AppointDate').attr('readonly', 'readonly');
+                    $('#Comment').attr('readonly', 'readonly');
+                    $('#Status').attr('disabled', 'disabled');
+                    $("#result").html('<div class="alert alert-success" role="alert" id="result">Appointment Save Success</div>');
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        $('#appointmentclosed').click(function() {
+
+            $('#datatableappointbody').empty();
+            var temp = $('#tempappoint').val();
+            $.ajax({
+                type: "POST",
+                data: {
+                    temp: temp
+                },
+                url: "/api/appointmentlist",
+                success: function(response) {
+                    $('#savemodal').removeAttr('disabled').val("");
+                    $('#AppointDate').removeAttr('readonly').val("");
+                    $('#Comment').removeAttr('readonly').val("");
+                    $('#Status').removeAttr('disabled');
+                    $("#result").empty();
+                    var len = response.length;
+                    if (len > 0) {
+                        var irow = response.length;
+                        var i = 0;
+                        var rown = 1;
+                        for (i = 0; i < irow; i++) {
+                            var html = "<tr>";
+                            html += '<td>' + response[i].Date + '</td>';
+                            html += '<td><div class="w-11p" style="height: 30px; overflow: hidden;">' + response[i].Comment + '</div></td>';
+                            if (response[i].Status == 1) {
+                                html += '<td>Active</td>';
+                            }
+                            if (response[i].Status == 2) {
+                                html += '<td>Change</td>';
+                            }
+                            if (response[i].Status == 3) {
+                                html += '<td>Disable</td>';
+                            }
+                            html += '<td>' + response[i].Createby + '</td>';
+                            html += '<td>' + response[i].Updateby + '</td>';
+                            html += '<td>' + response[i].created_at + '</td>';
+                            html += '<td>' + response[i].updated_at + '</td>';
+                            if (response[i].Status == 1) {
+                                html += '<td><a href="" data-toggle="modal" data-target="#issueseditModal" class="btn btn-success">Edit</a></td>';
+                            }
+                            html += '</tr>';
+                            $('#datatableappointbody').append(html);
+                        }
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+
+    $(document).ready(function() {
+
+        $('#addformcomment').on('submit', function(e) {
+            e.preventDefault();
+            var form = $('#addformcomment')[0];
+
+            var data = new FormData(form);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "/comments-add",
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function(response) {
+                    console.log(response);
+                    // alert("Data Saved");
+                    $('#savecomment').attr('disabled', 'disabled');
+                    $('#CComment').attr('readonly', 'readonly');
+                    $("#resultcomment").html('<div class="alert alert-success" role="alert" id="result">Comments Save Success</div>');
+                },
+                error: function(error) {
+                    console.log(error);
+                    // alert("Data error");
+
+                }
+            });
+        });
+
+        $('#closedcomment').click(function() {
+
+            $('#cardcomment').empty();
+            var temp = $('#Ctemp').val();
+            $.ajax({
+                type: "POST",
+                data: {
+                    temp: temp
+                },
+                url: "/api/commentlist",
+                success: function(response) {
+                    $('#savecomment').removeAttr('disabled');
+                    $('#CComment').removeAttr('readonly').val("");
+                    $("#resultcomment").empty();
+                    $('#image').val("");
+                    var len = response.length;
+                    if (len > 0) {
+                        var irow = response.length;
+                        var i = 0;
+                        var rown = 1;
+                        for (i = 0; i < irow; i++) {
+                            var html = '<div class="card-header">';
+                            html += '<div class="user-block">';
+                            if (response[i].Image != null) {
+                                // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
+                                html += '<img class="img-circle" src="http://127.0.0.1:8000/storage/' + response[i].Image + '" alt="Image" width="50" height="50"> &nbsp;'
+                            }
+                            html += '<span class="username">' + response[i].Createby + ' : </span>'
+                            html += '<span class="description">' + response[i].created_at + ' </span>'
+                            if (response[i].Type == 1) {
+                                html += '<span class="description">: App </span>';
+                            }
+                            if (response[i].Type == 0) {
+                                html += '<span class="description">: Web </span>';
+                            }
+                            if (response[i].Status === 1) {
+                                html += '<span class="description">Active</span>';
+                            }
+                            if (response[i].Status === 0) {
+                                html += '<span class="description">UnActive</span>';
+                            }
+
+                            html += '</div>'
+                            html += '</div>'
+                            html += '<div class="card-body">'
+                            html += '<button type="button" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
+                            if (response[i].Image != null) {
+                                html += '<img class="img-fluid pad center" src="http://127.0.0.1:8000/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">'
+                            }else{
+                                html += '<p style="padding-top: 20px;">ไม่มีรูปภาพ</p>'
+                            }
+                            html += '<p style="padding-top: 20px;">' + response[i].Comment + '</p>'
+                            html += '<span class="float-right text-muted">updated ' + response[i].updated_at + ' By ' + response[i].Updateby + '</span>'
+                            html += '</div>'
+                            html += '<div class="card-footer">'
+                            html += '<bt>'
+                            html += '</div>'
+
+                            $('#cardcomment').append(html);
+                        }
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
     });
 </script>
 

@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect('dashboard');
-    }else {
+    } else {
         return view('auth.login');
     }
 });
@@ -80,13 +80,6 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/issues-appointment-add', 'Admin\AppointmentController@storeedit');
     Route::put('/issues-appointment-edit', 'Admin\AppointmentController@updateedit');
 
-    //Comments//
-    Route::post('/comments-add', 'Admin\CommentsController@store');
-    Route::put('/comments-edit', 'Admin\CommentsController@update');
-    Route::post('/issues-comments-add', 'Admin\CommentsController@storeedit');
-    Route::put('/issues-comments-edit', 'Admin\CommentsController@updateedit');
-
-
     //department//
     Route::get('/department', 'Admin\DepartmentController@index');
     Route::get('/department-create', 'Admin\DepartmentController@create');
@@ -141,9 +134,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/issues-appointment-edit-user', 'User\AppointmentController@updateedit');
 
     Route::get('/checkin-checkout-user', 'User\CheckinCheckoutController@index');
-
 });
 
+
+//Comments//
+Route::post('/comments-add', 'Admin\CommentsController@store');
+Route::put('/issues-comments-add', 'Admin\CommentsController@storeedit');
 
 //Calendar
 Route::get('/calendar', 'Admin\AppointmentController@calendar');

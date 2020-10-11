@@ -51,104 +51,36 @@ class CommentsController extends Controller
 
     }
 
-    // public function update(Request $request)
-    // {
-    //     $this->validate(
-    //         $request,
-    //         array(
-    //             'AppointDate' => 'required',
-    //             'Comment' => 'required',
-    //         ),
-    //     );
-    //     $Uuid = $request->input('Uuid');
-    //     $Appoint =  DB::table('appointments')
-    //         ->select('Appointmentsid')
-    //         ->where('Uuid', $Uuid)
-    //         ->get();
-    //     foreach ($Appoint as $row) {
-    //         $Appointmentsid = $row->Appointmentsid;
-    //     }
-    //     // echo($Uuid);
-    //     $appointment = Appointments::find($Appointmentsid);
-    //     $appointment->Issuesid = 0;
-    //     $appointment->Date = $request->input('AppointDate');
-    //     $appointment->Comment = $request->input('Comment');
-    //     $appointment->Status = $request->input('Status');
-    //     $appointment->Updateby = $request->input('Updateby');
-    //     $appointment->Uuid = $request->input('Uuid');
-    //     $appointment->updated_at = DateThai(now());
-    //     $appointment->update();
+    public function storeedit(Request $request)
+    {
+        $this->validate(
+            $request,
+            array(
+                'CComment' => 'required',
+            ),
+        );
 
-    //     // return back();
-    // }
+        $comment = new IssuesComment();
+        $comment->Issuesid = $request->input('Issuesid');
+        $comment->Type = 0;
+        $comment->Status = 1;
+        $comment->Comment = $request->input('CComment');
+        $comment->Uuid = $request->input('Ctemp');
+        $comment->Createby = $request->input('CCreateby');
+        $comment->Updateby = $request->input('CCreateby');
+        $comment->created_at = DateThai(now());
+        $comment->updated_at = DateThai(now());
 
-    // public function storeedit(Request $request)
-    // {
-    //     $this->validate(
-    //         $request,
-    //         array(
-    //             'AppointDate' => 'required',
-    //             'Comment' => 'required',
-    //         ),
-    //     );
-    //     $count = DB::table('appointments')
-    //         ->select('Appointmentsid')
-    //         ->where('Uuid', $request->input('temp'))
-    //         ->count();
-    //     // echo($count);
-    //     if ($count >= 1) {
-    //         $data = DB::table('appointments')
-    //             ->select('Appointmentsid')
-    //             ->where('Uuid', $request->input('temp'))
-    //             ->max('Appointmentsid');
-    //         $appoint = Appointments::find($data);
-    //         $appoint->Status = 2;
-    //         $appoint->update();
-    //     }
-    //     $appointment = new Appointments();
-    //     $appointment->Issuesid = $request->input('Issuesid');
-    //     $appointment->Date = $request->input('AppointDate');
-    //     $appointment->Comment = $request->input('Comment');
-    //     $appointment->Status = $request->input('Status');
-    //     $appointment->Createby = $request->input('Createby');
-    //     $appointment->Updateby = $request->input('Createby');
-    //     $appointment->Uuid = $request->input('temp');
-    //     $appointment->created_at = DateThai(now());
-    //     $appointment->updated_at = DateThai(now());
-    //     $appointment->save();
+        if ($request->hasFile('image')) {
+            $filename = $request->image->getClientOriginalName();
+            $file = time() . '.' . $filename;
+            $comment->Image = $request->image->storeAs('images', $file, 'public');
+            // dd($file);
+        } else {
+            $comment->Image = null;
+        }
+        $comment->save();
 
-        
-    //     return response()->json();
-    // }
+    }
 
-    // public function updateedit(Request $request)
-    // {
-    //     $this->validate(
-    //         $request,
-    //         array(
-    //             'AppointDate' => 'required',
-    //             'Comment' => 'required',
-    //         ),
-    //     );
-    //     $Uuid = $request->input('Uuid');
-    //     $Appoint =  DB::table('appointments')
-    //         ->select('Appointmentsid')
-    //         ->where('Uuid', $Uuid)
-    //         ->get();
-    //     foreach ($Appoint as $row) {
-    //         $Appointmentsid = $row->Appointmentsid;
-    //     }
-    //     $appointment = Appointments::find($Appointmentsid);
-    //     $appointment->Issuesid = $request->input('Issuesid');
-    //     $appointment->Date = $request->input('AppointDate');
-    //     $appointment->Comment = $request->input('Comment');
-    //     $appointment->Status = $request->input('Status');
-    //     $appointment->Updateby = $request->input('Updateby');
-    //     // $Uuidapp = Str::uuid()->toString();
-    //     $appointment->Uuid = $request->input('Uuid');
-    //     $appointment->updated_at = DateThai(now());
-    //     $appointment->update();
-
-    //     return back();
-    // }
 }

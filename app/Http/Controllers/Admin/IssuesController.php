@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Appointments;
 use App\Models\Department;
 use App\Models\Issues;
+use App\Models\IssuesComment;
 use App\Models\IssuesLogs;
 use App\Models\Issuespriority;
 use App\Models\Issuesstatus;
@@ -254,7 +255,17 @@ class IssuesController extends Controller
             ->get();
         if ($comment == '[]') {
             $comment = null;
+            $usercomment = null;
+        } else {
+            foreach ($comment as $row) {
+                $createbycomment = $row->Createby;
+            }
+            $usercomment = DB::table('users')
+                ->select('*')
+                ->where('name', $createbycomment)
+                ->get();
         }
+
 
         return view('admin.issues.create', compact(
             ['issues'],
@@ -267,6 +278,7 @@ class IssuesController extends Controller
             ['temp'],
             ['appointment'],
             ['comment'],
+            ['usercomment']
         ));
     }
 
@@ -322,18 +334,6 @@ class IssuesController extends Controller
             $issues->Image = null;
         }
 
-
-        // if ($request->file('Image')) {
-        //     $file = $request->file('Image');
-        //     $extension = $file->getClientOriginalExtension();
-        //     $filename = time() . '.' . $extension;
-        //     $file->move('uploads/issues/' . $filename);
-        //     $issues->Image = $filename;
-        // } else {
-        //     return $request;
-        //     $issues->Image = '';
-        // }
-
         $issues->save();
         // echo($issues->Issuesid);
         $temp = $request->input('temp');
@@ -350,6 +350,20 @@ class IssuesController extends Controller
             $appointment = Appointments::find($Appointmentsid);
             $appointment->Issuesid = $issues->Issuesid;
             $appointment->update();
+        }
+        $comment = DB::table('issues_comment')
+            ->select('*')
+            ->where('Uuid', $temp)
+            ->get();
+        if ($comment == '[]') {
+            $comment = null;
+        } else {
+            foreach ($comment as $row) {
+                $usercomment = $row->Commentid;
+            }
+            $comments = IssuesComment::find($usercomment);
+            $comments->Issuesid = $issues->Issuesid;
+            $comments->update();
         }
 
         return redirect('/issues')->with('status', 'Data Added for Issues Successfully');
@@ -377,6 +391,25 @@ class IssuesController extends Controller
         if ($appointment == '[]') {
             $appointment = null;
         }
+
+        $comment = DB::table('issues_comment')
+            ->select('*')
+            ->where('Issuesid', $Issuesid)
+            ->orderBy('Commentid', 'DESC')
+            ->get();
+        if ($comment == '[]') {
+            $comment = null;
+            $usercomment = null;
+        } else {
+            foreach ($comment as $row) {
+                $createbycomment = $row->Createby;
+            }
+            $usercomment = DB::table('users')
+                ->select('*')
+                ->where('name', $createbycomment)
+                ->get();
+        }
+
         $strStart = $data->created_at;
         if ($issueslog != '[]') {
             if ($issueslog != null) {
@@ -397,6 +430,8 @@ class IssuesController extends Controller
                         ['user'],
                         ['dateinterval'],
                         ['appointment'],
+                        ['comment'],
+                        ['usercomment']
                     ));
                 }
             }
@@ -415,6 +450,8 @@ class IssuesController extends Controller
             ['tracker'],
             ['user'],
             ['appointment'],
+            ['comment'],
+            ['usercomment']
         ));
     }
 
@@ -454,11 +491,23 @@ class IssuesController extends Controller
         if ($appointment == '[]') {
             $appointment = null;
         }
-        // foreach($appointment as $row){
-        //     $app = $row->Appointmentsid;
-        // }
-        // $appoint = Appointments::find($app);
-        // echo($appointment);
+        $comment = DB::table('issues_comment')
+            ->select('*')
+            ->where('Issuesid', $Issuesid)
+            ->orderBy('Commentid', 'DESC')
+            ->get();
+        if ($comment == '[]') {
+            $comment = null;
+            $usercomment = null;
+        } else {
+            foreach ($comment as $row) {
+                $createbycomment = $row->Createby;
+            }
+            $usercomment = DB::table('users')
+                ->select('*')
+                ->where('name', $createbycomment)
+                ->get();
+        }
         return view('admin.issues.edit', compact(
             ['issues'],
             ['data'],
@@ -471,7 +520,8 @@ class IssuesController extends Controller
             ['user'],
             ['appointment'],
             ['temp'],
-            // ['appoint']
+            ['comment'],
+            ['usercomment']
 
         ));
     }

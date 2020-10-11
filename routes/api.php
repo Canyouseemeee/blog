@@ -35,6 +35,7 @@ Route::get('/appointments','Admin\ApiController@Appointments');
 
 Route::post('/appointmentlist','Admin\ApiController@Appointmentlist');
 Route::post('/commentlist','Admin\ApiController@Commentlist');
+Route::post('/commentliststatus','Admin\ApiController@CommentlistStatus');
 
 
 Route::post('/issues-poststatus','Admin\ApiController@poststatus');

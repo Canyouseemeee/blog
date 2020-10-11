@@ -354,5 +354,22 @@ class ApiController extends Controller
         return response()->json($data);
     }
 
+    public function CommentlistStatus(Request $request){
+        $Commentid = $request->input('Commentid');
+
+        $data = DB::table('issues_comment')
+            ->select('*')
+            ->where('Commentid', $Commentid)
+            ->get();
+        foreach($data as $row){
+            $cid = $row->Commentid;
+        }
+        $comments = IssuesComment::find($cid);
+        $comments->Status = 0;
+        $comments->update();
+
+        return response()->json($data);
+    }
+
 
 }

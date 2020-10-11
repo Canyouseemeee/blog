@@ -49,7 +49,7 @@ function DateThai($strDate)
                                 <label class="col-form-label text-md-right float-left"> Fromdate : {{$fromdate}} - Todate : {{$todate}} is quantity {{$data}} </label>
                                 @endif
                                 <button type="submit" class="btn btn-primary float-right">Search</button>
-                                <a href="#" class="btn btn-danger float-right">Reset</a>
+                                
                             </div>
                         </div>
                     </div>
