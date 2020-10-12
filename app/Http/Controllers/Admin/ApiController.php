@@ -12,6 +12,8 @@ use App\Models\MacAddress;
 use App\Models\VersionApp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use SebastianBergmann\Environment\Console;
+use SebastianBergmann\Environment\Console as EnvironmentConsole;
 
 function DateThai($strDate)
 {
@@ -32,32 +34,48 @@ function DateThai2($strDate)
     $strHour = date("H", strtotime($strDate)) + 7;
     $strMinute = date("i", strtotime($strDate));
     $strSeconds = date("s", strtotime($strDate));
-    if($strHour < 10 && $strHour >= 0){
+    if ($strHour < 10 && $strHour >= 0) {
         return "$strYear$strMonth$strDay 0$strHour$strMinute$strSeconds";
-    }else{
+    } else {
         return "$strYear$strMonth$strDay$strHour$strMinute$strSeconds";
     }
-    
 }
 
 
 class ApiController extends Controller
 {
- 
+
     public function Closed()
     {
         $demodata = DB::table('issues_tracker')
-            ->select('issues.Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-            'issues_status.ISSName', 'issues_priority.ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy',
-             'issues.Subject', 'issues.Tel', 'issues.Comname','issues.Informer','issues.Description','issues.created_at','issues.updated_at',
-            'department.DmName','issues.ClosedBy','issues_logs.create_at')
+            ->select(
+                'issues.Issuesid',
+                'issues_tracker.TrackName',
+                'issues_tracker.SubTrackName',
+                'issues_tracker.Name',
+                'issues_status.ISSName',
+                'issues_priority.ISPName',
+                'issues.Createby',
+                'users.name as Assignment',
+                'issues.UpdatedBy',
+                'issues.Subject',
+                'issues.Tel',
+                'issues.Comname',
+                'issues.Informer',
+                'issues.Description',
+                'issues.created_at',
+                'issues.updated_at',
+                'department.DmName',
+                'issues.ClosedBy',
+                'issues_logs.create_at'
+            )
             ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
             ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
             ->join('issues_logs', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
             ->join('users', 'issues.Assignment', '=', 'users.id')
-            ->where([['issues.Statusid', 2],['issues_logs.Action','Closed']])
+            ->where([['issues.Statusid', 2], ['issues_logs.Action', 'Closed']])
             ->orderBy('issues.Issuesid', 'DESC')
             ->get();
         $issues = Issues::all();
@@ -65,36 +83,70 @@ class ApiController extends Controller
         return response()->json($demodata);
     }
 
-    public function New(){
+    public function New()
+    {
         $demodata = DB::table('issues_tracker')
-        ->select('Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-        'ISSName', 'ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject', 
-        'issues.Tel', 'issues.Comname','issues.Informer','issues.Description','issues.created_at','issues.updated_at','DmName')
-        ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
-        ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
-        ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
-        ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
-        ->join('users', 'issues.Assignment', '=', 'users.id')
-        ->where('issues.Statusid', 1)
-        ->orderBy('issues.Issuesid', 'DESC')
-        ->get();
+            ->select(
+                'Issuesid',
+                'issues_tracker.TrackName',
+                'issues_tracker.SubTrackName',
+                'issues_tracker.Name',
+                'ISSName',
+                'ISPName',
+                'issues.Createby',
+                'users.name as Assignment',
+                'issues.UpdatedBy',
+                'issues.Subject',
+                'issues.Tel',
+                'issues.Comname',
+                'issues.Informer',
+                'issues.Description',
+                'issues.created_at',
+                'issues.updated_at',
+                'DmName'
+            )
+            ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+            ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
+            ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+            ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
+            ->join('users', 'issues.Assignment', '=', 'users.id')
+            ->where('issues.Statusid', 1)
+            ->orderBy('issues.Issuesid', 'DESC')
+            ->get();
         $issues = Issues::all();
 
         return response()->json($demodata);
     }
 
-    public function Defer(){
+    public function Defer()
+    {
         $demodata = DB::table('issues_tracker')
-            ->select('issues.Issuesid', 'issues_tracker.TrackName','issues_tracker.SubTrackName','issues_tracker.Name',
-            'ISSName', 'ISPName', 'issues.Createby','users.name as Assignment','issues.UpdatedBy', 'issues.Subject', 
-            'issues.Tel', 'issues.Comname','issues.Informer','issues.Description','issues.created_at','issues.updated_at','DmName')
+            ->select(
+                'issues.Issuesid',
+                'issues_tracker.TrackName',
+                'issues_tracker.SubTrackName',
+                'issues_tracker.Name',
+                'ISSName',
+                'ISPName',
+                'issues.Createby',
+                'users.name as Assignment',
+                'issues.UpdatedBy',
+                'issues.Subject',
+                'issues.Tel',
+                'issues.Comname',
+                'issues.Informer',
+                'issues.Description',
+                'issues.created_at',
+                'issues.updated_at',
+                'DmName'
+            )
             ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
             ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
             ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
             ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
             ->join('issues_logs', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
             ->join('users', 'issues.Assignment', '=', 'users.id')
-            ->where([['issues.Statusid', 3],['issues_logs.Action','Updated']])
+            ->where([['issues.Statusid', 3], ['issues_logs.Action', 'Updated']])
             ->groupBy('issues.Issuesid')
             ->orderBy('issues.Issuesid', 'DESC')
             ->get();
@@ -103,7 +155,8 @@ class ApiController extends Controller
         return response()->json($demodata);
     }
 
-    public function poststatus(Request $request){
+    public function poststatus(Request $request)
+    {
         $_issuesid = $request->input('issuesid');
         $_user = $request->input('user');
 
@@ -121,17 +174,18 @@ class ApiController extends Controller
         ]);
     }
 
-    public function updateclosedstatus(Request $request){
+    public function updateclosedstatus(Request $request)
+    {
         $_issuesid = $request->input('issuesid');
         $_user = $request->input('user');
         $_detail = $request->input('detail');
         $_checkid = $request->input('checkin');
 
         $checkinid = DB::table('issues_checkin')
-        ->select('*')
-        ->where('Issuesid',$_issuesid)
-        ->get();
-        
+            ->select('*')
+            ->where('Issuesid', $_issuesid)
+            ->get();
+
         $checkin = IssuesCheckin::find($_checkid);
         $checkin->Status = 2;
         $checkin->Detail = $_detail;
@@ -144,17 +198,18 @@ class ApiController extends Controller
         ]);
     }
 
-    public function updatekeepstatus(Request $request){
+    public function updatekeepstatus(Request $request)
+    {
         $_issuesid = $request->input('issuesid');
         $_user = $request->input('user');
         $_detail = $request->input('detail');
         $_checkid = $request->input('checkin');
 
         $checkinid = DB::table('issues_checkin')
-        ->select('*')
-        ->where('Issuesid',$_issuesid)
-        ->get();
-        
+            ->select('*')
+            ->where('Issuesid', $_issuesid)
+            ->get();
+
         $checkin = IssuesCheckin::find($_checkid);
         $checkin->Status = 3;
         $checkin->Detail = $_detail;
@@ -167,40 +222,44 @@ class ApiController extends Controller
         ]);
     }
 
-    public function getstatus(Request $request){
+    public function getstatus(Request $request)
+    {
         $_issuesid = $request->input('issuesid');
 
         $checkin = DB::table('issues_checkin')
-        ->select('*')
-        ->where('Issuesid',$_issuesid)
-        ->get();
+            ->select('*')
+            ->where('Issuesid', $_issuesid)
+            ->get();
         // $checkin = IssuesCheckin::all();
         return response()->json($checkin);
     }
 
-    public function getcountComment(Request $request){
+    public function getcountComment(Request $request)
+    {
         $_issuesid = $request->input('issuesid');
         $comment = DB::table('issues_comment')
-        ->select('*')
-        ->where('Issuesid',$_issuesid)
-        ->count();
+            ->select('*')
+            ->where('Issuesid', $_issuesid)
+            ->count();
         return response()->json(['count' => $comment]);
     }
 
-    public function getComment(Request $request){
+    public function getComment(Request $request)
+    {
         $_issuesid = $request->input('issuesid');
         $comment = DB::table('issues_comment')
-        ->select('*')
-        ->where('Issuesid',$_issuesid)
-        ->get();
+            ->select('*')
+            ->where('Issuesid', $_issuesid)
+            ->get();
         return response()->json($comment);
     }
 
-    public function postComment(Request $request){
+    public function postComment(Request $request)
+    {
         $_issuesid = $request->input('issuesid');
         $_comment = $request->input('comment');
         $_user = $request->input('user');
-    
+
 
         $comment = new IssuesComment();
         $comment->Issuesid = $_issuesid;
@@ -218,7 +277,7 @@ class ApiController extends Controller
         } else {
             $comment->Image = null;
         }
-        
+
         $comment->save();
 
         return response()->json([
@@ -226,7 +285,8 @@ class ApiController extends Controller
         ]);
     }
 
-    public function postStatusComment(Request $request){
+    public function postStatusComment(Request $request)
+    {
         $_commentid = $request->input('commentid');
 
         $comment = IssuesComment::find($_commentid);
@@ -247,14 +307,14 @@ class ApiController extends Controller
         $_expired = DateThai2(now()->addHours(8));
 
         $data = DB::table('users')
-        ->select('id')
-        ->where('username',$_username)
-        ->get();
+            ->select('id')
+            ->where('username', $_username)
+            ->get();
 
         $image = DB::table('users')
-        ->select('image')
-        ->where('username',$_username)
-        ->get();
+            ->select('image')
+            ->where('username', $_username)
+            ->get();
 
         $Loginlog = new Loginlog();
         $Loginlog->Deviceid = $_deviceid;
@@ -277,13 +337,14 @@ class ApiController extends Controller
         ]);
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $_token = $request->input('token');
 
         $data = DB::table('loginlog')
-        ->select('Loginid')
-        ->where([['Token',$_token],['expired','<',DateThai(now())]])
-        ->get();
+            ->select('Loginid')
+            ->where([['Token', $_token], ['expired', '<', DateThai(now())]])
+            ->get();
         // $Loginlog = Loginlog::findOrFail($data[0]->Loginid);
         // $Loginlog->delete();
         return response()->json([
@@ -292,45 +353,49 @@ class ApiController extends Controller
         ]);
     }
 
-    public function Deviceid(Request $request){
+    public function Deviceid(Request $request)
+    {
         $_deviceid = $request->input('deviceid');
 
         $data = DB::table('deviceinfo')
-        ->select('deviceid')
-        ->where('deviceid',$_deviceid)
-        ->get();
+            ->select('deviceid')
+            ->where('deviceid', $_deviceid)
+            ->get();
 
         return response()->json([
             'status' => 'Success',
             'deviceid' => $data
-            ]);
+        ]);
     }
 
-    public function lastedVersion(){
+    public function lastedVersion()
+    {
         $VersionApp = DB::table('version_app')
-        ->select('AppVersion',)
-        ->max('AppVersion');
+            ->select('AppVersion',)
+            ->max('AppVersion');
         $url = DB::table('version_app')
-        ->select('url',)
-        ->max('url');
+            ->select('url',)
+            ->max('url');
 
         return response()->json([
             'version' => $VersionApp,
             'url' => $url
         ]);
     }
-    
-    public function Appointments(){
+
+    public function Appointments()
+    {
         $Appointments = DB::table('appointments')
-        ->select('*',)
-        ->where([['Status','1'],['Issuesid','>',0]])
-        ->whereBetween('Date', [DateThai(now()), DateThai(now()->addDay(7))])
-        ->get();
+            ->select('*',)
+            ->where([['Status', '1'], ['Issuesid', '>', 0]])
+            ->whereBetween('Date', [DateThai(now()), DateThai(now()->addDay(7))])
+            ->get();
 
         return response()->json($Appointments);
     }
 
-    public function Appointmentlist(Request $request){
+    public function Appointmentlist(Request $request)
+    {
         $temp = $request->input('temp');
 
         $data = DB::table('appointments')
@@ -342,7 +407,8 @@ class ApiController extends Controller
         return response()->json($data);
     }
 
-    public function Commentlist(Request $request){
+    public function Commentlist(Request $request)
+    {
         $temp = $request->input('temp');
 
         $data = DB::table('issues_comment')
@@ -350,26 +416,33 @@ class ApiController extends Controller
             ->where('Uuid', $temp)
             ->orderBy('Commentid', 'DESC')
             ->get();
+        foreach ($data as $row) {
+            $createbycomment = $row->Createby;
+        }
+        $usercomment = DB::table('users')
+            ->select('*')
+            ->where('name', $createbycomment)
+            ->get();
 
         return response()->json($data);
     }
 
-    public function CommentlistStatus(Request $request){
-        $Commentid = $request->input('Commentid');
-
+    public function CommentlistStatus(Request $request)
+    {
+        $Commentid = $request->input('commentid');
+        // echo($Commentid);
         $data = DB::table('issues_comment')
             ->select('*')
             ->where('Commentid', $Commentid)
             ->get();
-        foreach($data as $row){
+        foreach ($data as $row) {
             $cid = $row->Commentid;
+            // echo($row->Commentid);
         }
         $comments = IssuesComment::find($cid);
         $comments->Status = 0;
         $comments->update();
 
-        return response()->json($data);
+        return response()->json($comments);
     }
-
-
 }

@@ -187,7 +187,6 @@ function DateThai($strDate)
                     <div class="form-group">
                         <!-- <label for="">Uuid</label> -->
                         <input id="Ctemp" name="Ctemp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
-
                     </div>
 
                     <div id="resultcomment">
@@ -203,11 +202,9 @@ function DateThai($strDate)
 </div>
 <!-- End Modal Comments -->
 
-<div class="btn-group btn-group-toggle" data-toggle="buttons">
-    <button type="button" class="btn btn-outline-warning btn_showIssues active">Issues Create</button>
-    <button type="button" class="btn btn-outline-primary btn_showComments">Comments</button>
-    <button type="button" class="btn btn-outline-danger btn_showAppointments">Appointments</button>
-</div>
+<button type="button" class="btn btn-outline-warning btn_showIssues active">Issues Create</button>
+<button type="button" class="btn btn-outline-primary btn_showComments">Comments</button>
+<button type="button" class="btn btn-outline-danger btn_showAppointments">Appointments</button>
 
 <div class="row subissues">
     <div class="col-md-12">
@@ -616,9 +613,12 @@ function DateThai($strDate)
             @foreach($comment as $row)
             <div class="card-header">
                 <div class="user-block">
-                    <!-- <span class="username" id="Commentid">{{$row->Commentid}} : </span> -->
                     @foreach($usercomment as $userc)
+                    @if(!is_null($userc->image))
                     <img class="img-circle" src="{{ url('storage/'.$userc->image) }}" alt="Image" width="50" height="50">
+                    @else
+                    <span class="username">ไม่มีรูปภาพ</span>
+                    @endif
                     @endforeach
                     <span class="username">{{$row->Createby}} : </span>
                     <span class="description">{{$row->created_at}}</span>
@@ -646,7 +646,9 @@ function DateThai($strDate)
                 <!-- /.card-tools -->
             </div>
             <div class="card-body">
-                <button type="button" class="btn btn-default btn-sm float-right" data-toggle="modal" data-target="#UnsendModal"><i class="fas fa-comment-slash"></i></i> Unsend</button>
+                @if($row->Status === 1)
+                <button type="button" class="btn btn-default btn-sm float-right" data-toggle="modal" data-target="#UnsendModal-{{$row->Commentid}}"><i class="fas fa-comment-slash"></i></i> Unsend</button>
+                @endif
                 @if($row->Image != null)
                 <img class="img-fluid pad center" src="{{ url('storage/'.$row->Image) }}" style="align-items: center;" width="555" height="550" alt="Photo">
                 @else
@@ -668,8 +670,10 @@ function DateThai($strDate)
     </div>
 </div>
 
+@if(!is_null($comment))
+@foreach($comment as $row)
 <!-- Modal Unsend -->
-<div class="modal fade" id=UnsendModal tabindex="-1" role="dialog" aria-labelledby="UnsendModalComments" aria-hidden="true">
+<div class="modal fade" id="UnsendModal-{{$row->Commentid}}" tabindex="-1" role="dialog" aria-labelledby="UnsendModalComments" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -678,26 +682,30 @@ function DateThai($strDate)
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="Unsend">
-                @foreach($comment as $row)
+            <form id="Unsendadd">
+                {{ csrf_field() }}
+                {{ method_field('PUT') }}
+
                 <div class="modal-body">
                     <p>ท่านต้องการยกเลิก Comment นี้ใช่หรือไม่?</p>
-                    <div hidden>
-                        <span class="username" id="Commentid">{{$row->Commentid}}</span>
+                    <div class="form-group">
+                        <!-- <label for="">Uuid</label> -->
+                        <input id="Ccid" name="Ccid" class="form-control" placeholder="{{$row->Commentid}}" value="{{$row->Commentid}}" hidden>
                     </div>
-                    <div id="resultcomment">
+                    <div id="resultcomment2">
                     </div>
                 </div>
-                @endforeach
 
                 <div class="modal-footer">
                     <button type="button" id="closedUnsend" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" id="Unsend" class="btn btn-primary">Save changes</button>
+                    <button type="submit" id="SubmitUnsend" name="action" value="save" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+@endforeach
+@endif
 @endsection
 
 @section('scripts')
@@ -1091,7 +1099,7 @@ function DateThai($strDate)
                             html += '<div class="user-block">';
                             if (response[i].Image != null) {
                                 // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
-                                html += '<img class="img-circle" src="http://127.0.0.1:8000/storage/' + response[i].Image + '" alt="Image" width="50" height="50"> &nbsp;'
+                                html += '<img class="img-circle" src="/storage/'+response[i].Image+'" alt="Image" width="50" height="50"> &nbsp;'
                             }
                             html += '<span class="username">' + response[i].Createby + ' : </span>'
                             html += '<span class="description">' + response[i].created_at + ' </span>'
@@ -1111,9 +1119,11 @@ function DateThai($strDate)
                             html += '</div>'
                             html += '</div>'
                             html += '<div class="card-body">'
-                            html += '<button type="button" class="btn btn-default btn-sm float-right" data-toggle="modal" data-target="#UnsendModal"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
+                            if (response[i].Status === 1) {
+                                html += '<button type="button" class="btn btn-default btn-sm float-right" data-toggle="modal" data-target="#UnsendModal-' + response[i].Commentid + '"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
+                            }
                             if (response[i].Image != null) {
-                                html += '<img class="img-fluid pad center" src="http://127.0.0.1:8000/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">'
+                                html += '<img class="img-fluid pad center" src="/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">'
                             } else {
                                 html += '<p style="padding-top: 20px;">ไม่มีรูปภาพ</p>'
                             }
@@ -1134,21 +1144,24 @@ function DateThai($strDate)
             });
         });
 
-        $('#Unsend').on('submit', function(e) {
+        $('#Unsendadd').on('submit', function(e) {
             e.preventDefault();
-            var Commentid = $('#Commentid').val();
+            var commentid = $('#Ccid').val();
             $.ajax({
                 type: "POST",
                 data: {
-                    Commentid: Commentid
+                    commentid: commentid
                 },
                 url: "/api/commentliststatus",
                 success: function(response) {
-                    $('#Unsend').attr('disabled', 'disabled');
-                    $("#resultcomment").html('<div class="alert alert-success" role="alert" id="result">Comments Unsend Sucess</div>');
+                    console.log(response);
+                    $('#SubmitUnsend').attr('disabled', 'disabled');
+                    $("#resultcomment2").html('<div class="alert alert-success" role="alert" id="result">Comments Unsend Sucess</div>');
                 },
                 error: function(error) {
                     console.log(error);
+                    $('#SubmitUnsend').attr('disabled', 'disabled');
+                    $("#resultcomment2").html('<div class="alert alert-success" role="alert" id="result">Comments Unsend Sucess</div>');
                 }
             });
         });
@@ -1164,8 +1177,8 @@ function DateThai($strDate)
                 },
                 url: "/api/commentlist",
                 success: function(response) {
-                    $('#Unsend').removeAttr('disabled');
-                    $("#resultcomment").empty();
+                    $('#SubmitUnsend').removeAttr('disabled');
+                    $("#resultcomment2").empty();
                     var len = response.length;
                     if (len > 0) {
                         var irow = response.length;
@@ -1176,7 +1189,7 @@ function DateThai($strDate)
                             html += '<div class="user-block">';
                             if (response[i].Image != null) {
                                 // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
-                                html += '<img class="img-circle" src="http://127.0.0.1:8000/storage/' + response[i].Image + '" alt="Image" width="50" height="50"> &nbsp;'
+                                html += '<img class="img-circle" src="/storage/'+ response[i].Image +'" alt="Image" width="50" height="50"> &nbsp;'
                             }
                             html += '<span class="username">' + response[i].Createby + ' : </span>'
                             html += '<span class="description">' + response[i].created_at + ' </span>'
@@ -1196,9 +1209,11 @@ function DateThai($strDate)
                             html += '</div>'
                             html += '</div>'
                             html += '<div class="card-body">'
-                            html += '<button type="button" class="btn btn-default btn-sm float-right" data-toggle="modal" data-target="#UnsendModal"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
+                            if (response[i].Status === 1) {
+                                html += '<button type="button" class="btn btn-default btn-sm float-right" data-toggle="modal" data-target="#UnsendModal-' + response[i].Commentid + '"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
+                            }
                             if (response[i].Image != null) {
-                                html += '<img class="img-fluid pad center" src="http://127.0.0.1:8000/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">'
+                                html += '<img class="img-fluid pad center" src="/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">'
                             } else {
                                 html += '<p style="padding-top: 20px;">ไม่มีรูปภาพ</p>'
                             }

@@ -761,13 +761,6 @@ function DateThai($strDate)
         allowClear: true,
     });
 
-    $('#issueseditModal').on('show', function(e) {
-        var link = e.relatedTarget(),
-            modal = $(this),
-            Appointmentsid = link.data("Appointmentsid"),
-
-            modal.find("#Appointmentsid").val(Appointmentsid);
-    });
 </script>
 
 <script>
@@ -809,7 +802,7 @@ function DateThai($strDate)
             e.preventDefault();
             $.ajax({
                 type: "PUT",
-                url: "/issues-appointment-edit",
+                url: "/issues-appointment-edit-user",
                 data: $('#editform').serialize(),
                 success: function(response) {
                     console.log(response);
@@ -881,7 +874,7 @@ function DateThai($strDate)
             e.preventDefault();
             $.ajax({
                 type: "POST",
-                url: "/issues-appointment-add",
+                url: "/issues-appointment-add-user",
                 data: $('#addform').serialize(),
                 success: function(response) {
                     console.log(response);
