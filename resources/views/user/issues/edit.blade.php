@@ -226,7 +226,7 @@ function DateThai($strDate)
                 </div>
                 @endforeach
                 @endif
-                <form action="{{ url('issues-update/'.$data->Issuesid) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ url('issues-update-user/'.$data->Issuesid) }}" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     {{ method_field('PUT') }}
 
@@ -308,7 +308,6 @@ function DateThai($strDate)
                                     >{{$row3->ISSName}}</option>
                                 @endforeach
                             </select>
-
                             @endif
 
                         </div>

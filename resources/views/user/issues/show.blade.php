@@ -222,7 +222,9 @@ function DateTime($strDate)
                             </div>
 
                         </div>
+                        @if($data->Statusid != 2)
                         <a href="{{ url('issues-edit-user/'.$data->Issuesid.'/'.$data->Uuid) }}" class="btn btn-primary">Edit</a>
+                        @endif
                         &nbsp;&nbsp;
                         <a href="/issues-user" class="btn btn-danger">Back</a>
                         &nbsp;&nbsp;
