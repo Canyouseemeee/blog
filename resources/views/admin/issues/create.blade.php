@@ -155,7 +155,7 @@ function DateThai($strDate)
 @endif
 
 <!-- Modal Comments -->
-<div class="modal fade" id="issuescommentsModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalComments" aria-hidden="true">
+<!-- <div class="modal fade" id="issuescommentsModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalComments" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -164,7 +164,7 @@ function DateThai($strDate)
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <!-- <form action="{{ url('/appointment-add') }}" method="post"> -->
+            <form action="{{ url('/appointment-add') }}" method="post">
             <form id="addformcomment" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="modal-body">
@@ -185,7 +185,7 @@ function DateThai($strDate)
                     </div>
 
                     <div class="form-group">
-                        <!-- <label for="">Uuid</label> -->
+                        <label for="">Uuid</label>
                         <input id="Ctemp" name="Ctemp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
                     </div>
 
@@ -199,7 +199,7 @@ function DateThai($strDate)
             </form>
         </div>
     </div>
-</div>
+</div> -->
 <!-- End Modal Comments -->
 
 <button type="button" class="btn btn-outline-warning btn_showIssues active">Issues Create</button>
@@ -413,7 +413,7 @@ function DateThai($strDate)
                         <th>Updateby</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
-                        <th>Edit</th>
+
                     </thead>
                     <tbody id="datatableappointbody">
                         <tr>
@@ -424,7 +424,7 @@ function DateThai($strDate)
                             <td>ไม่มีข้อมูลที่จะแสดง</td>
                             <td>ไม่มีข้อมูลที่จะแสดง</td>
                             <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
+
                         </tr>
                     </tbody>
                 </table>
@@ -434,103 +434,6 @@ function DateThai($strDate)
     </div>
 </div>
 
-<!-- <div class="row panelsub_all subcomment">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issuescommentsModal">Comments Add</a>
-                <h4 class="card-title">Comments</h4>
-
-            </div>
-            <style>
-                .elevation-2 {
-                    box-shadow: 0 3px 6px rgba(0, 0, 0, .16), 0 3px 6px rgba(0, 0, 0, .23) !important;
-                }
-
-                .img-circle {
-                    border-radius: 50%;
-                }
-
-                .w-11p {
-                    width: 300px;
-                    word-break: 'break-all';
-                }
-            </style>
-            <div class="card-body">
-                @if(!is_null($comment))
-
-                <table id="datatablecomment" class="table">
-                    <thead class="text-primary">
-                        <th>Image</th>
-                        <th>Type</th>
-                        <th>Comment</th>
-                        <th>Createby</th>
-                        <th>Updateby</th>
-                        <th>Created_at</th>
-                        <th>Updated_at</th>
-                        <th>Status</th>
-                    </thead>
-                    <tbody id="datatablecommentbody">
-                        @foreach($comment as $row)
-                        <tr>
-                            @if(!is_null($row->Image))
-                            <td><img src="{{ url('storage/'.$row->Image) }}" class="img-circle elevation-2" alt="image" width="80" height="80"></td>
-                            @else
-                            <td>ไม่มีรูปภาพ</td>
-                            @endif
-                            @if($row->Type === 1)
-                            <td>App</td>
-                            @elseif($row->Type === 0)
-                            <td>Web</td>
-                            @endif
-                            <td>
-                                <div class="w-11p" style="height: 30px; overflow: hidden;">
-                                    {{$row->Comment}}
-                                </div>
-                            </td>
-                            <td>{{$row->Createby}}</td>
-                            <td>{{$row->Updateby}}</td>
-                            <td>{{$row->created_at}}</td>
-                            <td>{{$row->updated_at}}</td>
-                            @if($row->Status === 1)
-                            <td>Active</td>
-                            @elseif($row->Status === 0)
-                            <td>UnActive</td>
-                            @endif
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                @else
-                <table id="datatablecomment" class="table">
-                    <thead class="text-primary">
-                        <th>Image</th>
-                        <th>Type</th>
-                        <th>Comment</th>
-                        <th>Createby</th>
-                        <th>Updateby</th>
-                        <th>Created_at</th>
-                        <th>Updated_at</th>
-                        <th>Status</th>
-                    </thead>
-                    <tbody id="datatablecommentbody">
-                        <tr>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                        </tr>
-                    </tbody>
-                </table>
-                @endif
-            </div>
-        </div>
-    </div>
-</div> -->
 <div class="row panelsub_all subcomment">
     <style>
         .elevation-2 {
@@ -603,16 +506,63 @@ function DateThai($strDate)
             width: 50%;
         }
     </style>
-    <div class="col-md-12">
+    <div class="col-md-12" style="overflow-y: auto; height: 600px;">
         <!-- Box Comment -->
         <div class="card-header">
-            <h4 class="card-title"> Comments <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issuescommentsModal">Comments Add</a></h4>
+            <h4 class="card-title"> Comments
+                <!-- <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issuescommentsModal">Comments Add</a> -->
+            </h4>
+            <!-- <form id="addformcomment" enctype="multipart/form-data"> -->
+            <form id="addformcomment">
+                {{ csrf_field() }}
+                <div class="body">
+                    <div class="form-group">
+                        <label for="">Comment</label>
+                        <textarea id="CComment" name="CComment" class="form-control" rows="1" placeholder="Enter Comment"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Image</label><br>
+                        <input type="file" id="image" name="image">
+                    </div>
+
+                    <div class="form-group">
+                        <!-- <label for="">Createby</label> -->
+                        <input type="text" id="CCreateby" name="CCreateby" class="form-control" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}" hidden>
+                    </div>
+
+                    <div class="form-group">
+                        <!-- <label for="">Uuid</label> -->
+                        <input id="Ctemp" name="Ctemp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
+                    </div>
+
+                    <div id="resultcomment">
+                    </div>
+
+                    <div id="resultcomment2">
+                    </div>
+                </div>
+                <div class="footer">
+                    <button type="button" id="savecomment" class="btn btn-primary right">Post</button>
+                    <br>
+                    <div id="countcomment">
+                        @if(!is_null($countcomment))
+                        <br>
+                        <h4>Comments ({{$countcomment}})</h4>
+                        @endif
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <br>
         </div>
         <div class="card card-widget" id="cardcomment">
             @if(!is_null($comment))
             @foreach($comment as $row)
             <div class="card-header">
                 <div class="user-block">
+                    <input id="Ccid" name="Ccid" class="form-control" placeholder="{{$row->Commentid}}" value="{{$row->Commentid}}">
                     @foreach($usercomment as $userc)
                     @if(!is_null($userc->image))
                     <img class="img-circle" src="{{ url('storage/'.$userc->image) }}" alt="Image" width="50" height="50">
@@ -628,26 +578,15 @@ function DateThai($strDate)
                     <span class="description">: Web</span>
                     @endif
                     @if($row->Status === 1)
-                    <span class="description">Active</span>
+                    <span class="description" style="color: green;">#Active</span>
                     @elseif($row->Status === 0)
-                    <span class="description">UnActive</span>
+                    <span class="description" style="color: red;">#UnActive</span>
                     @endif
                 </div>
-
-                <!-- /.user-block -->
-                <!-- <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-toggle="tooltip" title="Mark as read">
-                        <i class="far fa-circle"></i></button>
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                    </button>
-                </div> -->
-                <!-- /.card-tools -->
             </div>
             <div class="card-body">
                 @if($row->Status === 1)
-                <button type="button" class="btn btn-default btn-sm float-right" data-toggle="modal" data-target="#UnsendModal-{{$row->Commentid}}"><i class="fas fa-comment-slash"></i></i> Unsend</button>
+                <button id="Unsend" type="button" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>
                 @endif
                 @if($row->Image != null)
                 <img class="img-fluid pad center" src="{{ url('storage/'.$row->Image) }}" style="align-items: center;" width="555" height="550" alt="Photo">
@@ -663,7 +602,6 @@ function DateThai($strDate)
             @endforeach
             @else
             <div class="card card-widget" id="cardcomment">
-                <h4>ไม่มีข้อมูลที่จะแสดง</h4>
             </div>
             @endif
         </div>
@@ -673,7 +611,7 @@ function DateThai($strDate)
 @if(!is_null($comment))
 @foreach($comment as $row)
 <!-- Modal Unsend -->
-<div class="modal fade" id="UnsendModal-{{$row->Commentid}}" tabindex="-1" role="dialog" aria-labelledby="UnsendModalComments" aria-hidden="true">
+<!-- <div class="modal fade" id="UnsendModal-{{$row->Commentid}}" tabindex="-1" role="dialog" aria-labelledby="UnsendModalComments" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -689,7 +627,7 @@ function DateThai($strDate)
                 <div class="modal-body">
                     <p>ท่านต้องการยกเลิก Comment นี้ใช่หรือไม่?</p>
                     <div class="form-group">
-                        <!-- <label for="">Uuid</label> -->
+                        <label for="">Uuid</label>
                         <input id="Ccid" name="Ccid" class="form-control" placeholder="{{$row->Commentid}}" value="{{$row->Commentid}}" hidden>
                     </div>
                     <div id="resultcomment2">
@@ -703,7 +641,7 @@ function DateThai($strDate)
             </form>
         </div>
     </div>
-</div>
+</div> -->
 @endforeach
 @endif
 @endsection
@@ -833,14 +771,10 @@ function DateThai($strDate)
                 },
                 dataType: 'json', //return data will be json
                 success: function(data) {
-                    // console.log("Trackerid","3");
-                    // console.log(len(data));
                     console.log(data);
 
                     // here price is coloumn name in products table data.coln name
                     $('#Trackerid').val(data);
-                    // a.find('.tracker_id').val(data.Name);
-                    // console.log(data = JSON.parse(data));
 
                 },
                 error: function() {
@@ -874,6 +808,7 @@ function DateThai($strDate)
         $(this).addClass('active');
         $('.btn_showIssues').removeClass('active')
         $('.btn_showComments').removeClass('active')
+        $("#resultcomment").empty();
     });
 
     $('.btn_showIssues').click(function(e) {
@@ -884,6 +819,7 @@ function DateThai($strDate)
         $(this).addClass('active');
         $('.btn_showComments').removeClass('active')
         $('.btn_showAppointments').removeClass('active')
+        $("#resultcomment").empty();
     });
 
     $('.btn_showComments').click(function(e) {
@@ -897,78 +833,6 @@ function DateThai($strDate)
     });
 
     $(document).ready(function() {
-
-        // $('#editform').on('submit', function(e) {
-        //     e.preventDefault();
-        //     $.ajax({
-        //         type: "PUT",
-        //         url: "/appointment-edit",
-        //         data: $('#editform').serialize(),
-        //         success: function(response) {
-        //             console.log(response);
-        //             $('#editmodal').attr('disabled', 'disabled');
-        //             $('#AppointDateedit').attr('readonly', 'readonly');
-        //             $('#Commentedit').attr('readonly', 'readonly');
-        //             $('#Statusedit').attr('disabled', 'disabled');
-        //             $("#resultedit").html('<div class="alert alert-success" role="alert" id="result">Appointment Update Success</div>');
-        //         },
-        //         error: function(error) {
-        //             console.log(error);
-        //         }
-        //     });
-        // });
-
-        // $('#editclosed').click(function() {
-
-        //     $('#datatableappointbody').empty();
-        //     var temp = $('#tempappoint').val();
-        //     $.ajax({
-        //         type: "POST",
-        //         data: {
-        //             temp: temp
-        //         },
-        //         url: "/api/appointmentlist",
-        //         success: function(response) {
-        //             $('#editmodal').removeAttr('disabled');
-        //             $('#AppointDateedit').removeAttr('readonly');
-        //             $('#Commentedit').removeAttr('readonly');
-        //             $('#Statusedit').removeAttr('disabled');
-        //             $("#resultedit").empty();
-        //             var len = response.length;
-        //             if (len > 0) {
-        //                 var irow = response.length;
-        //                 var i = 0;
-        //                 var rown = 1;
-        //                 for (i = 0; i < irow; i++) {
-        //                     var html = "<tr>";
-        //                     html += '<td>' + response[i].Date + '</td>';
-        //                     html += '<td><div class="w-11p" style="height: 30px; overflow: hidden;">' + response[i].Comment + '</div></td>';
-        //                     if (response[i].Status == 1) {
-        //                         html += '<td>Active</td>';
-        //                     }
-        //                     if (response[i].Status == 2) {
-        //                         html += '<td>Change</td>';
-        //                     }
-        //                     if (response[i].Status == 3) {
-        //                         html += '<td>Disable</td>';
-        //                     }
-        //                     html += '<td>' + response[i].Createby + '</td>';
-        //                     html += '<td>' + response[i].Updateby + '</td>';
-        //                     html += '<td>' + response[i].created_at + '</td>';
-        //                     html += '<td>' + response[i].updated_at + '</td>';
-        //                     if (response[i].Status == 1) {
-        //                         html += '<td><a href="" data-toggle="modal" data-target="#issueseditModal" class="btn btn-success">Edit</a></td>';
-        //                     }
-        //                     html += '</tr>';
-        //                     $('#datatableappointbody').append(html);
-        //                 }
-        //             }
-        //         },
-        //         error: function(error) {
-        //             console.log(error);
-        //         }
-        //     });
-        // });
 
         $('#addform').on('submit', function(e) {
             e.preventDefault();
@@ -1030,9 +894,6 @@ function DateThai($strDate)
                             html += '<td>' + response[i].Updateby + '</td>';
                             html += '<td>' + response[i].created_at + '</td>';
                             html += '<td>' + response[i].updated_at + '</td>';
-                            if (response[i].Status == 1) {
-                                html += '<td><a href="" data-toggle="modal" data-target="#issueseditModal" class="btn btn-success">Edit</a></td>';
-                            }
                             html += '</tr>';
                             $('#datatableappointbody').append(html);
                         }
@@ -1047,9 +908,10 @@ function DateThai($strDate)
 
     $(document).ready(function() {
 
-        $('#addformcomment').on('submit', function(e) {
+        $('#savecomment').on('click', function(e) {
             e.preventDefault();
             var form = $('#addformcomment')[0];
+            // alert("Data Saved");
 
             var data = new FormData(form);
             $.ajax({
@@ -1063,9 +925,80 @@ function DateThai($strDate)
                 success: function(response) {
                     console.log(response);
                     // alert("Data Saved");
-                    $('#savecomment').attr('disabled', 'disabled');
-                    $('#CComment').attr('readonly', 'readonly');
+                    // $('#savecomment').attr('disabled', 'disabled');
+                    // $('#CComment').attr('readonly', 'readonly');
                     $("#resultcomment").html('<div class="alert alert-success" role="alert" id="result">Comments Save Success</div>');
+                    $('#cardcomment').empty();
+                    $('#countcomment').empty();
+                    var temp = $('#Ctemp').val();
+                    $.ajax({
+                        type: "POST",
+                        data: {
+                            temp: temp
+                        },
+                        url: "/api/commentlist",
+                        success: function(response) {
+                            $('#savecomment').removeAttr('disabled');
+                            $('#CComment').removeAttr('readonly').val("");
+                            // $("#resultcomment").empty();
+                            $('#image').val("");
+                            var len = response.length;
+                            if (len > 0) {
+                                var irow = response.length;
+                                var i = 0;
+                                var rown = 1;
+                                var html2 = '<br><h4 class="card-title">';
+                                html2 += 'Comments (' + response.length + ')';
+                                html2 += '</h4>';
+                                for (i = 0; i < irow; i++) {
+                                    var html = '<div class="card-header">';
+                                    html += '<div class="user-block">';
+                                    html += '<input id="Ccid" name="Ccid" class="form-control" placeholder="' + response[i].Commentid + '" value="' + response[i].Commentid + '">';
+                                    if (response[i].image != null) {
+                                        // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
+                                        html += '<img class="img-circle" src="/storage/' + response[i].image + '" alt="Image" width="50" height="50"> &nbsp;';
+                                    }
+                                    html += '<span class="username">' + response[i].Createby + ' : </span>';
+                                    html += '<span class="description">' + response[i].created_at + ' </span>';
+                                    if (response[i].Type == 1) {
+                                        html += '<span class="description">: App </span>';
+                                    }
+                                    if (response[i].Type == 0) {
+                                        html += '<span class="description">: Web </span>';
+                                    }
+                                    if (response[i].Status === 1) {
+                                        html += '<span class="description" style="color: green;">#Active</span>';
+                                    }
+                                    if (response[i].Status === 0) {
+                                        html += '<span class="description" style="color: red;">#UnActive</span>';
+                                    }
+                                    html += '</div>';
+                                    html += '</div>';
+                                    html += '<div class="card-body">';
+                                    if (response[i].Status === 1) {
+                                        html += '<button id="Unsend" type="button" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i>Unsend</button>';
+                                    }
+                                    if (response[i].Image != null) {
+                                        html += '<img class="img-fluid pad center" src="/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">';
+                                    } else {
+                                        html += '<p style="padding-top: 20px;">ไม่มีรูปภาพ</p>';
+                                    }
+                                    html += '<p style="padding-top: 20px;">' + response[i].Comment + '</p>';
+                                    html += '<span class="float-right text-muted">updated ' + response[i].updated_at + ' By ' + response[i].Updateby + '</span>';
+                                    html += '</div>';
+                                    html += '<div class="card-footer">';
+                                    html += '<bt>';
+                                    html += '</div>';
+
+                                    $('#cardcomment').append(html);
+                                }
+                                $('#countcomment').append(html2);
+                            }
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
                 },
                 error: function(error) {
                     console.log(error);
@@ -1074,97 +1007,168 @@ function DateThai($strDate)
                 }
             });
         });
-
-        $('#closedcomment').click(function() {
-
-            $('#cardcomment').empty();
-            var temp = $('#Ctemp').val();
-            $.ajax({
-                type: "POST",
-                data: {
-                    temp: temp
-                },
-                url: "/api/commentlist",
-                success: function(response) {
-                    $('#savecomment').removeAttr('disabled');
-                    $('#CComment').removeAttr('readonly').val("");
-                    $("#resultcomment").empty();
-                    $('#image').val("");
-                    var len = response.length;
-                    if (len > 0) {
-                        var irow = response.length;
-                        var i = 0;
-                        var rown = 1;
-                        for (i = 0; i < irow; i++) {
-                            var html = '<div class="card-header">';
-                            html += '<div class="user-block">';
-                            if (response[i].Image != null) {
-                                // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
-                                html += '<img class="img-circle" src="/storage/'+response[i].image+'" alt="Image" width="50" height="50"> &nbsp;'
-                            }
-                            html += '<span class="username">' + response[i].Createby + ' : </span>'
-                            html += '<span class="description">' + response[i].created_at + ' </span>'
-                            if (response[i].Type == 1) {
-                                html += '<span class="description">: App </span>';
-                            }
-                            if (response[i].Type == 0) {
-                                html += '<span class="description">: Web </span>';
-                            }
-                            if (response[i].Status === 1) {
-                                html += '<span class="description">Active</span>';
-                            }
-                            if (response[i].Status === 0) {
-                                html += '<span class="description">UnActive</span>';
-                            }
-
-                            html += '</div>'
-                            html += '</div>'
-                            html += '<div class="card-body">'
-                            if (response[i].Status === 1) {
-                                html += '<button type="button" class="btn btn-default btn-sm float-right" data-toggle="modal" data-target="#UnsendModal-' + response[i].Commentid + '"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
-                            }
-                            if (response[i].Image != null) {
-                                html += '<img class="img-fluid pad center" src="/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">'
-                            } else {
-                                html += '<p style="padding-top: 20px;">ไม่มีรูปภาพ</p>'
-                            }
-                            html += '<p style="padding-top: 20px;">' + response[i].Comment + '</p>'
-                            html += '<span class="float-right text-muted">updated ' + response[i].updated_at + ' By ' + response[i].Updateby + '</span>'
-                            html += '</div>'
-                            html += '<div class="card-footer">'
-                            html += '<bt>'
-                            html += '</div>'
-
-                            $('#cardcomment').append(html);
-                        }
-                    }
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
-        });
-
-        $('#Unsendadd').on('submit', function(e) {
+    //comment
+        // $('#closedcomment').click(function() {
+        //     $('#cardcomment').empty();
+        //     var temp = $('#Ctemp').val();
+        //     $.ajax({
+        //         type: "POST",
+        //         data: {
+        //             temp: temp
+        //         },
+        //         url: "/api/commentlist",
+        //         success: function(response) {
+        //             $('#savecomment').removeAttr('disabled');
+        //             $('#CComment').removeAttr('readonly').val("");
+        //             $("#resultcomment").empty();
+        //             $('#image').val("");
+        //             var len = response.length;
+        //             if (len > 0) {
+        //                 var irow = response.length;
+        //                 var i = 0;
+        //                 var rown = 1;
+        //                 for (i = 0; i < irow; i++) {
+        //                     var html = '<div class="card-header">';
+        //                     html += '<div class="user-block">';
+        //                     if (response[i].Image != null) {
+        //                         // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
+        //                         html += '<img class="img-circle" src="/storage/' + response[i].image + '" alt="Image" width="50" height="50"> &nbsp;'
+        //                     }
+        //                     html += '<span class="username">' + response[i].Createby + ' : </span>'
+        //                     html += '<span class="description">' + response[i].created_at + ' </span>'
+        //                     if (response[i].Type == 1) {
+        //                         html += '<span class="description">: App </span>';
+        //                     }
+        //                     if (response[i].Type == 0) {
+        //                         html += '<span class="description">: Web </span>';
+        //                     }
+        //                     if (response[i].Status === 1) {
+        //                         html += '<span class="description">Active</span>';
+        //                     }
+        //                     if (response[i].Status === 0) {
+        //                         html += '<span class="description">UnActive</span>';
+        //                     }
+        //                     html += '</div>'
+        //                     html += '</div>'
+        //                     html += '<div class="card-body">'
+        //                     if (response[i].Status === 1) {
+        //                         html += '<button type="button" class="btn btn-default btn-sm float-right" data-toggle="modal" data-target="#UnsendModal-' + response[i].Commentid + '"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
+        //                     }
+        //                     if (response[i].Image != null) {
+        //                         html += '<img class="img-fluid pad center" src="/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">'
+        //                     } else {
+        //                         html += '<p style="padding-top: 20px;">ไม่มีรูปภาพ</p>'
+        //                     }
+        //                     html += '<p style="padding-top: 20px;">' + response[i].Comment + '</p>'
+        //                     html += '<span class="float-right text-muted">updated ' + response[i].updated_at + ' By ' + response[i].Updateby + '</span>'
+        //                     html += '</div>'
+        //                     html += '<div class="card-footer">'
+        //                     html += '<bt>'
+        //                     html += '</div>'
+        //                     $('#cardcomment').append(html);
+        //                 }
+        //             }
+        //         },
+        //         error: function(error) {
+        //             console.log(error);
+        //         }
+        //     });
+        // });
+    //
+        $('#Unsend').on('click', function(e) {
             e.preventDefault();
             var commentid = $('#Ccid').val();
-            $.ajax({
-                type: "POST",
-                data: {
-                    commentid: commentid
-                },
-                url: "/api/commentliststatus",
-                success: function(response) {
-                    console.log(response);
-                    $('#SubmitUnsend').attr('disabled', 'disabled');
-                    $("#resultcomment2").html('<div class="alert alert-success" role="alert" id="result">Comments Unsend Sucess</div>');
-                },
-                error: function(error) {
-                    console.log(error);
-                    $('#SubmitUnsend').attr('disabled', 'disabled');
-                    $("#resultcomment2").html('<div class="alert alert-success" role="alert" id="result">Comments Unsend Sucess</div>');
-                }
-            });
+            alert($comment);
+
+            // $.ajax({
+            //     type: "POST",
+            //     data: {
+            //         commentid: commentid
+            //     },
+            //     url: "/api/commentliststatus",
+            //     success: function(response) {
+            //         console.log(response);
+            //         $('#SubmitUnsend').attr('disabled', 'disabled');
+            //         $("#resultcomment2").html('<div class="alert alert-danger" role="alert" id="result">Comments Unsend Sucess</div>');
+            //         $('#cardcomment').empty();
+            //         $('#countcomment').empty();
+            //         var temp = $('#Ctemp').val();
+            //         $.ajax({
+            //             type: "POST",
+            //             data: {
+            //                 temp: temp
+            //             },
+            //             url: "/api/commentlist",
+            //             success: function(response) {
+            //                 $('#savecomment').removeAttr('disabled');
+            //                 $('#CComment').removeAttr('readonly').val("");
+            //                 // $("#resultcomment").empty();
+            //                 $('#image').val("");
+            //                 var len = response.length;
+            //                 if (len > 0) {
+            //                     var irow = response.length;
+            //                     var i = 0;
+            //                     var rown = 1;
+            //                     var html2 = '<br><h4 class="card-title">';
+            //                     html2 += 'Comments('+response.length+')';
+            //                     html2 += '</h4>';
+            //                     for (i = 0; i < irow; i++) {
+            //                         var html = '<div class="card-header">';
+            //                         html += '<div class="user-block">';
+            //                         if (response[i].image != null) {
+            //                             // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
+            //                             html += '<img class="img-circle" src="/storage/' + response[i].image + '" alt="Image" width="50" height="50"> &nbsp;'
+            //                         }
+            //                         html += '<span class="username">' + response[i].Createby + ' : </span>'
+            //                         html += '<span class="description">' + response[i].created_at + ' </span>'
+            //                         if (response[i].Type == 1) {
+            //                             html += '<span class="description">: App </span>';
+            //                         }
+            //                         if (response[i].Type == 0) {
+            //                             html += '<span class="description">: Web </span>';
+            //                         }
+            //                         if (response[i].Status === 1) {
+            //                             html += '<span class="description" style="color: green;">#Active</span>';
+            //                         }
+            //                         if (response[i].Status === 0) {
+            //                             html += '<span class="description" style="color: red;">#UnActive</span>';
+            //                         }
+
+            //                         html += '</div>'
+            //                         html += '</div>'
+            //                         html += '<div class="card-body">'
+            //                         if (response[i].Status === 1) {
+            //                             html += '<button id="Unsend" type="button" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
+            //                         }
+            //                         if (response[i].Image != null) {
+            //                             html += '<img class="img-fluid pad center" src="/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">'
+            //                         } else {
+            //                             html += '<p style="padding-top: 20px;">ไม่มีรูปภาพ</p>'
+            //                         }
+            //                         html += '<p style="padding-top: 20px;">' + response[i].Comment + '</p>'
+            //                         html += '<span class="float-right text-muted">updated ' + response[i].updated_at + ' By ' + response[i].Updateby + '</span>'
+            //                         html += '</div>'
+            //                         html += '<div class="card-footer">'
+            //                         html += '<bt>'
+            //                         html += '</div>'
+
+            //                         $('#cardcomment').append(html);
+            //                     }
+            //                     $('#countcomment').append(html2);
+            //                 }
+            //             },
+            //             error: function(error) {
+            //                 console.log(error);
+            //             }
+            //         });
+            //     },
+            //     error: function(error) {
+            //         console.log(error);
+            //         // $('#SubmitUnsend').attr('disabled', 'disabled');
+            //         // alert("Data Saved");
+            //         $("#resultcomment2").html('<div class="alert alert-danger" role="alert" id="result">Comments Unsend Sucess</div>');
+            //     }
+            // });
         });
 
         $('#closedUnsend').click(function() {
@@ -1190,7 +1194,7 @@ function DateThai($strDate)
                             html += '<div class="user-block">';
                             if (response[i].Image != null) {
                                 // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
-                                html += '<img class="img-circle" src="/storage/'+ response[i].image +'" alt="Image" width="50" height="50"> &nbsp;'
+                                html += '<img class="img-circle" src="/storage/' + response[i].image + '" alt="Image" width="50" height="50"> &nbsp;'
                             }
                             html += '<span class="username">' + response[i].Createby + ' : </span>'
                             html += '<span class="description">' + response[i].created_at + ' </span>'
