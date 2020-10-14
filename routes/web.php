@@ -139,7 +139,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 //Comments//
 Route::post('/comments-add', 'Admin\CommentsController@store');
-Route::put('/issues-comments-add', 'Admin\CommentsController@storeedit');
+Route::post('/issues-comments-add', 'Admin\CommentsController@storeedit');
 
 //Calendar
 Route::get('/calendar', 'Admin\AppointmentController@calendar');

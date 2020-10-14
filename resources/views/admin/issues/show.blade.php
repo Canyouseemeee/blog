@@ -70,9 +70,9 @@ function DateTime($strDate)
                     <h4 class="card-title"> Issues-View</h4>
                 </div>
                 <style>
-                    .w-11p {
+                    .SandD {
                         width: 900px;
-                        word-break: break-all;
+                        word-wrap: break-word;
                     }
 
                     #myImg {
@@ -255,14 +255,14 @@ function DateTime($strDate)
                             </div>
 
                             <b><label>Subject : </label></b>
-                            <div class="form-group col-md-6">
-                                <label class="w-11p">{{$data->Subject}}</label>
+                            <div class="form-group col-md-10">
+                                <label class="SandD">{{$data->Subject}}</label>
                             </div>
 
 
                             <b><label>Description : </label></b>
-                            <div class="form-group col-md-6">
-                                <label class="w-11p">{{$data->Description}}</label>
+                            <div class="form-group col-md-10">
+                                <label class="SandD">{{$data->Description}}</label>
                             </div>
 
                             <div class="form-row ">

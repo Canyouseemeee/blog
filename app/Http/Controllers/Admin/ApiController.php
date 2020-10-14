@@ -77,6 +77,7 @@ class ApiController extends Controller
             ->join('users', 'issues.Assignment', '=', 'users.id')
             ->where([['issues.Statusid', 2], ['issues_logs.Action', 'Closed']])
             ->orderBy('issues.Issuesid', 'DESC')
+            ->limit(15)
             ->get();
         $issues = Issues::all();
 
@@ -412,17 +413,15 @@ class ApiController extends Controller
         $temp = $request->input('temp');
 
         $data = DB::table('issues_comment')
-            ->select('*')
+            ->select('users.image','issues_comment.Commentid','issues_comment.Issuesid','issues_comment.Status','issues_comment.Type','issues_comment.Comment','issues_comment.Image'
+            ,'issues_comment.Uuid','issues_comment.Createby','issues_comment.Updateby','issues_comment.created_at','issues_comment.updated_at')
+            ->join('users', 'issues_comment.Createby', '=', 'users.name')
             ->where('Uuid', $temp)
             ->orderBy('Commentid', 'DESC')
             ->get();
         foreach ($data as $row) {
             $createbycomment = $row->Createby;
         }
-        $usercomment = DB::table('users')
-            ->select('*')
-            ->where('name', $createbycomment)
-            ->get();
 
         return response()->json($data);
     }

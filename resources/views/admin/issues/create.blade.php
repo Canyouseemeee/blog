@@ -78,10 +78,10 @@ function DateThai($strDate)
 </div>
 <!-- End Modal -->
 
-@if(!is_null($appointment))
+@if(is_array($appointment))
 <!-- Edit Modal Appointments -->
 @foreach($appointment as $row)
-<div class="modal fade" id="issueseditModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalLabel" aria-hidden="true">
+<div class="modal fade" data-refresh="true" id="issueseditModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -372,7 +372,7 @@ function DateThai($strDate)
                         <th>Updateby</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
-                        <th>Edit</th>
+                        <!-- <th>Edit</th> -->
                     </thead>
                     <tbody id="datatableappointbody">
                         @foreach($appointment as $row)
@@ -394,11 +394,11 @@ function DateThai($strDate)
                             <td>{{$row->Updateby}}</td>
                             <td>{{$row->created_at}}</td>
                             <td>{{$row->updated_at}}</td>
-                            @if($row->Status === 1)
+                            <!-- @if($row->Status === 1)
                             <td>
                                 <a href="" data-toggle="modal" data-target="#issueseditModal" class="btn btn-success">Edit</a>
                             </td>
-                            @endif
+                            @endif -->
                         </tr>
                         @endforeach
                     </tbody>
@@ -898,77 +898,77 @@ function DateThai($strDate)
 
     $(document).ready(function() {
 
-        $('#editform').on('submit', function(e) {
-            e.preventDefault();
-            $.ajax({
-                type: "PUT",
-                url: "/appointment-edit",
-                data: $('#editform').serialize(),
-                success: function(response) {
-                    console.log(response);
-                    $('#editmodal').attr('disabled', 'disabled');
-                    $('#AppointDateedit').attr('readonly', 'readonly');
-                    $('#Commentedit').attr('readonly', 'readonly');
-                    $('#Statusedit').attr('disabled', 'disabled');
-                    $("#resultedit").html('<div class="alert alert-success" role="alert" id="result">Appointment Update Success</div>');
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
-        });
+        // $('#editform').on('submit', function(e) {
+        //     e.preventDefault();
+        //     $.ajax({
+        //         type: "PUT",
+        //         url: "/appointment-edit",
+        //         data: $('#editform').serialize(),
+        //         success: function(response) {
+        //             console.log(response);
+        //             $('#editmodal').attr('disabled', 'disabled');
+        //             $('#AppointDateedit').attr('readonly', 'readonly');
+        //             $('#Commentedit').attr('readonly', 'readonly');
+        //             $('#Statusedit').attr('disabled', 'disabled');
+        //             $("#resultedit").html('<div class="alert alert-success" role="alert" id="result">Appointment Update Success</div>');
+        //         },
+        //         error: function(error) {
+        //             console.log(error);
+        //         }
+        //     });
+        // });
 
-        $('#editclosed').click(function() {
+        // $('#editclosed').click(function() {
 
-            $('#datatableappointbody').empty();
-            var temp = $('#tempappoint').val();
-            $.ajax({
-                type: "POST",
-                data: {
-                    temp: temp
-                },
-                url: "/api/appointmentlist",
-                success: function(response) {
-                    $('#editmodal').removeAttr('disabled');
-                    $('#AppointDateedit').removeAttr('readonly');
-                    $('#Commentedit').removeAttr('readonly');
-                    $('#Statusedit').removeAttr('disabled');
-                    $("#resultedit").empty();
-                    var len = response.length;
-                    if (len > 0) {
-                        var irow = response.length;
-                        var i = 0;
-                        var rown = 1;
-                        for (i = 0; i < irow; i++) {
-                            var html = "<tr>";
-                            html += '<td>' + response[i].Date + '</td>';
-                            html += '<td><div class="w-11p" style="height: 30px; overflow: hidden;">' + response[i].Comment + '</div></td>';
-                            if (response[i].Status == 1) {
-                                html += '<td>Active</td>';
-                            }
-                            if (response[i].Status == 2) {
-                                html += '<td>Change</td>';
-                            }
-                            if (response[i].Status == 3) {
-                                html += '<td>Disable</td>';
-                            }
-                            html += '<td>' + response[i].Createby + '</td>';
-                            html += '<td>' + response[i].Updateby + '</td>';
-                            html += '<td>' + response[i].created_at + '</td>';
-                            html += '<td>' + response[i].updated_at + '</td>';
-                            if (response[i].Status == 1) {
-                                html += '<td><a href="" data-toggle="modal" data-target="#issueseditModal" class="btn btn-success">Edit</a></td>';
-                            }
-                            html += '</tr>';
-                            $('#datatableappointbody').append(html);
-                        }
-                    }
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
-        });
+        //     $('#datatableappointbody').empty();
+        //     var temp = $('#tempappoint').val();
+        //     $.ajax({
+        //         type: "POST",
+        //         data: {
+        //             temp: temp
+        //         },
+        //         url: "/api/appointmentlist",
+        //         success: function(response) {
+        //             $('#editmodal').removeAttr('disabled');
+        //             $('#AppointDateedit').removeAttr('readonly');
+        //             $('#Commentedit').removeAttr('readonly');
+        //             $('#Statusedit').removeAttr('disabled');
+        //             $("#resultedit").empty();
+        //             var len = response.length;
+        //             if (len > 0) {
+        //                 var irow = response.length;
+        //                 var i = 0;
+        //                 var rown = 1;
+        //                 for (i = 0; i < irow; i++) {
+        //                     var html = "<tr>";
+        //                     html += '<td>' + response[i].Date + '</td>';
+        //                     html += '<td><div class="w-11p" style="height: 30px; overflow: hidden;">' + response[i].Comment + '</div></td>';
+        //                     if (response[i].Status == 1) {
+        //                         html += '<td>Active</td>';
+        //                     }
+        //                     if (response[i].Status == 2) {
+        //                         html += '<td>Change</td>';
+        //                     }
+        //                     if (response[i].Status == 3) {
+        //                         html += '<td>Disable</td>';
+        //                     }
+        //                     html += '<td>' + response[i].Createby + '</td>';
+        //                     html += '<td>' + response[i].Updateby + '</td>';
+        //                     html += '<td>' + response[i].created_at + '</td>';
+        //                     html += '<td>' + response[i].updated_at + '</td>';
+        //                     if (response[i].Status == 1) {
+        //                         html += '<td><a href="" data-toggle="modal" data-target="#issueseditModal" class="btn btn-success">Edit</a></td>';
+        //                     }
+        //                     html += '</tr>';
+        //                     $('#datatableappointbody').append(html);
+        //                 }
+        //             }
+        //         },
+        //         error: function(error) {
+        //             console.log(error);
+        //         }
+        //     });
+        // });
 
         $('#addform').on('submit', function(e) {
             e.preventDefault();
@@ -1007,6 +1007,7 @@ function DateThai($strDate)
                     $('#Comment').removeAttr('readonly').val("");
                     $('#Status').removeAttr('disabled');
                     $("#result").empty();
+                    $("#issueseditModal").empty();
                     var len = response.length;
                     if (len > 0) {
                         var irow = response.length;
@@ -1099,7 +1100,7 @@ function DateThai($strDate)
                             html += '<div class="user-block">';
                             if (response[i].Image != null) {
                                 // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
-                                html += '<img class="img-circle" src="/storage/'+response[i].Image+'" alt="Image" width="50" height="50"> &nbsp;'
+                                html += '<img class="img-circle" src="/storage/'+response[i].image+'" alt="Image" width="50" height="50"> &nbsp;'
                             }
                             html += '<span class="username">' + response[i].Createby + ' : </span>'
                             html += '<span class="description">' + response[i].created_at + ' </span>'
@@ -1189,7 +1190,7 @@ function DateThai($strDate)
                             html += '<div class="user-block">';
                             if (response[i].Image != null) {
                                 // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
-                                html += '<img class="img-circle" src="/storage/'+ response[i].Image +'" alt="Image" width="50" height="50"> &nbsp;'
+                                html += '<img class="img-circle" src="/storage/'+ response[i].image +'" alt="Image" width="50" height="50"> &nbsp;'
                             }
                             html += '<span class="username">' + response[i].Createby + ' : </span>'
                             html += '<span class="description">' + response[i].created_at + ' </span>'

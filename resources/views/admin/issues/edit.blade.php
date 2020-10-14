@@ -206,11 +206,11 @@ function DateThai($strDate)
 </div>
 <!-- End Modal Comments -->
 
-<div class="btn-group btn-group-toggle" data-toggle="buttons">
+<!-- <div class="btn-group btn-group-toggle" data-toggle="buttons"> -->
     <button type="button" class="btn btn-outline-warning btn_showIssues active">Issues Create</button>
     <button type="button" class="btn btn-outline-primary btn_showComments">Comments</button>
     <button type="button" class="btn btn-outline-danger btn_showAppointments">Appointments</button>
-</div>
+<!-- </div> -->
 
 <div class="row subissues">
     <div class="col-md-12">
@@ -759,14 +759,6 @@ function DateThai($strDate)
         minimumInputLength: 1,
         delay: 250,
         allowClear: true,
-    });
-
-    $('#issueseditModal').on('show', function(e) {
-        var link = e.relatedTarget(),
-            modal = $(this),
-            Appointmentsid = link.data("Appointmentsid"),
-
-            modal.find("#Appointmentsid").val(Appointmentsid);
     });
 </script>
 

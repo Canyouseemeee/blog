@@ -48,11 +48,11 @@ function DateTime($strDate)
 
 ?>
 
-<div class="btn-group btn-group-toggle" data-toggle="buttons">
+<!-- <div class="btn-group btn-group-toggle" data-toggle="buttons"> -->
     <button type="button" class="btn btn-outline-warning btn_showIssues active">Issues Create</button>
     <button type="button" class="btn btn-outline-primary btn_showComments">Comments</button>
     <button type="button" class="btn btn-outline-danger btn_showAppointments">Appointments</button>
-</div>
+<!-- </div> -->
 
 <form action="{{ url('issues-show-user/'.$data->Issuesid) }}" method="PUT">
     {{ csrf_field() }}
@@ -63,9 +63,9 @@ function DateTime($strDate)
                     <h4 class="card-title"> Issues-View</h4>
                 </div>
                 <style>
-                    .w-11p {
+                    .SandD {
                         width: 900px;
-                        word-break: break-all;
+                        word-wrap: break-word;
                     }
                 </style>
                 <div class="container">
@@ -153,13 +153,13 @@ function DateTime($strDate)
 
                             <b><label>Subject : </label></b>
                             <div class="form-group col-md-6">
-                                <label class="w-11p">{{$data->Subject}}</label>
+                                <label class="SandD">{{$data->Subject}}</label>
                             </div>
 
 
                             <b><label>Description : </label></b>
                             <div class="form-group col-md-6">
-                                <label class="w-11p">{{$data->Description}}</label>
+                                <label class="SandD">{{$data->Description}}</label>
                             </div>
 
                             <div class="form-row ">
