@@ -253,6 +253,10 @@ class IssuesController extends Controller
             ->where('Uuid', $temp)
             ->orderBy('Commentid', 'DESC')
             ->get();
+        $countcomment = DB::table('issues_comment')
+            ->select('*')
+            ->where('Uuid', $temp)
+            ->count();
         if ($comment == '[]') {
             $comment = null;
             $usercomment = null;
@@ -266,7 +270,6 @@ class IssuesController extends Controller
                 ->get();
         }
 
-
         return view('user.issues.create', compact(
             ['issues'],
             ['issuespriority'],
@@ -278,7 +281,8 @@ class IssuesController extends Controller
             ['temp'],
             ['appointment'],
             ['comment'],
-            ['usercomment']
+            ['usercomment'],
+            ['countcomment']
         ));
     }
 
@@ -496,6 +500,10 @@ class IssuesController extends Controller
             ->where('Issuesid', $Issuesid)
             ->orderBy('Commentid', 'DESC')
             ->get();
+        $countcomment = DB::table('issues_comment')
+            ->select('*')
+            ->where('Uuid', $temp)
+            ->count();
         if ($comment == '[]') {
             $comment = null;
             $usercomment = null;
@@ -521,7 +529,8 @@ class IssuesController extends Controller
             ['appointment'],
             ['temp'],
             ['comment'],
-            ['usercomment']
+            ['usercomment'],
+            ['countcomment']
 
         ));
     }

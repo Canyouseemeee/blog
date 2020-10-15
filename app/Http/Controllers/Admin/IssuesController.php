@@ -256,7 +256,6 @@ class IssuesController extends Controller
         $countcomment = DB::table('issues_comment')
             ->select('*')
             ->where('Uuid', $temp)
-            ->orderBy('Commentid', 'DESC')
             ->count();
         if ($comment == '[]') {
             $comment = null;
@@ -270,7 +269,6 @@ class IssuesController extends Controller
                 ->where('name', $createbycomment)
                 ->get();
         }
-
 
         return view('admin.issues.create', compact(
             ['issues'],
@@ -502,6 +500,10 @@ class IssuesController extends Controller
             ->where('Issuesid', $Issuesid)
             ->orderBy('Commentid', 'DESC')
             ->get();
+        $countcomment = DB::table('issues_comment')
+            ->select('*')
+            ->where('Uuid', $temp)
+            ->count();
         if ($comment == '[]') {
             $comment = null;
             $usercomment = null;
@@ -527,7 +529,8 @@ class IssuesController extends Controller
             ['appointment'],
             ['temp'],
             ['comment'],
-            ['usercomment']
+            ['usercomment'],
+            ['countcomment']
 
         ));
     }

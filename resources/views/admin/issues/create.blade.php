@@ -506,7 +506,7 @@ function DateThai($strDate)
             width: 50%;
         }
     </style>
-    <div class="col-md-12" style="overflow-y: auto; height: 600px;">
+    <div class="col-md-12">
         <!-- Box Comment -->
         <div class="card-header">
             <h4 class="card-title"> Comments
@@ -557,49 +557,50 @@ function DateThai($strDate)
         <div class="card-footer">
             <br>
         </div>
-        <div class="card card-widget" id="cardcomment">
-            @if(!is_null($comment))
-            @foreach($comment as $row)
-            <div class="card-header">
-                <div class="user-block">
-                    <input id="Ccid" name="Ccid" class="form-control" placeholder="{{$row->Commentid}}" value="{{$row->Commentid}}">
-                    @foreach($usercomment as $userc)
-                    @if(!is_null($userc->image))
-                    <img class="img-circle" src="{{ url('storage/'.$userc->image) }}" alt="Image" width="50" height="50">
-                    @else
-                    <span class="username">ไม่มีรูปภาพ</span>
-                    @endif
-                    @endforeach
-                    <span class="username">{{$row->Createby}} : </span>
-                    <span class="description">{{$row->created_at}}</span>
-                    @if($row->Type === 1)
-                    <span class="description">: App</span>
-                    @elseif($row->Type === 0)
-                    <span class="description">: Web</span>
-                    @endif
-                    @if($row->Status === 1)
-                    <span class="description" style="color: green;">#Active</span>
-                    @elseif($row->Status === 0)
-                    <span class="description" style="color: red;">#UnActive</span>
-                    @endif
+        <div style="overflow-y: auto;; height: 500px;">
+            <div class="card card-widget"  id="cardcomment">
+                @if(!is_null($comment))
+                @foreach($comment as $row)
+                <div class="card-header">
+                    <div class="user-block">
+                        @foreach($usercomment as $userc)
+                        @if(!is_null($userc->image))
+                        <img class="img-circle" src="{{ url('storage/'.$userc->image) }}" alt="Image" width="50" height="50">
+                        @else
+                        <span class="username">ไม่มีรูปภาพ</span>
+                        @endif
+                        @endforeach
+                        <span class="username">{{$row->Createby}} : </span>
+                        <span class="description">{{$row->created_at}}</span>
+                        @if($row->Type === 1)
+                        <span class="description">: App</span>
+                        @elseif($row->Type === 0)
+                        <span class="description">: Web</span>
+                        @endif
+                        @if($row->Status === 1)
+                        <span class="description" style="color: green;">#Active</span>
+                        @elseif($row->Status === 0)
+                        <span class="description" style="color: red;">#UnActive</span>
+                        @endif
+                    </div>
                 </div>
+                <div class="card-body">
+                    @if($row->Status === 1)
+                    <button id="Unsend1" type="button" OnClick="JavaScript:fncConfirm1({{$row->Commentid}});" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>
+                    @endif
+                    @if($row->Image != null)
+                    <img class="img-fluid pad center" src="{{ url('storage/'.$row->Image) }}" style="align-items: center;" width="555" height="550" alt="Photo">
+                    @else
+                    <p style="padding-top: 20px;">ไม่มีรูปภาพ</p>
+                    @endif
+                    <p style="padding-top: 20px;">{{$row->Comment}}</p>
+                    <span class="float-right text-muted">updated {{$row->updated_at}} By {{$row->Updateby}}</span>
+                </div>
+                <div class="card-footer">
+                    <br>
+                </div>
+                @endforeach
             </div>
-            <div class="card-body">
-                @if($row->Status === 1)
-                <button id="Unsend" type="button" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>
-                @endif
-                @if($row->Image != null)
-                <img class="img-fluid pad center" src="{{ url('storage/'.$row->Image) }}" style="align-items: center;" width="555" height="550" alt="Photo">
-                @else
-                <p style="padding-top: 20px;">ไม่มีรูปภาพ</p>
-                @endif
-                <p style="padding-top: 20px;">{{$row->Comment}}</p>
-                <span class="float-right text-muted">updated {{$row->updated_at}} By {{$row->Updateby}}</span>
-            </div>
-            <div class="card-footer">
-                <br>
-            </div>
-            @endforeach
             @else
             <div class="card card-widget" id="cardcomment">
             </div>
@@ -608,42 +609,6 @@ function DateThai($strDate)
     </div>
 </div>
 
-@if(!is_null($comment))
-@foreach($comment as $row)
-<!-- Modal Unsend -->
-<!-- <div class="modal fade" id="UnsendModal-{{$row->Commentid}}" tabindex="-1" role="dialog" aria-labelledby="UnsendModalComments" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="UnsendModalComments">Unsend</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="Unsendadd">
-                {{ csrf_field() }}
-                {{ method_field('PUT') }}
-
-                <div class="modal-body">
-                    <p>ท่านต้องการยกเลิก Comment นี้ใช่หรือไม่?</p>
-                    <div class="form-group">
-                        <label for="">Uuid</label>
-                        <input id="Ccid" name="Ccid" class="form-control" placeholder="{{$row->Commentid}}" value="{{$row->Commentid}}" hidden>
-                    </div>
-                    <div id="resultcomment2">
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" id="closedUnsend" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="SubmitUnsend" name="action" value="save" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> -->
-@endforeach
-@endif
 @endsection
 
 @section('scripts')
@@ -795,6 +760,111 @@ function DateThai($strDate)
         delay: 250,
         allowClear: true,
     });
+</script>
+
+<script>
+    function fncConfirm1(commentid) {
+        //   var txt;
+        $('#resultcomment').empty();
+        $('#resultcomment2').empty();
+
+        if (confirm("ท่านต้องการยกเลิกข้อความนี้ใช่หรือไม่ ?")) {
+            // txt = "You pressed OK!"+cid;
+            $.ajax({
+                type: "POST",
+                data: {
+                    commentid: commentid
+                },
+                url: "/api/commentliststatus",
+                success: function(response) {
+                    console.log(response);
+                    // $('#SubmitUnsend').attr('disabled', 'disabled');
+                    $("#resultcomment2").html('<div class="alert alert-danger" role="alert" id="result">Comments Unsend Sucess</div>');
+                    $('#cardcomment').empty();
+                    $('#countcomment').empty();
+                    var temp = $('#Ctemp').val();
+                    $.ajax({
+                        type: "POST",
+                        data: {
+                            temp: temp
+                        },
+                        url: "/api/commentlist",
+                        success: function(response) {
+                            $('#savecomment').removeAttr('disabled');
+                            $('#CComment').removeAttr('readonly').val("");
+                            // $("#resultcomment").empty();
+                            $('#image').val("");
+                            var len = response.length;
+                            if (len > 0) {
+                                var irow = response.length;
+                                var i = 0;
+                                var rown = 1;
+                                var html2 = '<br><h4 class="card-title">';
+                                html2 += 'Comments(' + response.length + ')';
+                                html2 += '</h4>';
+                                for (i = 0; i < irow; i++) {
+                                    var html = '<div class="card-header">';
+                                    html += '<div class="user-block">';
+                                    if (response[i].image != null) {
+                                        // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
+                                        html += '<img class="img-circle" src="/storage/' + response[i].image + '" alt="Image" width="50" height="50"> &nbsp;'
+                                    }
+                                    html += '<span class="username">' + response[i].Createby + ' : </span>'
+                                    html += '<span class="description">' + response[i].created_at + ' </span>'
+                                    if (response[i].Type == 1) {
+                                        html += '<span class="description">: App </span>';
+                                    }
+                                    if (response[i].Type == 0) {
+                                        html += '<span class="description">: Web </span>';
+                                    }
+                                    if (response[i].Status === 1) {
+                                        html += '<span class="description" style="color: green;">#Active</span>';
+                                    }
+                                    if (response[i].Status === 0) {
+                                        html += '<span class="description" style="color: red;">#UnActive</span>';
+                                    }
+
+                                    html += '</div>'
+                                    html += '</div>'
+                                    html += '<div class="card-body">'
+                                    if (response[i].Status === 1) {
+                                        html += '<button id="Unsend1" type="button" OnClick="JavaScript:fncConfirm1(' + response[i].Commentid + ');"  class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
+                                    }
+                                    if (response[i].Image != null) {
+                                        html += '<img class="img-fluid pad center" src="/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">'
+                                    } else {
+                                        html += '<p style="padding-top: 20px;">ไม่มีรูปภาพ</p>'
+                                    }
+                                    html += '<p style="padding-top: 20px;">' + response[i].Comment + '</p>'
+                                    html += '<span class="float-right text-muted">updated ' + response[i].updated_at + ' By ' + response[i].Updateby + '</span>'
+                                    html += '</div>'
+                                    html += '<div class="card-footer">'
+                                    html += '<bt>'
+                                    html += '</div>'
+
+                                    $('#cardcomment').append(html);
+                                }
+                                $('#countcomment').append(html2);
+                            }
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                },
+                error: function(error) {
+                    console.log(error);
+                    // $('#SubmitUnsend').attr('disabled', 'disabled');
+                    // alert("Data Saved");
+                    $("#resultcomment2").html('<div class="alert alert-danger" role="alert" id="result">Comments Unsend Sucess</div>');
+                }
+            });
+        } else {
+            // txt = "You pressed Cancel!";
+        }
+        //   console.log(txt);
+        // document.getElementById("demo").innerHTML = txt;
+    }
 </script>
 
 <script>
@@ -953,7 +1023,6 @@ function DateThai($strDate)
                                 for (i = 0; i < irow; i++) {
                                     var html = '<div class="card-header">';
                                     html += '<div class="user-block">';
-                                    html += '<input id="Ccid" name="Ccid" class="form-control" placeholder="' + response[i].Commentid + '" value="' + response[i].Commentid + '">';
                                     if (response[i].image != null) {
                                         // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
                                         html += '<img class="img-circle" src="/storage/' + response[i].image + '" alt="Image" width="50" height="50"> &nbsp;';
@@ -976,7 +1045,7 @@ function DateThai($strDate)
                                     html += '</div>';
                                     html += '<div class="card-body">';
                                     if (response[i].Status === 1) {
-                                        html += '<button id="Unsend" type="button" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i>Unsend</button>';
+                                        html += '<button id="Unsend1" type="button" OnClick="JavaScript:fncConfirm1(' + response[i].Commentid + ');"  class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
                                     }
                                     if (response[i].Image != null) {
                                         html += '<img class="img-fluid pad center" src="/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">';
@@ -1004,237 +1073,6 @@ function DateThai($strDate)
                     console.log(error);
                     // alert("Data error");
 
-                }
-            });
-        });
-    //comment
-        // $('#closedcomment').click(function() {
-        //     $('#cardcomment').empty();
-        //     var temp = $('#Ctemp').val();
-        //     $.ajax({
-        //         type: "POST",
-        //         data: {
-        //             temp: temp
-        //         },
-        //         url: "/api/commentlist",
-        //         success: function(response) {
-        //             $('#savecomment').removeAttr('disabled');
-        //             $('#CComment').removeAttr('readonly').val("");
-        //             $("#resultcomment").empty();
-        //             $('#image').val("");
-        //             var len = response.length;
-        //             if (len > 0) {
-        //                 var irow = response.length;
-        //                 var i = 0;
-        //                 var rown = 1;
-        //                 for (i = 0; i < irow; i++) {
-        //                     var html = '<div class="card-header">';
-        //                     html += '<div class="user-block">';
-        //                     if (response[i].Image != null) {
-        //                         // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
-        //                         html += '<img class="img-circle" src="/storage/' + response[i].image + '" alt="Image" width="50" height="50"> &nbsp;'
-        //                     }
-        //                     html += '<span class="username">' + response[i].Createby + ' : </span>'
-        //                     html += '<span class="description">' + response[i].created_at + ' </span>'
-        //                     if (response[i].Type == 1) {
-        //                         html += '<span class="description">: App </span>';
-        //                     }
-        //                     if (response[i].Type == 0) {
-        //                         html += '<span class="description">: Web </span>';
-        //                     }
-        //                     if (response[i].Status === 1) {
-        //                         html += '<span class="description">Active</span>';
-        //                     }
-        //                     if (response[i].Status === 0) {
-        //                         html += '<span class="description">UnActive</span>';
-        //                     }
-        //                     html += '</div>'
-        //                     html += '</div>'
-        //                     html += '<div class="card-body">'
-        //                     if (response[i].Status === 1) {
-        //                         html += '<button type="button" class="btn btn-default btn-sm float-right" data-toggle="modal" data-target="#UnsendModal-' + response[i].Commentid + '"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
-        //                     }
-        //                     if (response[i].Image != null) {
-        //                         html += '<img class="img-fluid pad center" src="/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">'
-        //                     } else {
-        //                         html += '<p style="padding-top: 20px;">ไม่มีรูปภาพ</p>'
-        //                     }
-        //                     html += '<p style="padding-top: 20px;">' + response[i].Comment + '</p>'
-        //                     html += '<span class="float-right text-muted">updated ' + response[i].updated_at + ' By ' + response[i].Updateby + '</span>'
-        //                     html += '</div>'
-        //                     html += '<div class="card-footer">'
-        //                     html += '<bt>'
-        //                     html += '</div>'
-        //                     $('#cardcomment').append(html);
-        //                 }
-        //             }
-        //         },
-        //         error: function(error) {
-        //             console.log(error);
-        //         }
-        //     });
-        // });
-    //
-        $('#Unsend').on('click', function(e) {
-            e.preventDefault();
-            var commentid = $('#Ccid').val();
-            alert($comment);
-
-            // $.ajax({
-            //     type: "POST",
-            //     data: {
-            //         commentid: commentid
-            //     },
-            //     url: "/api/commentliststatus",
-            //     success: function(response) {
-            //         console.log(response);
-            //         $('#SubmitUnsend').attr('disabled', 'disabled');
-            //         $("#resultcomment2").html('<div class="alert alert-danger" role="alert" id="result">Comments Unsend Sucess</div>');
-            //         $('#cardcomment').empty();
-            //         $('#countcomment').empty();
-            //         var temp = $('#Ctemp').val();
-            //         $.ajax({
-            //             type: "POST",
-            //             data: {
-            //                 temp: temp
-            //             },
-            //             url: "/api/commentlist",
-            //             success: function(response) {
-            //                 $('#savecomment').removeAttr('disabled');
-            //                 $('#CComment').removeAttr('readonly').val("");
-            //                 // $("#resultcomment").empty();
-            //                 $('#image').val("");
-            //                 var len = response.length;
-            //                 if (len > 0) {
-            //                     var irow = response.length;
-            //                     var i = 0;
-            //                     var rown = 1;
-            //                     var html2 = '<br><h4 class="card-title">';
-            //                     html2 += 'Comments('+response.length+')';
-            //                     html2 += '</h4>';
-            //                     for (i = 0; i < irow; i++) {
-            //                         var html = '<div class="card-header">';
-            //                         html += '<div class="user-block">';
-            //                         if (response[i].image != null) {
-            //                             // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
-            //                             html += '<img class="img-circle" src="/storage/' + response[i].image + '" alt="Image" width="50" height="50"> &nbsp;'
-            //                         }
-            //                         html += '<span class="username">' + response[i].Createby + ' : </span>'
-            //                         html += '<span class="description">' + response[i].created_at + ' </span>'
-            //                         if (response[i].Type == 1) {
-            //                             html += '<span class="description">: App </span>';
-            //                         }
-            //                         if (response[i].Type == 0) {
-            //                             html += '<span class="description">: Web </span>';
-            //                         }
-            //                         if (response[i].Status === 1) {
-            //                             html += '<span class="description" style="color: green;">#Active</span>';
-            //                         }
-            //                         if (response[i].Status === 0) {
-            //                             html += '<span class="description" style="color: red;">#UnActive</span>';
-            //                         }
-
-            //                         html += '</div>'
-            //                         html += '</div>'
-            //                         html += '<div class="card-body">'
-            //                         if (response[i].Status === 1) {
-            //                             html += '<button id="Unsend" type="button" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
-            //                         }
-            //                         if (response[i].Image != null) {
-            //                             html += '<img class="img-fluid pad center" src="/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">'
-            //                         } else {
-            //                             html += '<p style="padding-top: 20px;">ไม่มีรูปภาพ</p>'
-            //                         }
-            //                         html += '<p style="padding-top: 20px;">' + response[i].Comment + '</p>'
-            //                         html += '<span class="float-right text-muted">updated ' + response[i].updated_at + ' By ' + response[i].Updateby + '</span>'
-            //                         html += '</div>'
-            //                         html += '<div class="card-footer">'
-            //                         html += '<bt>'
-            //                         html += '</div>'
-
-            //                         $('#cardcomment').append(html);
-            //                     }
-            //                     $('#countcomment').append(html2);
-            //                 }
-            //             },
-            //             error: function(error) {
-            //                 console.log(error);
-            //             }
-            //         });
-            //     },
-            //     error: function(error) {
-            //         console.log(error);
-            //         // $('#SubmitUnsend').attr('disabled', 'disabled');
-            //         // alert("Data Saved");
-            //         $("#resultcomment2").html('<div class="alert alert-danger" role="alert" id="result">Comments Unsend Sucess</div>');
-            //     }
-            // });
-        });
-
-        $('#closedUnsend').click(function() {
-
-            $('#cardcomment').empty();
-            var temp = $('#Ctemp').val();
-            $.ajax({
-                type: "POST",
-                data: {
-                    temp: temp
-                },
-                url: "/api/commentlist",
-                success: function(response) {
-                    $('#SubmitUnsend').removeAttr('disabled');
-                    $("#resultcomment2").empty();
-                    var len = response.length;
-                    if (len > 0) {
-                        var irow = response.length;
-                        var i = 0;
-                        var rown = 1;
-                        for (i = 0; i < irow; i++) {
-                            var html = '<div class="card-header">';
-                            html += '<div class="user-block">';
-                            if (response[i].Image != null) {
-                                // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
-                                html += '<img class="img-circle" src="/storage/' + response[i].image + '" alt="Image" width="50" height="50"> &nbsp;'
-                            }
-                            html += '<span class="username">' + response[i].Createby + ' : </span>'
-                            html += '<span class="description">' + response[i].created_at + ' </span>'
-                            if (response[i].Type == 1) {
-                                html += '<span class="description">: App </span>';
-                            }
-                            if (response[i].Type == 0) {
-                                html += '<span class="description">: Web </span>';
-                            }
-                            if (response[i].Status === 1) {
-                                html += '<span class="description">Active</span>';
-                            }
-                            if (response[i].Status === 0) {
-                                html += '<span class="description">UnActive</span>';
-                            }
-
-                            html += '</div>'
-                            html += '</div>'
-                            html += '<div class="card-body">'
-                            if (response[i].Status === 1) {
-                                html += '<button type="button" class="btn btn-default btn-sm float-right" data-toggle="modal" data-target="#UnsendModal-' + response[i].Commentid + '"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
-                            }
-                            if (response[i].Image != null) {
-                                html += '<img class="img-fluid pad center" src="/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">'
-                            } else {
-                                html += '<p style="padding-top: 20px;">ไม่มีรูปภาพ</p>'
-                            }
-                            html += '<p style="padding-top: 20px;">' + response[i].Comment + '</p>'
-                            html += '<span class="float-right text-muted">updated ' + response[i].updated_at + ' By ' + response[i].Updateby + '</span>'
-                            html += '</div>'
-                            html += '<div class="card-footer">'
-                            html += '<bt>'
-                            html += '</div>'
-
-                            $('#cardcomment').append(html);
-                        }
-                    }
-                },
-                error: function(error) {
-                    console.log(error);
                 }
             });
         });

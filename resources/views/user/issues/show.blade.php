@@ -48,11 +48,18 @@ function DateTime($strDate)
 
 ?>
 
-<!-- <div class="btn-group btn-group-toggle" data-toggle="buttons"> -->
-    <button type="button" class="btn btn-outline-warning btn_showIssues active">Issues Create</button>
-    <button type="button" class="btn btn-outline-primary btn_showComments">Comments</button>
-    <button type="button" class="btn btn-outline-danger btn_showAppointments">Appointments</button>
-<!-- </div> -->
+<!-- The Modal -->
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+
+
+<button type="button" class="btn btn-outline-warning btn_showIssues active">Issues Create</button>
+<button type="button" class="btn btn-outline-primary btn_showComments">Comments</button>
+<button type="button" class="btn btn-outline-danger btn_showAppointments">Appointments</button>
+
 
 <form action="{{ url('issues-show-user/'.$data->Issuesid) }}" method="PUT">
     {{ csrf_field() }}
@@ -66,6 +73,102 @@ function DateTime($strDate)
                     .SandD {
                         width: 900px;
                         word-wrap: break-word;
+                    }
+
+                    #myImg {
+                        border-radius: 5px;
+                        cursor: pointer;
+                        transition: 0.3s;
+                    }
+
+                    #myImg:hover {
+                        opacity: 0.7;
+                    }
+
+                    /* The Modal (background) */
+                    .modal {
+                        display: none;
+                        /* Hidden by default */
+                        position: fixed;
+                        /* Stay in place */
+                        z-index: 1;
+                        /* Sit on top */
+                        padding-top: 100px;
+                        /* Location of the box */
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        /* Full width */
+                        height: 100%;
+                        /* Full height */
+                        overflow: auto;
+                        /* Enable scroll if needed */
+                        background-color: rgb(0, 0, 0);
+                        /* Fallback color */
+                        background-color: rgba(0, 0, 0, 0.9);
+                        /* Black w/ opacity */
+                    }
+
+                    /* Modal Content (Image) */
+                    .modal-content {
+                        margin: auto;
+                        display: block;
+                        width: 80%;
+                        max-width: 700px;
+                    }
+
+                    /* Caption of Modal Image (Image Text) - Same Width as the Image */
+                    #caption {
+                        margin: auto;
+                        display: block;
+                        width: 80%;
+                        max-width: 700px;
+                        text-align: center;
+                        color: #ccc;
+                        padding: 10px 0;
+                        height: 150px;
+                    }
+
+                    /* Add Animation - Zoom in the Modal */
+                    .modal-content,
+                    #caption {
+                        animation-name: zoom;
+                        animation-duration: 0.6s;
+                    }
+
+                    @keyframes zoom {
+                        from {
+                            transform: scale(0)
+                        }
+
+                        to {
+                            transform: scale(1)
+                        }
+                    }
+
+                    /* The Close Button */
+                    .close {
+                        position: absolute;
+                        top: 15px;
+                        right: 35px;
+                        color: #f1f1f1;
+                        font-size: 40px;
+                        font-weight: bold;
+                        transition: 0.3s;
+                    }
+
+                    .close:hover,
+                    .close:focus {
+                        color: #bbb;
+                        text-decoration: none;
+                        cursor: pointer;
+                    }
+
+                    /* 100% Image Width on Smaller Screens */
+                    @media only screen and (max-width: 700px) {
+                        .modal-content {
+                            width: 100%;
+                        }
                     }
                 </style>
                 <div class="container">
@@ -152,13 +255,13 @@ function DateTime($strDate)
                             </div>
 
                             <b><label>Subject : </label></b>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-10">
                                 <label class="SandD">{{$data->Subject}}</label>
                             </div>
 
 
                             <b><label>Description : </label></b>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-10">
                                 <label class="SandD">{{$data->Description}}</label>
                             </div>
 
@@ -216,15 +319,11 @@ function DateTime($strDate)
 
                             <div class="form-group">
                                 <b><label>Image : </label></b>
-
-                                <img src="{{ url('storage/'.$data->Image) }}" alt="Image" width="300" height="300" />
-
+                                <img id="myImg" src="{{ url('storage/'.$data->Image) }}" alt="Image" style="width:100%;max-width:300px">
                             </div>
 
                         </div>
-                        @if($data->Statusid != 2)
                         <a href="{{ url('issues-edit-user/'.$data->Issuesid.'/'.$data->Uuid) }}" class="btn btn-primary">Edit</a>
-                        @endif
                         &nbsp;&nbsp;
                         <a href="/issues-user" class="btn btn-danger">Back</a>
                         &nbsp;&nbsp;
@@ -400,7 +499,11 @@ function DateTime($strDate)
             <div class="card-header">
                 <div class="user-block">
                     @foreach($usercomment as $userc)
+                    @if(!is_null($userc->image))
                     <img class="img-circle" src="{{ url('storage/'.$userc->image) }}" alt="Image" width="50" height="50">
+                    @else
+                    <span class="username">ไม่มีรูปภาพ</span>
+                    @endif
                     @endforeach
                     <span class="username">{{$row->Createby}} : </span>
                     <span class="description">{{$row->created_at}}</span>
@@ -410,15 +513,16 @@ function DateTime($strDate)
                     <span class="description">: Web</span>
                     @endif
                     @if($row->Status === 1)
-                    <span class="description">Active</span>
+                    <span class="description" style="color: green;">#Active</span>
                     @elseif($row->Status === 0)
-                    <span class="description">UnActive</span>
+                    <span class="description" style="color: red;">#UnActive</span>
                     @endif
                 </div>
-
             </div>
             <div class="card-body">
-                <button type="button" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>
+                @if($row->Status === 1)
+                <button id="Unsend1" type="button" OnClick="JavaScript:fncConfirm1({{$row->Commentid}});" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>
+                @endif
                 @if($row->Image != null)
                 <img class="img-fluid pad center" src="{{ url('storage/'.$row->Image) }}" style="align-items: center;" width="555" height="550" alt="Photo">
                 @else
@@ -431,13 +535,15 @@ function DateTime($strDate)
                 <br>
             </div>
             @endforeach
-            @else
-            <div class="card card-widget" id="cardcomment">
-                <h4>ไม่มีข้อมูลที่จะแสดง</h4>
-            </div>
-            @endif
         </div>
+        
+        @else
+        <div class="card card-widget" id="cardcomment">
+            </div>
+        @endif
     </div>
+</div>
+</div>
 @endsection
 
 @section('scripts')
@@ -475,6 +581,27 @@ function DateTime($strDate)
         $('.btn_showAppointments').removeClass('active')
         $('.btn_showIssues').removeClass('active')
     });
+</script>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    var img = document.getElementById("myImg");
+    var modalImg = document.getElementById("img01");
+    img.onclick = function() {
+        document.getElementById("myModal").style.display = 'block';
+        modalImg.src = this.src;
+    }
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
 </script>
 
 @endsection

@@ -75,141 +75,10 @@ function DateThai($strDate)
 </div>
 <!-- End Modal -->
 
-@if(!is_null($appointment))
-<!-- Edit Modal Appointments -->
-@foreach($appointment as $row)
-<div class="modal fade" id="issueseditModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="issuesModalLabel">Appointment Edit</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <!-- <form action="{{ url('/appointment-edit') }}" method="post"> -->
-            <form id="editform">
-                {{ csrf_field() }}
-                {{ method_field('PUT') }}
-                <div class="modal-body">
-
-
-                    <div class="form-group">
-                        <label for="">AppointDate</label>
-                        <input type="dateTime-local" id="AppointDateedit" name="AppointDate" value="{{DateThai($row->Date)}}" class="form-control">
-                        <!-- <input type="text" id="AppointDate" placeholder=""> -->
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Comment</label>
-                        <textarea id="Commentedit" name="Comment" class="form-control" rows="3">{{$row->Comment}}</textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Status</label>
-                        <select id="Statusedit" name="Status" class="form-control" require>
-                            <option value="1" @if ($row->Status === 1)
-                                selected
-                                @endif>Active</option>
-                            <option value="2" @if ($row->Status === 2)
-                                selected
-                                @endif>Change</option>
-                            <option value="3" @if ($row->Status === 3)
-                                selected
-                                @endif>Disable</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Updateby</label>
-                        <input type="text" id="Updateby" name="Updateby" class="form-control" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}" readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <!-- <label for="">Uuid</label> -->
-                        <input name="Uuid" class="form-control" placeholder="{{$row->Uuid}}" value="{{$row->Uuid}}" hidden>
-                    </div>
-
-                    <div class="form-group">
-                        <!-- <label for="">Uuid</label> -->
-                        <input name="Issuesid" class="form-control" placeholder="{{$row->Issuesid}}" value="{{$row->Issuesid}}" hidden>
-                    </div>
-
-                    <div id="resultedit">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="editclosed" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="editmodal" name="action" value="save" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
-
-        </div>
-    </div>
-</div>
-@endforeach
-<!-- End Edit Appointments Modal -->
-@endif
-
-<!-- Modal Comments -->
-<div class="modal fade" id="issuescommentsModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalComments" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="issuesModalComments">Comments Add</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <!-- <form action="{{ url('/appointment-add') }}" method="post"> -->
-            <form id="addformcomment" enctype="multipart/form-data">
-                {{ csrf_field() }}
-                <div class="modal-body">
-
-                    <div class="form-group">
-                        <label for="">Comment</label>
-                        <textarea id="CComment" name="CComment" class="form-control" rows="3" placeholder="Enter Comment"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Image</label><br>
-                        <input type="file" id="image" name="image">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Createby</label>
-                        <input type="text" id="CCreateby" name="CCreateby" class="form-control" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}" readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <!-- <label for="">Uuid</label> -->
-                        <input id="Ctemp" name="Ctemp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
-                    </div>
-
-                    
-                    <div class="form-group">
-                        <!-- <label for="">Uuid</label> -->
-                        <input name="Issuesid" class="form-control" placeholder="{{$data->Issuesid}}" value="{{$data->Issuesid}}" hidden>
-                    </div>
-                   
-
-                    <div id="resultcomment">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="closedcomment" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="savecomment" name="action" value="save" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- End Modal Comments -->
-
 <!-- <div class="btn-group btn-group-toggle" data-toggle="buttons"> -->
-    <button type="button" class="btn btn-outline-warning btn_showIssues active">Issues Create</button>
-    <button type="button" class="btn btn-outline-primary btn_showComments">Comments</button>
-    <button type="button" class="btn btn-outline-danger btn_showAppointments">Appointments</button>
+<button type="button" class="btn btn-outline-warning btn_showIssues active">Issues Create</button>
+<button type="button" class="btn btn-outline-primary btn_showComments">Comments</button>
+<button type="button" class="btn btn-outline-danger btn_showAppointments">Appointments</button>
 <!-- </div> -->
 
 <div class="row subissues">
@@ -554,48 +423,100 @@ function DateThai($strDate)
     <div class="col-md-12">
         <!-- Box Comment -->
         <div class="card-header">
-            <h4 class="card-title"> Comments <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issuescommentsModal">Comments Add</a></h4>
-        </div>
-        <div class="card card-widget" id="cardcomment">
-            @if(!is_null($comment))
-            @foreach($comment as $row)
-            <div class="card-header">
-                <div class="user-block">
-                    @foreach($usercomment as $userc)
-                    <img class="img-circle" src="{{ url('storage/'.$userc->image) }}" alt="Image" width="50" height="50">
-                    @endforeach
-                    <span class="username">{{$row->Createby}} : </span>
-                    <span class="description">{{$row->created_at}}</span>
-                    @if($row->Type === 1)
-                    <span class="description">: App</span>
-                    @elseif($row->Type === 0)
-                    <span class="description">: Web</span>
-                    @endif
-                    @if($row->Status === 1)
-                    <span class="description">Active</span>
-                    @elseif($row->Status === 0)
-                    <span class="description">UnActive</span>
-                    @endif
-                </div>
+            <h4 class="card-title"> Comments
+                <!-- <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issuescommentsModal">Comments Add</a> -->
+            </h4>
+            <!-- <form id="addformcomment" enctype="multipart/form-data"> -->
+            <form id="addformcomment">
+                {{ csrf_field() }}
+                <div class="body">
+                    <div class="form-group">
+                        <label for="">Comment</label>
+                        <textarea id="CComment" name="CComment" class="form-control" rows="1" placeholder="Enter Comment"></textarea>
+                    </div>
 
+                    <div class="form-group">
+                        <label for="">Image</label><br>
+                        <input type="file" id="image" name="image">
+                    </div>
+
+                    <div class="form-group">
+                        <!-- <label for="">Createby</label> -->
+                        <input type="text" id="CCreateby" name="CCreateby" class="form-control" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}" hidden>
+                    </div>
+
+                    <div class="form-group">
+                        <!-- <label for="">Uuid</label> -->
+                        <input id="Ctemp" name="Ctemp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
+                    </div>
+
+                    <div id="resultcomment">
+                    </div>
+
+                    <div id="resultcomment2">
+                    </div>
+                </div>
+                <div class="footer">
+                    <button type="button" id="savecomment" class="btn btn-primary right">Post</button>
+                    <br>
+                    <div id="countcomment">
+                        @if(!is_null($countcomment))
+                        <br>
+                        <h4>Comments ({{$countcomment}})</h4>
+                        @endif
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <br>
+        </div>
+        <div style="overflow-y: auto;; height: 500px;">
+            <div class="card card-widget" id="cardcomment">
+                @if(!is_null($comment))
+                @foreach($comment as $row)
+                <div class="card-header">
+                    <div class="user-block">
+                        @foreach($usercomment as $userc)
+                        @if(!is_null($userc->image))
+                        <img class="img-circle" src="{{ url('storage/'.$userc->image) }}" alt="Image" width="50" height="50">
+                        @else
+                        <span class="username">ไม่มีรูปภาพ</span>
+                        @endif
+                        @endforeach
+                        <span class="username">{{$row->Createby}} : </span>
+                        <span class="description">{{$row->created_at}}</span>
+                        @if($row->Type === 1)
+                        <span class="description">: App</span>
+                        @elseif($row->Type === 0)
+                        <span class="description">: Web</span>
+                        @endif
+                        @if($row->Status === 1)
+                        <span class="description" style="color: green;">#Active</span>
+                        @elseif($row->Status === 0)
+                        <span class="description" style="color: red;">#UnActive</span>
+                        @endif
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if($row->Status === 1)
+                    <button id="Unsend1" type="button" OnClick="JavaScript:fncConfirm1({{$row->Commentid}});" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>
+                    @endif
+                    @if($row->Image != null)
+                    <img class="img-fluid pad center" src="{{ url('storage/'.$row->Image) }}" style="align-items: center;" width="555" height="550" alt="Photo">
+                    @else
+                    <p style="padding-top: 20px;">ไม่มีรูปภาพ</p>
+                    @endif
+                    <p style="padding-top: 20px;">{{$row->Comment}}</p>
+                    <span class="float-right text-muted">updated {{$row->updated_at}} By {{$row->Updateby}}</span>
+                </div>
+                <div class="card-footer">
+                    <br>
+                </div>
+                @endforeach
             </div>
-            <div class="card-body">
-                <button type="button" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>
-                @if($row->Image != null)
-                <img class="img-fluid pad center" src="{{ url('storage/'.$row->Image) }}" style="align-items: center;" width="555" height="550" alt="Photo">
-                @else
-                <p style="padding-top: 20px;">ไม่มีรูปภาพ</p>
-                @endif
-                <p style="padding-top: 20px;">{{$row->Comment}}</p>
-                <span class="float-right text-muted">updated {{$row->updated_at}} By {{$row->Updateby}}</span>
-            </div>
-            <div class="card-footer">
-                <br>
-            </div>
-            @endforeach
             @else
             <div class="card card-widget" id="cardcomment">
-                <h4>ไม่มีข้อมูลที่จะแสดง</h4>
             </div>
             @endif
         </div>
@@ -763,6 +684,111 @@ function DateThai($strDate)
 </script>
 
 <script>
+    function fncConfirm1(commentid) {
+        //   var txt;
+        $('#resultcomment').empty();
+        $('#resultcomment2').empty();
+
+        if (confirm("ท่านต้องการยกเลิกข้อความนี้ใช่หรือไม่ ?")) {
+            // txt = "You pressed OK!"+cid;
+            $.ajax({
+                type: "POST",
+                data: {
+                    commentid: commentid
+                },
+                url: "/api/commentliststatus",
+                success: function(response) {
+                    console.log(response);
+                    // $('#SubmitUnsend').attr('disabled', 'disabled');
+                    $("#resultcomment2").html('<div class="alert alert-danger" role="alert" id="result">Comments Unsend Sucess</div>');
+                    $('#cardcomment').empty();
+                    $('#countcomment').empty();
+                    var temp = $('#Ctemp').val();
+                    $.ajax({
+                        type: "POST",
+                        data: {
+                            temp: temp
+                        },
+                        url: "/api/commentlist",
+                        success: function(response) {
+                            $('#savecomment').removeAttr('disabled');
+                            $('#CComment').removeAttr('readonly').val("");
+                            // $("#resultcomment").empty();
+                            $('#image').val("");
+                            var len = response.length;
+                            if (len > 0) {
+                                var irow = response.length;
+                                var i = 0;
+                                var rown = 1;
+                                var html2 = '<br><h4 class="card-title">';
+                                html2 += 'Comments(' + response.length + ')';
+                                html2 += '</h4>';
+                                for (i = 0; i < irow; i++) {
+                                    var html = '<div class="card-header">';
+                                    html += '<div class="user-block">';
+                                    if (response[i].image != null) {
+                                        // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
+                                        html += '<img class="img-circle" src="/storage/' + response[i].image + '" alt="Image" width="50" height="50"> &nbsp;'
+                                    }
+                                    html += '<span class="username">' + response[i].Createby + ' : </span>'
+                                    html += '<span class="description">' + response[i].created_at + ' </span>'
+                                    if (response[i].Type == 1) {
+                                        html += '<span class="description">: App </span>';
+                                    }
+                                    if (response[i].Type == 0) {
+                                        html += '<span class="description">: Web </span>';
+                                    }
+                                    if (response[i].Status === 1) {
+                                        html += '<span class="description" style="color: green;">#Active</span>';
+                                    }
+                                    if (response[i].Status === 0) {
+                                        html += '<span class="description" style="color: red;">#UnActive</span>';
+                                    }
+
+                                    html += '</div>'
+                                    html += '</div>'
+                                    html += '<div class="card-body">'
+                                    if (response[i].Status === 1) {
+                                        html += '<button id="Unsend1" type="button" OnClick="JavaScript:fncConfirm1(' + response[i].Commentid + ');"  class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
+                                    }
+                                    if (response[i].Image != null) {
+                                        html += '<img class="img-fluid pad center" src="/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">'
+                                    } else {
+                                        html += '<p style="padding-top: 20px;">ไม่มีรูปภาพ</p>'
+                                    }
+                                    html += '<p style="padding-top: 20px;">' + response[i].Comment + '</p>'
+                                    html += '<span class="float-right text-muted">updated ' + response[i].updated_at + ' By ' + response[i].Updateby + '</span>'
+                                    html += '</div>'
+                                    html += '<div class="card-footer">'
+                                    html += '<bt>'
+                                    html += '</div>'
+
+                                    $('#cardcomment').append(html);
+                                }
+                                $('#countcomment').append(html2);
+                            }
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                },
+                error: function(error) {
+                    console.log(error);
+                    // $('#SubmitUnsend').attr('disabled', 'disabled');
+                    // alert("Data Saved");
+                    $("#resultcomment2").html('<div class="alert alert-danger" role="alert" id="result">Comments Unsend Sucess</div>');
+                }
+            });
+        } else {
+            // txt = "You pressed Cancel!";
+        }
+        //   console.log(txt);
+        // document.getElementById("demo").innerHTML = txt;
+    }
+</script>
+
+<script>
     $('.panelsub_all').hide();
 
     $('.btn_showAppointments').click(function(e) {
@@ -796,78 +822,6 @@ function DateThai($strDate)
     });
 
     $(document).ready(function() {
-
-        $('#editform').on('submit', function(e) {
-            e.preventDefault();
-            $.ajax({
-                type: "PUT",
-                url: "/issues-appointment-edit",
-                data: $('#editform').serialize(),
-                success: function(response) {
-                    console.log(response);
-                    $('#editmodal').attr('disabled', 'disabled');
-                    $('#AppointDateedit').attr('readonly', 'readonly');
-                    $('#Commentedit').attr('readonly', 'readonly');
-                    $('#Statusedit').attr('disabled', 'disabled');
-                    $("#resultedit").html('<div class="alert alert-success" role="alert" id="result">Appointment Update Success</div>');
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
-        });
-
-        $('#editclosed').click(function() {
-
-            $('#datatableappointbody').empty();
-            var temp = $('#tempappoint').val();
-            $.ajax({
-                type: "POST",
-                data: {
-                    temp: temp
-                },
-                url: "/api/appointmentlist",
-                success: function(response) {
-                    $('#editmodal').removeAttr('disabled');
-                    $('#AppointDateedit').removeAttr('readonly');
-                    $('#Commentedit').removeAttr('readonly');
-                    $('#Statusedit').removeAttr('disabled');
-                    $("#resultedit").empty();
-                    var len = response.length;
-                    if (len > 0) {
-                        var irow = response.length;
-                        var i = 0;
-                        var rown = 1;
-                        for (i = 0; i < irow; i++) {
-                            var html = "<tr>";
-                            html += '<td>' + response[i].Date + '</td>';
-                            html += '<td><div class="w-11p" style="height: 30px; overflow: hidden;">' + response[i].Comment + '</div></td>';
-                            if (response[i].Status == 1) {
-                                html += '<td>Active</td>';
-                            }
-                            if (response[i].Status == 2) {
-                                html += '<td>Change</td>';
-                            }
-                            if (response[i].Status == 3) {
-                                html += '<td>Disable</td>';
-                            }
-                            html += '<td>' + response[i].Createby + '</td>';
-                            html += '<td>' + response[i].Updateby + '</td>';
-                            html += '<td>' + response[i].created_at + '</td>';
-                            html += '<td>' + response[i].updated_at + '</td>';
-                            if (response[i].Status == 1) {
-                                html += '<td><a href="" data-toggle="modal" data-target="#issueseditModal" class="btn btn-success">Edit</a></td>';
-                            }
-                            html += '</tr>';
-                            $('#datatableappointbody').append(html);
-                        }
-                    }
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
-        });
 
         $('#addform').on('submit', function(e) {
             e.preventDefault();
@@ -906,6 +860,7 @@ function DateThai($strDate)
                     $('#Comment').removeAttr('readonly').val("");
                     $('#Status').removeAttr('disabled');
                     $("#result").empty();
+                    $("#issueseditModal").empty();
                     var len = response.length;
                     if (len > 0) {
                         var irow = response.length;
@@ -928,9 +883,6 @@ function DateThai($strDate)
                             html += '<td>' + response[i].Updateby + '</td>';
                             html += '<td>' + response[i].created_at + '</td>';
                             html += '<td>' + response[i].updated_at + '</td>';
-                            if (response[i].Status == 1) {
-                                html += '<td><a href="" data-toggle="modal" data-target="#issueseditModal" class="btn btn-success">Edit</a></td>';
-                            }
                             html += '</tr>';
                             $('#datatableappointbody').append(html);
                         }
@@ -945,9 +897,10 @@ function DateThai($strDate)
 
     $(document).ready(function() {
 
-        $('#addformcomment').on('submit', function(e) {
+        $('#savecomment').on('click', function(e) {
             e.preventDefault();
             var form = $('#addformcomment')[0];
+            // alert("Data Saved");
 
             var data = new FormData(form);
             $.ajax({
@@ -961,82 +914,84 @@ function DateThai($strDate)
                 success: function(response) {
                     console.log(response);
                     // alert("Data Saved");
-                    $('#savecomment').attr('disabled', 'disabled');
-                    $('#CComment').attr('readonly', 'readonly');
+                    // $('#savecomment').attr('disabled', 'disabled');
+                    // $('#CComment').attr('readonly', 'readonly');
                     $("#resultcomment").html('<div class="alert alert-success" role="alert" id="result">Comments Save Success</div>');
+                    $('#cardcomment').empty();
+                    $('#countcomment').empty();
+                    var temp = $('#Ctemp').val();
+                    $.ajax({
+                        type: "POST",
+                        data: {
+                            temp: temp
+                        },
+                        url: "/api/commentlist",
+                        success: function(response) {
+                            $('#savecomment').removeAttr('disabled');
+                            $('#CComment').removeAttr('readonly').val("");
+                            // $("#resultcomment").empty();
+                            $('#image').val("");
+                            var len = response.length;
+                            if (len > 0) {
+                                var irow = response.length;
+                                var i = 0;
+                                var rown = 1;
+                                var html2 = '<br><h4 class="card-title">';
+                                html2 += 'Comments (' + response.length + ')';
+                                html2 += '</h4>';
+                                for (i = 0; i < irow; i++) {
+                                    var html = '<div class="card-header">';
+                                    html += '<div class="user-block">';
+                                    if (response[i].image != null) {
+                                        // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
+                                        html += '<img class="img-circle" src="/storage/' + response[i].image + '" alt="Image" width="50" height="50"> &nbsp;';
+                                    }
+                                    html += '<span class="username">' + response[i].Createby + ' : </span>';
+                                    html += '<span class="description">' + response[i].created_at + ' </span>';
+                                    if (response[i].Type == 1) {
+                                        html += '<span class="description">: App </span>';
+                                    }
+                                    if (response[i].Type == 0) {
+                                        html += '<span class="description">: Web </span>';
+                                    }
+                                    if (response[i].Status === 1) {
+                                        html += '<span class="description" style="color: green;">#Active</span>';
+                                    }
+                                    if (response[i].Status === 0) {
+                                        html += '<span class="description" style="color: red;">#UnActive</span>';
+                                    }
+                                    html += '</div>';
+                                    html += '</div>';
+                                    html += '<div class="card-body">';
+                                    if (response[i].Status === 1) {
+                                        html += '<button id="Unsend1" type="button" OnClick="JavaScript:fncConfirm1(' + response[i].Commentid + ');"  class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
+                                    }
+                                    if (response[i].Image != null) {
+                                        html += '<img class="img-fluid pad center" src="/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">';
+                                    } else {
+                                        html += '<p style="padding-top: 20px;">ไม่มีรูปภาพ</p>';
+                                    }
+                                    html += '<p style="padding-top: 20px;">' + response[i].Comment + '</p>';
+                                    html += '<span class="float-right text-muted">updated ' + response[i].updated_at + ' By ' + response[i].Updateby + '</span>';
+                                    html += '</div>';
+                                    html += '<div class="card-footer">';
+                                    html += '<bt>';
+                                    html += '</div>';
+
+                                    $('#cardcomment').append(html);
+                                }
+                                $('#countcomment').append(html2);
+                            }
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
                 },
                 error: function(error) {
                     console.log(error);
                     // alert("Data error");
 
-                }
-            });
-        });
-
-        $('#closedcomment').click(function() {
-
-            $('#cardcomment').empty();
-            var temp = $('#Ctemp').val();
-            $.ajax({
-                type: "POST",
-                data: {
-                    temp: temp
-                },
-                url: "/api/commentlist",
-                success: function(response) {
-                    $('#savecomment').removeAttr('disabled');
-                    $('#CComment').removeAttr('readonly').val("");
-                    $("#resultcomment").empty();
-                    $('#image').val("");
-                    var len = response.length;
-                    if (len > 0) {
-                        var irow = response.length;
-                        var i = 0;
-                        var rown = 1;
-                        for (i = 0; i < irow; i++) {
-                            var html = '<div class="card-header">';
-                            html += '<div class="user-block">';
-                            if (response[i].Image != null) {
-                                // html += '<td><img src="http://10.57.34.148:8000/storage/' + response[i].Image + '" alt="image" width="80" height="80"></td>';
-                                html += '<img class="img-circle" src="http://127.0.0.1:8000/storage/' + response[i].Image + '" alt="Image" width="50" height="50"> &nbsp;'
-                            }
-                            html += '<span class="username">' + response[i].Createby + ' : </span>'
-                            html += '<span class="description">' + response[i].created_at + ' </span>'
-                            if (response[i].Type == 1) {
-                                html += '<span class="description">: App </span>';
-                            }
-                            if (response[i].Type == 0) {
-                                html += '<span class="description">: Web </span>';
-                            }
-                            if (response[i].Status === 1) {
-                                html += '<span class="description">Active</span>';
-                            }
-                            if (response[i].Status === 0) {
-                                html += '<span class="description">UnActive</span>';
-                            }
-
-                            html += '</div>'
-                            html += '</div>'
-                            html += '<div class="card-body">'
-                            html += '<button type="button" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>'
-                            if (response[i].Image != null) {
-                                html += '<img class="img-fluid pad center" src="http://127.0.0.1:8000/storage/' + response[i].Image + '" style="align-items: center;" width="555" height="550" alt="Photo">'
-                            }else{
-                                html += '<p style="padding-top: 20px;">ไม่มีรูปภาพ</p>'
-                            }
-                            html += '<p style="padding-top: 20px;">' + response[i].Comment + '</p>'
-                            html += '<span class="float-right text-muted">updated ' + response[i].updated_at + ' By ' + response[i].Updateby + '</span>'
-                            html += '</div>'
-                            html += '<div class="card-footer">'
-                            html += '<bt>'
-                            html += '</div>'
-
-                            $('#cardcomment').append(html);
-                        }
-                    }
-                },
-                error: function(error) {
-                    console.log(error);
                 }
             });
         });

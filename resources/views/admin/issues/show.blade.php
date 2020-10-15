@@ -50,9 +50,9 @@ function DateTime($strDate)
 
 <!-- The Modal -->
 <div id="myModal" class="modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="img01">
-  <div id="caption"></div>
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
 </div>
 
 
@@ -499,7 +499,11 @@ function DateTime($strDate)
             <div class="card-header">
                 <div class="user-block">
                     @foreach($usercomment as $userc)
+                    @if(!is_null($userc->image))
                     <img class="img-circle" src="{{ url('storage/'.$userc->image) }}" alt="Image" width="50" height="50">
+                    @else
+                    <span class="username">ไม่มีรูปภาพ</span>
+                    @endif
                     @endforeach
                     <span class="username">{{$row->Createby}} : </span>
                     <span class="description">{{$row->created_at}}</span>
@@ -509,15 +513,16 @@ function DateTime($strDate)
                     <span class="description">: Web</span>
                     @endif
                     @if($row->Status === 1)
-                    <span class="description">Active</span>
+                    <span class="description" style="color: green;">#Active</span>
                     @elseif($row->Status === 0)
-                    <span class="description">UnActive</span>
+                    <span class="description" style="color: red;">#UnActive</span>
                     @endif
                 </div>
-
             </div>
             <div class="card-body">
-                <button type="button" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>
+                @if($row->Status === 1)
+                <button id="Unsend1" type="button" OnClick="JavaScript:fncConfirm1({{$row->Commentid}});" class="btn btn-default btn-sm float-right"><i class="fas fa-comment-slash"></i></i> Unsend</button>
+                @endif
                 @if($row->Image != null)
                 <img class="img-fluid pad center" src="{{ url('storage/'.$row->Image) }}" style="align-items: center;" width="555" height="550" alt="Photo">
                 @else
@@ -530,13 +535,13 @@ function DateTime($strDate)
                 <br>
             </div>
             @endforeach
-            @else
-            <div class="card card-widget" id="cardcomment">
-                <h4>ไม่มีข้อมูลที่จะแสดง</h4>
-            </div>
-            @endif
         </div>
+        @else
+        <div class="card card-widget" id="cardcomment">
+            </div>
+        @endif
     </div>
+</div>
 </div>
 @endsection
 
