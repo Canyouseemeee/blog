@@ -23,7 +23,7 @@
         }
 
         .full-height {
-            height: 100vh;
+            height: 96vh;
         }
 
         .flex-center {
@@ -77,7 +77,7 @@
                 {{ __('Logout') }}
             </a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                  @csrf
+                @csrf
             </form>
             @else
             <a href="{{ route('login') }}">Login</a>
@@ -93,6 +93,8 @@
             </div>
         </div>
     </div>
+    <div><span class="flex-center position-ref" style="color: gray;">© 2020 Power By Phongsathorn Boonchu </span></div>
+
 </body>
 
 </html>

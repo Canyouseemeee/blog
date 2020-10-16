@@ -26,7 +26,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                CNMI:HELPDESK
+                    CNMI:HELPDESK
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -75,6 +75,44 @@
             @yield('content')
         </main>
     </div>
+    <!-- <footer>
+        <h6 class="float-right" style="color: gray;">Power BY Phongsathorn Boonchu</h6>
+    </footer> -->
+    
 </body>
+<div class="FooterSmall__CopyRight-sc-1093s7q-0 RostK">
+        <div class="CMSV2__Wrapper-fShGfv ckYCpm">
+            <div id="cms-5d1b070576a1ab001511e961" class="GrapesViewer__CustomWrapper-fLnJQO gOoWFR">
+                <div>
+                    <div><span class="footer-copy-right-gjs float-right powerby" style="color: gray;">© 2020 Power By Phongsathorn Boonchu </span></div>
+                </div>
+                <style>
+                    * {
+                        box-sizing: border-box;
+                    }
+
+                    body {
+                        margin: 0;
+                    }
+
+                    * {
+                        box-sizing: border-box;
+                    }
+
+                    .powerby {
+                        margin-top: 600px;
+                        margin-right: 800px;
+                        margin-bottom: 0px;
+                        margin-left: 0px;
+                    }
+
+                    #cms-5d1b070576a1ab001511e961 .footer-copy-right-gjs {
+                        font-size: 14px;
+                        color: #000;
+                    }
+                </style>
+            </div>
+        </div>
+    </div>
 
 </html>
